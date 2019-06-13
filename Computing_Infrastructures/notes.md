@@ -180,7 +180,9 @@ However, some nodes of DC must be configured as router: this can limit their per
 
 # Virtualization
 
-The main contribution of a VMM is handling virtual resources:  
+## Virtual Resources
+
+The main contribution of a VMM (Virtual Machines Manager) is handling virtual resources:  
 it presents to the guest OS the interface of a real resource and understands the OS requests and emulates them.    
 
 Virtualization maps virtual resources to a set of managed ones, which are often physical and in rare cases are virtual, it can provide
@@ -311,6 +313,31 @@ There are 4 kinds of Virtual Network Adapters (VNA):
 <img src="images/i_net.png" style="zoom:50%">
 
 
+
+## Virtual Machines
+
+### Instructions' Levels
+
+In a machine there are 6 levels of instructions, to move from one to the lower one a translator is needed. 
+
+***Level 2*** is the one of the Instruction Set Architecture (***ISA***), which represents the bunch of instructions the machine can execute. 
+
+It is divided into:
+
+- ***User ISA*** 
+  visible to an application program
+-  ***System ISA***  
+  can be seen only by the operative system, used to perform its specific task.    
+
+Another important component is the Application Binary Interface (***ABI***) which allows the program to access to hardware resources and other available systems. 
+
+It is composed by:
+
+- ***User ISA***
+- ***System calls***  
+  which allows a program to indirectly interact with OS-managed resources 
+
+COPIO ALTRO E VADO AVANTI
 
 # Performance
 
@@ -697,7 +724,6 @@ $$
 - *Response time:*  
   The sum of the *time spent in the queue waiting* and of the *service time*, which is the time effectively spent to read the data.  
   We will evaluate only the latter, which is the sum of
-
 - *Seek time:*  
   head movement time
 - *Rotational latency:*  
@@ -707,7 +733,7 @@ $$
 - *Controller overhead:*  
   the time required to send the data.   
 
-#### Without Locality Concept
+#### Formulas
 
 - **Rotational Latency of a disk**  
   The rotational latency of a disk is half of the time required to perform one rotation  
@@ -718,30 +744,36 @@ $$
 
 - **Transfer Time**
   $$
-  transfer \ time = \frac{sector \ to \ be \ transfered}{data \ transfer \ rate }
+  T_{TRANSF} = \frac{sector \ to \ be \ transfered}{data \ transfer \ rate }
   $$
 
-- **Total I/O Service Time**   
-  $$
-  T_{I/O}=T_{controller \ overhead}+T_{average \ seek \ time} + T_{rotational \ latency}+ \ transfer \ time
-  $$
+- 
 
-
-
-#### With Locality Concept
-
-Another quantity to consider is the data locality, which considers the fragmentation of the disk by telling the percentage of data that are stored contiguously. 
-
-<u>Single Block Response Time</u>
 $$
-service \ time = (1-locality)\cdot(seek \ time + rot \ latency)\  +trans \ time \ + \ contr \ overhead
-$$
-<u>Multiple Blocks Response Time</u>
-$$
-total= affected\cdot(1-locality)\cdot (tr +contr+seek+lat)+unaffected\cdot locality\cdot(tr+contr)
+S_{TT}=T_{LAT}+T_{SEEK} +T_{TRANSF}+T_{OHCONTROLLER}
 $$
 
+- **Service Time - N Blocks**
 
+$$
+S_{TT}=n(T_{LAT}+T_{SEEK})+T_{TRANF}+T_{OHCONTROLLER}
+$$
+
+- **Service Time with locality**  
+
+$$
+S_{TT}=n\bigg[ (1-l)(T_{LAT}+T_{SEEK})+T_{TRANSF} + T_{OHCONTROLLER}\bigg]
+\\
+or \ equivalently
+\\
+S_{TT}=n \bigg[ l(T_{TRANSF}+T_{OHCONTROLLER})+(1-l)(T_{TRANSF}+T_{OHCONTROLLER}+T_{SEEK}+T_{LAT})\bigg]
+$$
+
+$$
+n=number \ of \ blocks=\frac{File \ Size}{Block \ Size}
+$$
+
+#### Example
 
 if you have 
 
