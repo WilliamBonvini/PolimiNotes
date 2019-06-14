@@ -1,12 +1,13 @@
 # Notes of Computing Infrastructures
 
-*A series of overly incomprehensible notes of the course Computing Infrastructures as taught in PoliMi.*
+*A series of overly incomprehensible notes of the course Computing Infrastructures as taught in PoliMi.  
+Check for document updates on [GitHub](https://github.com/WilliamBonvini/PolimiNotes).*
+
+<div style="page-break-after: always;"></div> 
 
 [TOC]
 
-
-
-
+<div style="page-break-after: always;"></div> 
 
 # Data Centers
 
@@ -29,6 +30,8 @@ Corridors where servers are located are split into cold aisle, where the front p
 Cold air flows from the front (cool aisle), cools down the equipment, and leave the room from the back (warm aisle).
 
 <img src="images/corridors2.png" style="zoom:50%">
+
+<div style="page-break-after: always;"></div> 
 
 ## Data Center Racks
 
@@ -59,6 +62,8 @@ They may differ in:
 - Available RAM
 - Locally attached disks (HDD, SSD or not installed)
 - Other special purpose devices (like GPUs, DSPs and coprocessors)
+
+<div style="page-break-after: always;"></div> 
 
 ### Communication Equipment
 
@@ -107,6 +112,8 @@ Several different configurations have been tested. The most important are:
 - Fat-tree
 - D-Cell
 
+<div style="page-break-after: always;"></div> 
+
 ### Three Layers
 
 Three layer architecture configures the network in three different layers:
@@ -120,6 +127,8 @@ Three layer architecture configures the network in three different layers:
 Three layer architecture reflects the topology of the data center: 
 
 <img src="images/3layers2.png" style="zoom:50%">
+
+<div style="page-break-after: always;"></div> 
 
 #### Access
 
@@ -142,6 +151,8 @@ This solution is very simple, but can be very expensive in large data-centers si
 
 
 
+<div style="page-break-after: always;"></div> 
+
 ### Fat-Tree
 
 Fat-tree topologies use a larger number of slower speed switches and connections. In particular, nodes are divided into pods characterized by the same number of nodes and switches.
@@ -155,6 +166,8 @@ There is a division in
 - Edge Layer
 
 <img src="images/fat-tree.png" style="zoom:50%">
+
+<div style="page-break-after: always;"></div> 
 
 ### D-Cell
 
@@ -176,7 +189,179 @@ The advantage of DCell is that it requires fewer switches and less cables than t
 **FT over DC**  
 However, some nodes of DC must be configured as router: this can limit their performance, introduce network administration problems, and requires special routing protocols that are not fully standardized yet, this does not happen in FT.
 
+<div style="page-break-after: always;"></div> 
 
+# Performance
+
+## Basics
+
+<img src="C:/Users/Willi/Desktop/myGitHub/Notes/Computing_Infrastructures/images/1555696696386.png" style="zoom:40%">
+
+- in interactive systems we can't use little's law because we have thinking users.
+- ***Workload Intensity***   
+  The rate at which customers arrive.
+- ***Service Demand***  
+  Average service requirement of a customer.
+- ***Utilization***   
+  The proportion of time the server is busy.
+- ***Residence Time***   
+  The average time spent at the service center by a customer, both queueing and receiving service.
+- ***Response Time***  
+  The intuitive notion of perceived system response time.
+- ***Queue Length***   
+  The average number of customers at the service center, both waiting and receiving service.
+- ***Throughput***   
+  The rate at which customers pass through the service center.
+
+<div style="page-break-after: always;"></div> 
+
+## Unbalanced Systems
+
+<img src="C:/Users/Willi/Desktop/myGitHub/Notes/Computing_Infrastructures/images/1558026389109.png" style="zoom:40%">
+
+## Open Models  
+
+$$
+X(\lambda) \le \frac{1}{D_{max}} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D \le R(\lambda)
+\\
+\downarrow
+\\
+X(\lambda) \le \frac{1}{D_{max}} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{D}{1-\lambda D_{avg}} \le R(\lambda) \le \frac{D}{1-\lambda D_{max}} 
+$$
+
+
+
+<img src="C:/Users/Willi/Desktop/myGitHub/Notes/Computing_Infrastructures/images/1558103874687.png" style="zoom:40%">
+
+- $X_k(\lambda)=\lambda V_k$
+
+
+
+<div style="page-break-after: always;"></div> 
+
+## Closed Queuing Models 
+
+### Without Z
+
+$$
+\max(ND_{max},D) \ \ \ \ \ \ \  \le  \ \ \ \ \ \ \ R(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  ND 
+\\ 
+\
+\\
+\frac{1}{D} \ \ \ \ \ \ \  \le \ \ \ \ \ \ \ X(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  \min\bigg(\frac{N}{D},\frac{1}{D_{max}}\bigg)
+$$
+
+
+
+### With Z
+
+$$
+\max(ND_{max}-Z,D) \ \ \ \ \ \ \  \le  \ \ \ \ \ \ \ R(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  ND 
+\\ 
+\
+\\
+\frac{N}{ND+Z} \ \ \ \ \ \ \  \le \ \ \ \ \ \ \ X(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  \min\bigg(\frac{N}{D+Z},\frac{1}{D_{max}}\bigg)
+$$
+
+$$
+N^*=\frac{D+Z}{D_{max}}
+$$
+
+
+
+### Balanced without Z
+
+$$
+D_{avg}=\frac{D}{number \ of \ stations}
+$$
+
+$$
+\max\Bigg(ND_{max},D+(N-1)D_{avg}\Bigg) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  R(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  D +(N-1)D_{max}
+$$
+
+$$
+\frac{N}{D+(N-1)D_{max}
+} \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  X(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  
+\min\Bigg(\frac{1}{D_{max}},\frac{N}{D+(N-1)D_{avg}}\Bigg)
+$$
+
+
+
+### Balanced with Z
+
+$$
+D_{avg}=\frac{D}{number \ of \ stations}
+$$
+
+$$
+\max\Bigg(ND_{max}-Z,D+\frac{(N-1)D_{avg}}{1+\frac{Z}{D}}\Bigg) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  R(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  D +\frac{(N-1)D_{max}}{1+\frac{Z}{ND}}
+$$
+
+$$
+\frac{N}{D+Z+\frac{(N-1)D_{max}}{1+\frac{Z}{ND}}} \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  X(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  \min\Bigg(\frac{1}{D_{max}},\frac{N}{D+Z+\frac{(N-1)D_{avg}}{1+\frac{Z}{D}}}\Bigg)
+$$
+
+$$
+N^+=\frac{(D+Z)^2-D\cdot D_{avg}}{(D+Z)D_{max}-D \cdot D_{avg}}
+$$
+
+<div style="page-break-after: always;"></div> 
+
+## Closed Batch Models
+
+### Standard
+
+$$
+\max(ND_{max},D) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  R(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  ND
+\\
+\ 
+\\
+\frac{1}{D} \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  X(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  \min\bigg(\frac{N}{D},\frac{1}{D_{max}}\bigg)
+$$
+
+$$
+N^*=\frac{D}{D_{max}}
+$$
+
+
+
+### Balanced
+
+$$
+\max(ND_{max},D+(N-1)D_{avg}) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  R(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  D+(N-1)D_{max}
+$$
+
+$$
+\frac{N}{D+(N-1)D_{max}} \le X(N) \le \min(\frac{1}{D_{max}},\frac{N}{D+(N-1)D_{avg}})
+$$
+
+$$
+N^+=\frac{D-D_{avg}}{D_{max}-D_{avg}}
+$$
+
+
+
+## Single-Class Multi Station Systems with two stations
+
+- ${R_1=r_1V_1}$
+- ${R_2=r_2V_2}$
+- ${R=R_1+R_2}$
+
+## Availability
+
+- $A=\frac{MTTF}{MTTF+MTTR}$
+- $A_{serial}=A_1A_2A_3...A_n$
+- $A_{parallel}=1-\prod(1-A_i)$
+
+## Reliability
+
+- $R(t)=e^{-\frac{t}{MTTF}}$
+- $R_{serial}=R_1R_2...R_n$
+- $R_{parallel}=1-(1-R_A(t))(1-R_B(t))$
+
+
+
+<div style="page-break-after: always;"></div> 
 
 # Virtualization
 
@@ -258,6 +443,8 @@ With virtualization, another saga structure is needed, it is called memory *mana
 The VMM builds a virtual version of the devices, it intercepts and handles the requests.  
 Devices can be dedicated (keyboard, mouse, …), partitioned (large disks) or shared (network adapter)  .
 
+<div style="page-break-after: always;"></div> 
+
 ### Virtual disks   
 
 They can convert the entire HDD into a file.
@@ -287,6 +474,8 @@ There are 4 kinds of Virtual Network Adapters (VNA):
 
 <img src="images/nat.png" style="zoom:50%">
 
+<div style="page-break-after: always;"></div> 
+
 #### Bridged Networking
 
 - the VM seems to be actually connected to the real network
@@ -304,7 +493,7 @@ There are 4 kinds of Virtual Network Adapters (VNA):
 
 <img src="images/honet.png" style="zoom:50%">
 
-
+<div style="page-break-after: always;"></div> 
 
 #### Internal Networking
 
@@ -312,105 +501,151 @@ There are 4 kinds of Virtual Network Adapters (VNA):
 
 <img src="images/i_net.png" style="zoom:50%">
 
-
+<div style="page-break-after: always;"></div> 
 
 ## Virtual Machines
 
 ### Instructions' Levels
 
-In a machine there are 6 levels of instructions, to move from one to the lower one a translator is needed. 
+In a machine there are 6 levels of instructions (from 0 to 5), to move from one level to a lower one a translator is needed. 
 
-***Level 2*** is the one of the Instruction Set Architecture (***ISA***), which represents the bunch of instructions the machine can execute. 
+<img src="images/levels.png" style="zoom:40%">
 
-It is divided into:
+***Level 2*** is the one of the *Instruction Set Architecture* (***ISA***), which represents the bunch of instructions the machine can execute. 
+
+The **ISA** is divided into:
 
 - ***User ISA*** 
-  visible to an application program
+  It's visible to application programs.
 -  ***System ISA***  
-  can be seen only by the operative system, used to perform its specific task.    
+  It can be seen only by the OS.    
 
-Another important component is the Application Binary Interface (***ABI***) which allows the program to access to hardware resources and other available systems. 
+Another important component is the *Application Binary Interface* (***ABI***) which allows the program to access to hardware resources. 
 
-It is composed by:
+The **ABI** is composed by:
 
 - ***User ISA***
 - ***System calls***  
-  which allows a program to indirectly interact with OS-managed resources 
+  which allows a program to indirectly interact with OS-managed resources. 
+
+<div style="page-break-after: always;"></div> 
 
 ### Virtualization
 
-Not possible to run on instructions that were not meant for that machine, but **the hardware can be virtualized**:  
+It's not possible to run on instructions that were not meant for that machine, but **the hardware can be virtualized**:  
 Java runs in every architecture for which an interpreter exists, as it uses a specific set of instructions which is translated by the Java Runtime Environment into machine instructions.  
-The same technique can be used to run on a machine software which is meant for another one, by using **emulators**.  
-They understand the behavior of the CPU and of the RAM and reproduce it into the physical system on which it is running. Both the ABI and the ISA are reproduced.   
+The same technique can be used to run software on a machine that is meant for another machine, by using **emulators**.  
+Emulators understand the behavior of the CPU and of the RAM and reproduce it into the physical system on which it is running. Both the ABI and the ISA are reproduced.   
 
-### Virtual Machines
+### Virtual Machines - Definition and Types
 
-A **virtual machine** is a logical abstraction able to provide a virtual execution environment or a full system one.   
-It maps virtual resources in physical ones and it uses the physical machine instructions to execute virtual ones, the **host** is the software that runs in the virtual machine while the **guest** is the underlying platform that supports it.  
-*There are two types of virtual machines.* 
+A **virtual machine** is a logical abstraction able to provide a virtual execution environment.   
+It maps virtual resources in physical ones and it uses the physical machine instructions to execute virtual ones.  
+The **host** is the software that runs in the virtual machine while the **guest** is the underlying platform that supports it.  
+
+***There are two types of Virtual Machines:***
+
+<img src="images/vmtypes.png" style="zoom:30%">
 
 1. ***Process Virtual Machines***  
-   The ABI provides the interface between the physical machine and the virtual one, onto which it is possible to execute processes but no other operative systems. The virtualization software is called **runtime software**, it emulates user-level ISA and operating system calls, meaning that it must rely in the software of the physical machine to access the hardware as it supports the level 0-3 of the architecture. 
+   The ABI provides the interface between the physical machine and the virtual one, onto which *it is possible to execute processes but no other operative systems.*  
+   The virtualization software is called **runtime software**, it emulates user-level ISA and operating system calls, meaning that it must rely on the software of the physical machine to access the hardware as it supports the level 0-3 of the architecture. 
 2.  ***System Virtual Machines***  
-   The ISA provides the interface between the two machines, meaning that each machine can run its own operative system and interact independently with resources, either via an underlying OS or directly communicating with the hardware, which includes also the I/O resources. The virtualizing software is the **Virtual Machine Monitor (VMM)**, it supports the level 0-2 of the architecture, as it does not include the software.   
+   The ISA provides the interface between the two machines, meaning that *each machine can run its own operative system and interact independently with resources*, either via an underlying OS or directly communicating with the hardware, which includes also the I/O resources.   
+   The virtualizing software is the **Virtual Machine Monitor (VMM)**, it supports the level 0-2 of the architecture, as it does not include the software.   
 
-
+<div style="page-break-after: always;"></div> 
 
 ### VM's Architecture Dependency
 
 A great problem is the slowing down of the machine due to the need of translating the instructions, but it can be solved (not always) exploiting the fact that the languages of the two machines coincide, which means that they have the same ABI for process VMs or the same ISA for system ones. 
 
+<img src="images/vmtypes.png" style="zoom:30%">
+
 - ***Same architecture:***   
-  depending on the level, it can be the same IBA is the same ISA
-  - *Process VMs*  
-    have the same ABI, this technique is used to allow multiple users to run in the same machine, but it is not considered a real virtual machine.
-  - *System VMs*  
-    have the same ISA, the machine is on the bare hardware and the VMM can connect it directly with the I/O and the memory. If the machine runs on top of another operative system, it is called *hosted VM*.
+  depending on the level, it can be the same ABI or the same ISA
+  - *<u>Process VMs</u>*  
+    Same ABI.  
+    This technique is used to allow multiple users to run in the same machine, but *it is not considered a real virtual machine*.
+  - <u>*System VMs*</u>  
+    Same ISA.  
+    The machine is on the bare hardware and the VMM can connect it directly with the I/O and the memory.  
+    If the machine runs on top of another operative system, it is called *hosted VM*.
 - ***Different architecture:***   
-  *emulation* is required, it refers to those techniques developed to allow an application to run in an environment different from that originally intended. Two methods can be implemented in two ways, through interpretation or binary translation, which is faster as it converts blocks of instructions at runtime and caches them.
-  - *Process VMs*  
-    every application has a different execution environment, the VMM translates the byte code of the applications, which are sandboxed, into that of the machine.
-  - *System VMs*  
-    usually they run on top of another OS, in this case the VM must emulate the entire hardware environment. 
+  <u>*Emulation*</u> is required, it refers to those techniques developed to allow an application to run in an environment different from that originally intended.  
+  Two methods can be implemented in two ways, through interpretation or binary translation, which is faster as it converts blocks of instructions at runtime and caches them.
+  - <u>*Process VMs*</u>  
+    Every application has a different execution environment, the VMM translates the byte code of the applications, which are sandboxed, into that of the machine.
+  - <u>*System VMs*</u>  
+    Usually they run on top of another OS.  
+    In this case the VM must emulate the entire hardware environment. 
+
+<div style="page-break-after: always;"></div> 
+
+### Virtualization
+
+***How do we implement it?***
+
+Given a typical layered architecture of a system, we add layers between execution stack layers.  
+
+<img src="images/virtualization.png" style="zoom:50%">
 
 Virtualization must be implemented if the machine needs to execute instructions meant for another ISA or another ABI.  
-Depending on the level where it is placed, it is possible to obtain different types:
+Depending on the level where it is placed, it is possible to obtain different types of virtualization:
+
+***Virtualization Types:***
 
 - ***Hardware-Level Virtualization***  
-  is placed between the hardware and the operative system
+  It is placed between the hardware and the operative system   
+
+  <img src="images/hlvirtualization.png" style="zoom:50%">
+
+  
+
 - ***Application-level Virtualization***   
-  is put between the operative system and some application, which run in its environment independently and can be also a software. 
+  It is put between the operative system and some application, which run in its environment independently and can also be a software.   
+  <img src="images/alvirtualization.png" style="zoom:50%">
 
+- ***System-level Virtualization***  
+  The virtualization layer provides the interface of a physical machine to a secondary OS and a set of applications running in it, allowing them to run on top of an existing OS.  
+  <img src="images/slvirtualization.png" style="zoom:50%">
 
+<div style="page-break-after: always;"></div> 
 
-### Virtual Machine Managers 
+### Virtual Machine Manager 
 
-(system VMs, same ISA).
-
-The VMM manages the virtual machines, mediates the access to the hardware resources and handles protected instructions; it is crucial to support cloud computing. 
+The VMM is an application that manages the virtual machines, mediates the access to the hardware resources and handles any privileged or protected instruction issued by the virtual machines.  
+It is crucial to support cloud computing. 
 
 There are three terms, which have a slightly different meaning:
 
-- ***Virtual machine monitor***  
-  the software
-- ***Virtual machine manager***  
-  the software which takes care of virtualized resources providing a userfriendly interface  
+- ***Virtual Machine Monitor***  
+  The virtualization software
 - ***Hypervisor***  
-  which runs directly on the hardware   
+  A virtualization software that runs directly on the hardware.
+- ***Virtual Machine Manager***  
+  A VMM or Hypervisor that is also used to create, configure and maintain virtualized resource.  
+  It provides a user-friendly interface  to the underlying virtualization software.
 
 #### Hypervisor
 
 Let’s focus on the hypervisor, it can be
 
-- ***Bare metal (type 1)***  
-  which takes direct control of the hardware and was sometimes used to provide hacks for certain OS.
+- ***Bare Metal (type 1)***  
+  which takes direct control of the hardware and was sometimes used to provide hacks for certain OS. 
+  <img src="images/type1.png" style="zoom:50%">
+
   - *Monolithic:*  
     the drivers are installed on the hypervisor, so they need to be available for that software, it leads to better performances and isolation
+
   - *Microkernel:*  
-    the drivers are installed on a service virtual machine, so those specific for the OS and also 3rd party ones (even if difficult) can be used, this allows also to keep the hypervisor small
+    the drivers are installed on a service virtual machine, so those specific for the OS and also 3rd party ones (even if difficult) can be used, this allows also to keep the hypervisor small.  
+
+    <div style="page-break-after: always;"></div> 
+
 - ***Hosted (type 2)***  
-  which is characterized by at least two operative systems, the host where the VMM runs and the guest where the virtual machine runs. It is more flexible and simpler, but special care must be taken to avoid conflicts between the systems and to keep low the resources consumed by the guest.  
+  which is characterized by at least two operative systems, the host where the VMM runs and the guest where the virtual machine runs. It is more flexible and simpler, but special care must be taken to avoid conflicts between the systems and to keep low the resources consumed by the guest.   
+  <img src="images/type2.png" style="zoom:50%">
 
 #### VMM Properties
 
@@ -426,11 +661,13 @@ VMM must ensure the following properties:
 There are three types of virtualization:
 
 1. ***Para-virtualization***  
-   the interface is similar but not identical to that if the underlying hardware, the guest OS can require the host to execute some instructions that would be virtualised thus making them faster; only some modified guest OS can be installed in these machines.
+   The interface is similar but not identical to that if the underlying hardware, the guest OS can require the host to execute some instructions that would be virtualized thus making them faster; only some modified guest OS can be installed in these machines.
 2. ***Full virtualization***  
-   the guest OS does not need to be modified, but the hypervisor must mediate, and some hardware support is required
+   The guest OS does not need to be modified, but the hypervisor must mediate, and some hardware support is required
 3. ***Kernel-level virtualization***   
-   the virtualization is at the OS level, it does not allow multiple OS to run but it can be used to support private servers, it requires some kernel level modification   
+   The virtualization is at the OS level, it does not allow multiple OS to run but it can be used to support private servers, it requires some kernel level modification   
+
+<div style="page-break-after: always;"></div> 
 
 ### Implementing Full Virtualization
 
@@ -450,7 +687,7 @@ Instructions are classified in three categories
 3. ***Behavior sensitive***  
    their result depends on the configuration of the resources   
 
-Requirements for a system-level VM 
+*Requirements for a system-level VM* 
 
 1. ***Efficiency***  
    the instructions that need the VM intervention must be less than those that can be executed without it
@@ -476,129 +713,97 @@ The following properties must be guaranteed
 
 
 
-# Performance
+<div style="page-break-after: always;"></div> 
 
-## Basics
+# Cloud Computing
 
+### Intro
 
+***Virtualization*** allows to have:
 
-<img src="images\1555696696386.png" style="zoom:40%">
+- Hardware independence of the software
+- High flexibility
+- The operative system and the applications can be handed as a "single entity"  
 
-- in interactive systems we can't use little's law because we have thinking users.
+***Consolidation*** means migrating from physical to virtual machines, servers are connected one another so it is possible to:
 
-- Workload Intensity: the rate at which customers arrive
-- Service Demand: Average service requirement of a customer
-- Utilization: the proportion of time the server is busy
-- Residence Time: the average time spent at the service center by a customer, both queueing and receiving service
-- Response Time:the intuitive notion of perceived system response time
-- Queue Length: the average number of customers at the service center, both waiting and receiving service
-- Throughput: the rate at which customers pass through the service center
+- Perform live migration, which is moving one server to another physical architecture without switching it off, thus making the system more scalable
+- Automatically balance the workloads, without the machines feeling the difference
+- Protect the machines from hardware or system failures, as if a physical machine fails the other continue running, so the virtual machines do not need to be stopped even if they could be slowed down.   
 
-## Unbalanced Systems
+It leads to a higher hardware utilization, it allows different operative systems to run on the same hardware and to continue to use legacy software (Linux applications on Linux, Windows on Windows, …) as the applications are independent from the hardware.   
 
-<img src="images\1558026389109.png" style="zoom:40%">
+<div style="page-break-after: always;"></div> 
 
-## Open Models  
+### Definition & Services
 
-$$
-X(\lambda) \le \frac{1}{D_{max}} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ D \le R(\lambda)
-\\
-\downarrow
-\\
-X(\lambda) \le \frac{1}{D_{max}} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \frac{D}{1-\lambda D_{avg}} \le R(\lambda) \le \frac{D}{1-\lambda D_{max}} 
-$$
+***Cloud Computing*** is a model for enabling convenient, on-demand network access to a shared pool of configurable computing resources, as network, servers, storage, applications and services that can be rapidly provisioned and released with minimal management effort or service provider interaction. 
 
+<img src="images/cc.png" style="zoom:50%">
 
+1. ***Cloud Application*** (software as a service)   
+   The user accesses resources which are provided through the internet without needing to install or know anything.
+2. ***Cloud Software Environment*** (platform as a service)  
+   The users are application developers, they are supplied with a platform where they can code and with the needed API, to accelerate the deployment and support scalability of the so built applications.
+3. ***Cloud Software Infrastructure***  
+   it provides resources to the higher level, it might be bypassed by the lower ones.
+   1. *<u>Computational Resources</u>* (Infrastructure As A Service)  
+      Virtual machines allow flexibility and root access to the machines, but they could lead to performance inefficiencies and to the inability to provide strong guarantees about the service levels.
+   2. <u>*Storage*</u> (Data As A Service):  
+      They allow users to store and retrieve data (usually through specific applications), the key points are a high dependability, replication and data consistency.
+   3. *<u>Communications</u>* (Communication As A Service):  
+      It becomes a vital component, it must provide security (encryption) and monitoring and be service-oriented, configurable, schedulable, reliable and predictable, so it is necessary to make previsions on the traffic with the aim of guaranteeing a maximum delay of message.
+4. ***Software Kernel***  
+   it provides the basic software management for the servers. 
+5. ***Firmware/Hardware*** (Hardware As A Service):  
+   The users are big IT enterprises with high software requirements, they do not want to worry about the hardware, so they rent it, the provider must guarantee also the needed management and upgrade. 
 
-<img src="images\1558103874687.png" style="zoom:40%">
+Usually, the role of service provider is divided into two parts: the service provider, who serves the end users, rents its infrastructure by another provider who manages the cloud platform and is called infrastructure provider; the chain can become even longer, as the latter can become the user for a lower level product.
 
-- $X_k(\lambda)=\lambda V_k$
+<div style="page-break-after: always;"></div> 
 
+### Cloud Infrastructures Belonging Categories
 
+Cloud infrastructures can belong to four different categories.
 
+1. ***Public***   
+   A company rents its infrastructure to private users or to other companies, it is characterised by the virtualization of the operative systems and by a service level agreement. The main feature is the fact that it is entirely web-based, the "pay-as-you-go" policy allows users to select the service they need, to pay for it and to use it almost immediately.
+2. ***Private***   
+   It is an internally managed data-center, a huge company buys the hardware and takes care of everything, the total control has the side effect of loose flexibility.
+3. ***Community***   
+   Some organizations share a single cloud, so resources can be used by one of the partners when the others are not using them; it is similar to private cloud, but it has a more complex accounting system.  
+   Usually it is hosted locally, the participants share their infrastructures, but sometimes it is submitted to a specific separate organization or to a small subset of the partners.
+4. ***Hybrid***    
+   It is a mixture of the others, it can be used by an IT company that has its own resources but is subject to unpredictable and rare peaks in computation demand so, when they happen, it rents the resources to deal with them only for the needed time
 
+### Pros & Cons
 
-## Closed Queuing Models 
+***Pros***
 
-### Normal
+- Lower IT costs.
+- Improved performances.
+- Instant software updates.
+- Unlimited storage capacity.
+- Data reliability.
+- Documents can be accessed everywhere and on every device. 
 
-$$
-\max(ND_{max}-Z,D) \ \ \ \ \ \ \  \le  \ \ \ \ \ \ \ R(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  ND 
-\\ 
-\
-\\
-\frac{N}{D+Z} \ \ \ \ \ \ \  \le \ \ \ \ \ \ \ X(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  \min\bigg(\frac{N}{D+Z},\frac{1}{D_{max}}\bigg)
-$$
+***Cons***
 
-$$
-N^*=\frac{D+Z}{D_{max}}
-$$
+- It requires a constant and fast internet connection, as it does not work well with low-speed connections.
+- The features might be limited.
+- Can be slow due to virtualization.
+- Stored data might not be secure and might be lost. 
 
+### Fog Computing
 
-
-### Balanced
-
-$$
-D_{avg}=\frac{D}{number \ of \ stations}
-$$
-
-$$
-\max\Bigg(ND_{max}-Z,D+\frac{(N-1)D_{avg}}{1+\frac{Z}{D}}\Bigg) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  R(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  D +\frac{(N-1)D_{max}}{1+\frac{Z}{ND}}
-$$
-
-$$
-\frac{N}{D+Z+\frac{(N-1)D_{max}}{1+\frac{Z}{ND}}} \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  X(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  \min\Bigg(\frac{1}{D_{max}},\frac{N}{D+Z+\frac{(N-1)D_{avg}}{1+\frac{Z}{D}}}\Bigg)
-$$
-
-$$
-N^+=\frac{(D+Z)^2-D\cdot D_{avg}}{(D+Z)D_{max}-D \cdot D_{avg}}
-$$
-
-
-
-
-
-## Closed Batch Models
-
-### Normal
-
-$$
-\max(ND_{max},D) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  R(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  ND
-\\
-\ 
-\\
-\frac{1}{D} \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  X(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  \min\bigg(\frac{N}{D},\frac{1}{D_{max}}\bigg)
-$$
-
-$$
-N^*=\frac{D}{D_{max}}
-$$
+A further development consists in Fog  Computing.  
+It stays in the middle between the objects and the cloud:  
+the computation is split.  
+The fog pre-processes the data and, if it is able, it takes a decision, otherwise it sends them to the cloud to exploit its major computation power. 
 
 
 
-### Balanced
-
-$$
-\max(ND_{max},D+(N-1)D_{avg}) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  R(N) \ \ \ \ \ \ \  \le \ \ \ \ \ \ \  D+(N-1)D_{max}
-$$
-
-$$
-\frac{N}{D+(N-1)D_{max}} \le X(N) \le \min(\frac{1}{D_{max}},\frac{N}{D+(N-1)D_{avg}})
-$$
-
-$$
-N^+=\frac{D-D_{avg}}{D_{max}-D_{avg}}
-$$
-
-
-
-## Single-Class Multi Station Systems with two stations
-
-- ${R_1=r_1V_1}$
-- ${R_2=r_2V_2}$
-- ${R=R_1+R_2}$
-
-
+<div style="page-break-after: always;"></div> 
 
 # Storage
 
@@ -619,6 +824,8 @@ Two techniques must be implemented on RAID disks.
 
 There are many types of architectures, the choice should be done accordingly to the required features.   
 
+<div style="page-break-after: always;"></div> 
+
 ## RAID 0  
 
 Data are written on a single logical disk and then split by the controller among the several physical disks.   
@@ -629,7 +836,6 @@ It has the lowest costs and the best write performance of all the levels, but th
 $$
 MTTDL=\frac{MTTF}{n}
 $$
-
 
 ## RAID 1 
 
@@ -642,6 +848,8 @@ In theory, data could be copied on more than one disk, but this solution is neve
 $$
 MTTDL=\frac{MTTF^{(n)}}{n \cdot MTTR^{(n-1)}}
 $$
+<div style="page-break-after: always;"></div> 
+
 ## Combinations of 0 and 1
 
 If several disks are available, RAIDs can be combined:  
@@ -663,6 +871,7 @@ $$
 MTTDL=\frac{MTTF^2}{n\cdot MTTR}
 $$
 
+<div style="page-break-after: always;"></div> 
 
 ## RAID 2 
 
@@ -694,6 +903,8 @@ ${b) \ 10101010 \ XOR}$
 ${c) \ 11001010=}$  
 ${a) \ 01100011 }$
 
+<div style="page-break-after: always;"></div> 
+
 ## RAID 4 
 
 It is similar to level 3, the main difference is that <u>parity is calculated for strips that have the same position in all the disks and then stored in that aimed for redundancy.</u>   
@@ -713,6 +924,7 @@ $$
 MTTDL=\frac{MTTF^2}{(n)(n-1)MTTR}
 $$
 
+<div style="page-break-after: always;"></div> 
 
 ## RAID 6 
 
@@ -758,8 +970,10 @@ The repairing technique depends on which disk (or disks) have failed:
    and then used to reconstruct P
    $$
 
-   and then used to reconstruct P  
+   and then used to reconstruct P   
 
+   <div style="page-break-after: always;"></div> 
+   
 5. *<u>Two data disks ${D_i}$ and ${D_j}$:</u>*   
    a system of equation must be solved, calling 
    $$
@@ -812,11 +1026,9 @@ $$
 
 not standardized yet, we will not see it.
 
+<div style="page-break-after: always;"></div> 
 
-
-
-
-## Storage systems 
+## Storage Systems 
 
 There are three main types of storage systems   
 
@@ -831,16 +1043,47 @@ There are three main types of storage systems
 
    
 
-## Fiber Channel Interface
+### Fibre Channel Interface
 
-As said, a special interface is needed to access it:  
-The TCP/IP stack over ethernet leads to many issues, that is not needed for the specific purpose, so a specific protocol called *fiber channel* is implemented.  
+A special interface is needed to access Storage Units.  
+The TCP/IP stack over ethernet leads to many issues, that is not needed for the specific purpose, so a specific protocol called *Fibre channel* is implemented.  
 It is a high-speed network technology that is well established in the open system environment.  
-They are accessed using the standard ethernet using an appliance called NAS 
+They are accessed using the standard ethernet using an appliance called *NAS head*.
 
-
+<div style="page-break-after: always;"></div> 
 
 ## Storage Structures
+
+For the operative system, a disk is a collection of data blocks that can be read or written independently.  
+In order to allow their management, each block is characterized by the ***Logical block address (LBA)***, which is a unique numerical address.  
+In order to simplify the access, blocks are grouped into clusters, which are the smallest unit that an operative system can read or write on a disk. 
+
+They can contain file data, the actual content of a file, as well as metadata, which is the information required to support the file system and contain the file name, the owner, the permissions, the list of the blocks that contain the actual data, the size, the type, the creation, modification and last access dates. 
+
+
+
+So, the disk can contain four kinds of files.  
+***Files Kinds:***  
+
+- Fixed-position metadata, to bootstrap the file system.
+- Variable-position metadata, to hold the folders structure.
+- File data.
+- Unused space.   
+
+
+
+The system can perform three actions on a file.  
+***System Actions on Files***
+
+- ***Read***  
+  The metadata must be accessed to locate the blocks, then the real content is read from them 
+- ***Write***  
+  The free space is located by accessing the metadata, then the file is written, but it is possible to access only clusters, so on each writing some space is lost due to the difference between the size of the clusters that must be written and the actual size of the file.  
+  This loss is called internal fragmentation. Also, there might not be enough contiguous clusters to store all the file, so it is split and put into the free clusters, that are spread all over the disk causing the so-called external fragmentation. 
+- ***Delete***  
+  It is the simplest operation as it needs to access only the metadata, the clusters on which the file was stored are added to the free list. 
+
+<div style="page-break-after: always;"></div> 
 
 ### HDD Structure
 
@@ -858,16 +1101,16 @@ $$
 
 #### Definitions
 
-- *Response time:*  
+- ***Response time***  
   The sum of the *time spent in the queue waiting* and of the *service time*, which is the time effectively spent to read the data.  
-  We will evaluate only the latter, which is the sum of
-- *Seek time:*  
+  We will evaluate only the latter.
+- ***Seek time***  
   head movement time
-- *Rotational latency:*  
-  the time to wait for the sector, which is assumed to be half a round
-- *Data transfer time:*  
+- ***Rotational Latency:***  
+  the time to wait for the sector, which is assumed to be half a round.
+- ***Data transfer time***  
   a function of the rotation speed, the storing density and the cylinder position
-- *Controller overhead:*  
+- ***Controller overhead***  
   the time required to send the data.   
 
 #### Formulas
@@ -884,7 +1127,6 @@ $$
   T_{TRANSF} = \frac{sector \ to \ be \ transfered}{data \ transfer \ rate }
   $$
 
-- 
 
 $$
 S_{TT}=T_{LAT}+T_{SEEK} +T_{TRANSF}+T_{OHCONTROLLER}
@@ -895,6 +1137,8 @@ $$
 $$
 S_{TT}=n(T_{LAT}+T_{SEEK})+T_{TRANF}+T_{OHCONTROLLER}
 $$
+
+<div style="page-break-after: always;"></div> 
 
 - **Service Time with locality**  
 
@@ -924,19 +1168,20 @@ $$
 \bigg(\frac{filedim\cdot1024}{blocksize}\bigg)\bigg[(loc)(ohc+transf\ time \ per \ block) + (1-loc)(I/O \ service \ time \ with \ no \ locality)\bigg]
 $$
 
-
+<div style="page-break-after: always;"></div> 
 
 ### SSD Structure
 
-Data are stored in an array of NAND cells, which can be of two types:
+Data are stored in an array of NAND cells, which can be of two types   
+***NAND cells types:***
 
 - Single layer, that store only one bit
 
 - Multiple layer, that store more than one (typically two) bit by multilevel voltage, they have a higher capacity but a smaller data reliability.  
 
-  
 
- A page can be in three states:
+ A page can be in three states.  
+***Page States:***
 
 - *Empty:*  
   it is possible to write only on them
@@ -945,32 +1190,21 @@ Data are stored in an array of NAND cells, which can be of two types:
 - *In Use:*   
   it is meaningful to read them. 
 
+Reading a single page consists of transferring it to the data register and then outputting it, while reading more than one occurs in the "cache mode":  
+***Negative Aspects:***
+
+- Higher cost if compared with HDD.
+- The memory can be modified only a small number of times:
+  - Shorter lifetime
+  - Error-correcting codes
+  - Over-provisioning
+- Different read/write speed, as the write performances degrades with the writings.
+- The controller becomes the real bottleneck.
+- Data must not be defragmented, as it could damage the disk. 
 
 
 
-
-# Dependability
-
-## Availability
-
-- $A=\frac{MTTF}{MTTF+MTTR}$
-- $A_{serial}=A_1A_2A_3...A_n$
-- $A_{parallel}=1-\prod(1-A_i)$
-
-## Reliability
-
-- $R(t)=e^{-\frac{t}{MTTF}}$
-- $R_{parallel}=1-(1-R_A(t))(1-R_B(t))$
-
-
-
-
-
-# Childhood's Memories
-
-- ${RPM=}$ Revolutions Per Minute
-
-
+<div style="page-break-after: always;"></div> 
 
 # Doubts
 
