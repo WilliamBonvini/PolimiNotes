@@ -1,6 +1,6 @@
 # Notes of Database 2
 
-*A series of not yet structured notes on the course of Database 2 as taught in Politecnico di Milano by Sara Comai.*
+*A series of not yet structured notes on the course of Database 2 as taught in Politecnico di Milano by Sara Comai during the academic year 2018/2019.*
 
 <div style="page-break-after: always;"></div> 
 
@@ -8,7 +8,102 @@
 
 <div style="page-break-after: always;"></div> 
 
+# Concurrency Control
 
+## Class Hierarchy
+
+$$
+2PL \implies CSR \implies VSR
+$$
+
+
+
+## VSR - View Serializability
+
+***Preliminary Definitions***
+
+- *<u>Reads-From</u>*  
+  $r_i(x)$ ***reads-from*** $w_j(x)$ in a schedule $S$ when $w_j(x)$ precedes $r_i(x)$ and there is no $w_k(x)$ in $S$ between $r_i(x)$ and $w_j(x)$
+- *<u>Final Write</u>*  
+  $w_i(x)$ in a schedule $S$ is a ***final write*** if it is the last write on $x$ the occurs in $S$
+
+***View Equivalence***  
+Two schedules are ***view-equivalent*** $(S_i \approx_\mathbf{v} S_j)$ if: they have the same 
+
+- *operations*
+- *reads-from* relations
+- *final writes*
+
+***View Serializable***  
+A schedule is ***view-serializable*** if it is view-equivalent to a serial schedule of the same transactions
+
+The class of View-Serializable schedules is named ***VSR***.
+
+***Blind Writes***  
+
+a write $w_i(X)$ is said to be ***blind*** if it is not the last action of resource $X$ and the following action on $X$ is a write $w_j(X)$.
+
+***VSR Property*** 
+each schedule $S \in VSR$ and $S\notin CSR$ has, in its conflict graph, cycles of arcs due to pairs of blind writes.  These can be swapped without modifying the *reads-from* relationships.  
+Once the graph is acyclic it is possible to find a serial schedule view-equivalent to the initial one.
+
+***How to find out if a schedule is in VSR?***
+
+Do the Conflict Graph.  
+If such graph is cyclic, consider the cycles that are due to blind writes.   
+Switch such writes (switch the direction of the arrow).   
+If now the graph is acyclic we can say it is in VSR.
+
+
+
+## CSR -  Conflict Serializability
+
+***Conflict***  
+Two operations $o_i$ and $o_j$ $(i\neq j)$ are in ***conflict*** if they address the same resource and at least one of them is a write.  
+Thus, the possible conflicts are: 
+
+- *read-write* conflicts 
+- *write-write* conflicts.
+
+***Conflict-Equivalence***  
+Two schedules are ***conflict-equivalent*** $(S_i \approx_{\mathbf{C}}S_j)$ if:  
+$S_i$ and $S_j$ contain the same operations and all conflicting pairs occur in the same order
+
+***Conflict-Serializable***  
+A schedule is ***conflict-serializable*** if it is conflict-equivalent to a serial schedule of the same transactions. 
+The class of conflict-serializable schedules is named ***CSR***.
+
+***How to find out if a schedule is in CSR?***  
+We need to do the *Conflict Graph*:
+
+- One node for each transaction $T_i$.
+- One arc from $T_i$ to $T_j$ if there exists at least one conflict between an operation $o_i$ of $T_i$ and an operation $o_j$ of $T_j$ such that $o_i$ precedes $o_j$.
+
+A schedule is in ***CSR*** if and only if its conflict graph is acyclic.
+
+ 
+
+<img src="images\1555350358796.png" style="zoom:50%">
+
+
+
+## 2PL
+
+
+
+<img src="images\1555332565008.png" style="zoom:50%">
+
+
+
+
+
+## 2PL STRINCT
+
+<img src="images\1555332620352.png" style="zoom:50%">
+
+in 2PL strict, if I unlock the transition 3, I need to unlock it immediately for all the resources.
+
+<div style="page-break-after: always;"></div> 
 
 # Physical Access Structures Introduction
 
@@ -30,7 +125,7 @@ Each table is stored into exactly one primary physical access structure, and may
 
 <div style="page-break-after: always;"></div> 
 
-# Physical Access Structure Types
+## Physical Access Structure Types
 
 <u>Legenda</u> :
 
@@ -113,7 +208,7 @@ The nodes can be organized in two ways:
 
 <div style="page-break-after: always;"></div>
 
-# Costs
+## Costs
 
 - **Sequential Structures**
 
@@ -138,21 +233,21 @@ The nodes can be organized in two ways:
     The Hash function is applied to v, the right bucket is therefore immediately identified.
     The bucket contains the searched tuples
 
-    - Cost = 1
+    - $Cost = 1$
       if the hash has no overflow chains
-    - Cost = 1 + (average size of the overflow chain)
+    - $Cost = 1 + (average  \ size \  of  \ the \  overflow \  chain)$
       if the hash has overflow chains
 
-    *<u>If it is a secondary hash </u>*   
-    The lookup for A_i = v works exactly in the same way, only the aim is to find the block(s) storing the pointers to the tuples with the same hash for A_i as those with v.
-    The Hash function is applied to v, the right bucket is identified, and the corresponding block(s) are retrieved.
+    *<u>If it is a secondary hash:</u>*   
+    The lookup for $A_i = v$ works exactly in the same way, only the aim is to find the block(s) storing the pointers to the tuples with the same hash for $A_i$ as those with $v$.
+    The Hash function is applied to $v$, the right bucket is identified, and the corresponding block(s) are retrieved.
 
-    - Cost = 1 (for the initial bucket block) + 
-                  (average overflow blocks) (if any) + 
-                  1 block per pointer to be followed)     
-
-    ​    
-
+    - $Cost =  1$ (for the initial bucket block) + 
+              
+              $(average  \ overflow  \ blocks) \\ $ (if  any) ​ + 
+          
+            $ (1 \  block  \ per  \ pointer \ to  \ be  \ followed)$   
+    
   - Cost of Interval Lookups:   
     lookups based on intervals are not supported
 
@@ -165,41 +260,41 @@ The nodes can be organized in two ways:
     If the searched tuples are all stored in that leaf block, stop.
     Else, continue in the leaf blocks chain until v changes to v'
 
-    - Cost = (1 block per intermediate level) + 
-                  (as many leaf blocks as necessary to store all the tuples with A_i = v)
+    - $Cost =  \\ (1 \  block  \ per  \ intermediate  \ level) +  \\
+                  (as \  many  \ leaf  \ blocks  \ as  \ necessary  \ to  \ store  \ all \ the  \ tuples  \ with \  A_i = v)$
 
     *<u>If it is a secondary B+</u>*  
-    The lookup for A_i = v needs to find the block(s) storing all the pointers that point to all tuples with the key value v for A_i.
+    The lookup for $A_i = v$ needs to find the block(s) storing all the pointers that point to all tuples with the key value $v$ for $A_i$.
     The root is read first, then a node per intermediate level is read, until the first leaf node that sores pointers A_i = v is reached.
     If the pointers are all stored in that leaf block, stop.
-    Else, continue in the leaf blocks chain until v changes to v'.
+    Else, continue in the leaf blocks chain until v changes to $v'$.
 
-    - Cost = (1 block per intermediate level) + 
-                  (as many leaf blocks as necess. to store the pointers pointing to the tuples with A_i = v) + 
-                  (1 block per each pointer)  
+    - $Cost =  \\ (1 \  block  \ per  \ intermediate  \ level) +  \\ 
+                  (as \  many  \ leaf  \ blocks  \ as  \ necess. \  to  \ store  \ the  \ pointers  \ pointing  \ to  \ the  \ tuples  \ with  \  A_i = v) +  \\
+                  (1  \ block \  per  \ each  \ pointer)$
 
   - Cost of Interval Lookups  
 
     *<u>If it is a primary B+</u>*  
-    We consider a lookup for v_1<=A_i<=v_2 as the general case.
-    If (A_i < v) or (v < A_i) we just assume that the other edge of the interval is the first/last value in the structure.
-    The root is read first, then a node per intermediate level is read, until the first leaf node that stores tuples with A_i = v_1 is reached.
+    We consider a lookup for $v_1 \le A_i \le v_2$ as the general case.
+    If $(A_i < v)$ or $(v < A_i)$ we just assume that the other edge of the interval is the first/last value in the structure.
+    The root is read first, then a node per intermediate level is read, until the first leaf node that stores tuples with $A_i = v_1$ is reached.
     if the searched tuples are all stored in that leaf block stop.
     Else continue in the leaf blocks chain until v_2 is reached.
 
-    - Cost = (1 block per intermediate level) +
-                  (as many leaf blocks as necess. to store all the tuples in the interval)
+    - $Cost  =  \\ (1 \  block  \ per  \ intermediate  \ level) + \\
+                  (as  \ many  \ leaf \  blocks  \ as  \ necess.  \ to  \ store  \ all  \ the  \ tuples  \ in  \ the  \ interval)$
 
     *<u>If it is a secondary B+</u>*  
 
-    We still consider a lookup for v_1<=A_i<=v_2 as the general case.
-    The root is read first, then a node per intermediate level is read, until the first leaf node that stores a the pointers pointing to the tuples with A_i = v_1 is reached.
-    If all the pointers (up to v_2) are in that leaf block, stop.
-    Else, continue in the leaf blocks chain until v_2 is reached.
+    We still consider a lookup for $v_1 \le A_i \le  v_2$ as the general case.
+    The root is read first, then a node per intermediate level is read, until the first leaf node that stores a the pointers pointing to the tuples with $A_i = v_1$ is reached.
+    If all the pointers (up to $v_2$) are in that leaf block, stop.
+    Else, continue in the leaf blocks chain until $v_2$ is reached.
 
-    - Cost = (1 block per intermediate level) +
-                  (as many leaf blocks as necess. to store all pointers to the tuples in the interval) +
-                  (1 block per each such pointer, in order to retrieve the tuples)
+    - $Cost = \\  (1  \ block \  per \  intermediate  \ level) + \\
+                  (as  \ many  \ leaf \ blocks  \ as  \ necess. \  to  \ store  \ all \  pointers  \ to  \ the \ tuples \  in  \ the interval) \  + \\ 
+                  (1  \ block \  per \  each  \ such  \ pointer, \  in \  order \  to  \ retrieve  \ the  \ tuples)$
 
   
 
@@ -209,12 +304,12 @@ I cannot talk about the cost of joins regarding each type of structure independe
 
 Legenda:
 
-- b_A = Number of blocks of the table A
-- t_A = Number of tuples of a block of the table A 
-- E = External table
-- I = Internal table
-- L = Left
-- R = Right
+- $b_A$ = Number of blocks of the table A
+- $t_A$ = Number of tuples of a block of the table A 
+- $E$ = External table
+- $I$ = Internal table
+- $L$ = Left
+- $R$ = Right
 
 Type of joins:
 
@@ -248,7 +343,7 @@ Type of joins:
 
 <div style="page-break-after: always;"></div>
 
-# Query Planning 
+## Query Planning 
 
 What cost to assign to a plan?
 
