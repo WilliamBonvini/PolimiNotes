@@ -54,7 +54,7 @@ If such graph is cyclic, consider the cycles that are due to blind writes.
 Switch such writes (switch the direction of the arrow).   
 If now the graph is acyclic we can say it is in VSR.
 
-
+<div style="page-break-after: always;"></div> 
 
 ## CSR -  Conflict Serializability
 
@@ -85,7 +85,7 @@ A schedule is in ***CSR*** if and only if its conflict graph is acyclic.
 
 <img src="images\1555350358796.png" style="zoom:50%">
 
-
+<div style="page-break-after: always;"></div> 
 
 ## 2PL
 
@@ -95,7 +95,7 @@ A schedule is in ***CSR*** if and only if its conflict graph is acyclic.
 
 
 
-
+<div style="page-break-after: always;"></div> 
 
 ## 2PL STRINCT
 
@@ -153,6 +153,8 @@ Three types:
   - In a Sequentially - Ordered organization, the tuples are ordered according o the value of a key (typically one field, but may be obtained by combining more than one attribute)
   - Main problem: 
     Insertions and Updates could increase the data size, this means that such structures require reordering techniques for the tuples already present. There are some techniques to avoid such reordering problem (i.e. leaving a certain number of slots free at the time of first loading, followed by 'local reordering' operations) 
+
+<div style="page-break-after: always;"></div> 
 
 #### Hash - Based Access Structures
 
@@ -242,11 +244,7 @@ The nodes can be organized in two ways:
     The lookup for $A_i = v$ works exactly in the same way, only the aim is to find the block(s) storing the pointers to the tuples with the same hash for $A_i$ as those with $v$.
     The Hash function is applied to $v$, the right bucket is identified, and the corresponding block(s) are retrieved.
 
-    - $Cost =  1$ (for the initial bucket block) + 
-              
-              $(average  \ overflow  \ blocks) \\ $ (if  any) ​ + 
-          
-            $ (1 \  block  \ per  \ pointer \ to  \ be  \ followed)$   
+    - $Cost =   \\ 1 (comment: \ for  \ the  \ initial  \ bucket  \ block) + \\  (average  \ overflow  \ blocks) \\ (comment: \ if  \  any)  +  \\ (1 \  block  \ per  \ pointer \ to  \ be  \ followed)$   
     
   - Cost of Interval Lookups:   
     lookups based on intervals are not supported
