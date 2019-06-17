@@ -359,7 +359,18 @@ $$
 - $R_{serial}=R_1R_2...R_n$
 - $R_{parallel}=1-(1-R_A(t))(1-R_B(t))$
 
+## MTTF
 
+- Serial Configuration
+  $$
+  MTTF_{Serial}=\frac{1}{\frac{1}{MTTF_A}+\frac{1}{MTTF_B}}
+  $$
+
+- Parallel Configuration  
+  $$
+  MTTF_{//}=MTTF_A+MTTF_B+\frac{1}{\frac{1}{MTTF_A}+\frac{1}{MTTF_B}}
+  $$
+  
 
 <div style="page-break-after: always;"></div> 
 
@@ -400,19 +411,18 @@ Virtualization maps virtual resources to a set of managed ones, which are often 
 
 ### CPU   
 
-The host must be able to execute the guest instruction, via emulation if there is a different ISA which prevents direct native execution   
+The host must be able to execute the guest instructions, via emulation if there is a different ISA which prevents direct native execution.  
+Usually, a core is shared among any virtual machines by partitioning it. 
+It should be avoided to assign each machine a number of virtual cores that is greater than the total number of cores of the physical device, as the only way in which it can be implemented is time sharing a core and it leads to bad performances. 
 
-Usually, a core is shared among any virtual machines by partitioning it; 
-
-it should be avoided to assign each machine a number of virtual cores that is greater than the total number of cores of the physical device, as the only way in which it can be implemented time sharing a code and it leads to bad performances. 
-
-However, when more than one virtual machine is running, the total amount of their core can be greater than the physical one, as usually the machines are in a waiting state and therefore the cores are sufficient to execute something on one machine at a time.   
+However, when more than one virtual machine is running, the total amount of their core can be greater than the physical one, since usually the machines are in a waiting state and therefore the cores are sufficient to execute something on one machine at a time.   
 
 It is also possible to set an execution cap, that is the maximum amount of time a core can be used by a machine, it allows to select less important machines and ensure they don’t interfere with the execution on the most important ones.   
 
 ### Memory   
 
-The sum of the memory allocated for each machine should be less than the total physical memory, but it can lead to a poor utilization of the real memory. So, it is preferred to assign memories that, if summed, result greater than the physical one.  
+The sum of the memory allocated for each machine should be less than the total physical memory, but it can lead to a poor utilization of the real memory.  
+So, it is preferred to assign memories that, if summed, result greater than the physical one.  
 
 Allocating new memory can be done in two ways:
 
@@ -424,17 +434,21 @@ Allocating new memory can be done in two ways:
 
 Conventional operative systems virtualize memory since they load only a few pages into the RAM and, if another page is needed, one of those in the RAM is put back into the disk and then another one is loaded. 
 
-With virtualization, another saga structure is needed, it is called memory *management unit (MMU)* and it allows to separate the process address space from the physical one. For each virtual page, it contains the physical address and three flags that tell whether or not the page is loaded into memory, whether or not it has been changed and whether or not it is free.   Each virtual machine has its own virtual memory, so it is necessary to maintain synchronization and consistency among them. It can be done in two ways. 
+With virtualization, another saga structure is needed, it is called *Memory* *Management Unit (MMU)* and it allows to separate the process address space from the physical one.   
+*For each virtual page, it contains the physical address and three flags that tell whether or not the page is loaded into memory, whether or not it has been changed and whether or not it is free.*    
+Each virtual machine has its own virtual memory, so it is necessary to maintain synchronization and consistency among them.  
+It can be done in two ways. 
 
 **Virtual resources** 
 
 1. *Shadow pages*  
-   which are maintained by the VMM and consist of the mapping of the virtual pages of the guest into the physical ones of the host, they are used by the hardware to translate the addresses and they are synchronized with the host’s page table by the VMM.  
-   The counter effect is a lot of overhead when they are updated
-
+   which are maintained by the VMM and consist of the mapping of the virtual pages of the guest into the physical ones of the host.  
+   They are used by the hardware to translate the addresses and they are synchronized with the host’s page table by the VMM.  
+The counter effect is a lot of overhead when they are updated.
+   
 2. *Nested pages*  
    which remove the overhead in translating but require a hardware that is able to support it.  
-   The translation lookaside buffer is able to cache the translation to make it faster. 
+   The Translation Lookaside Buffer is able to cache the translation to make it faster. 
 
    
 
@@ -515,7 +529,7 @@ In a machine there are 6 levels of instructions (from 0 to 5), to move from one 
 
 The **ISA** is divided into:
 
-- ***User ISA*** 
+- ***User ISA***  
   It's visible to application programs.
 -  ***System ISA***  
   It can be seen only by the OS.    
@@ -535,12 +549,14 @@ The **ABI** is composed by:
 It's not possible to run on instructions that were not meant for that machine, but **the hardware can be virtualized**:  
 Java runs in every architecture for which an interpreter exists, as it uses a specific set of instructions which is translated by the Java Runtime Environment into machine instructions.  
 The same technique can be used to run software on a machine that is meant for another machine, by using **emulators**.  
-Emulators understand the behavior of the CPU and of the RAM and reproduce it into the physical system on which it is running. Both the ABI and the ISA are reproduced.   
+Emulators understand the behavior of the CPU and of the RAM and reproduce it into the physical system on which it is running. Both the ABI and the ISA are reproduced.  
+
+<div style="page-break-after: always;"></div>  
 
 ### Virtual Machines - Definition and Types
 
 A **virtual machine** is a logical abstraction able to provide a virtual execution environment.   
-It maps virtual resources in physical ones and it uses the physical machine instructions to execute virtual ones.  
+It maps virtual resources into physical ones and it uses the physical machine instructions to execute virtual ones.  
 The **host** is the software that runs in the virtual machine while the **guest** is the underlying platform that supports it.  
 
 ***There are two types of Virtual Machines:***
@@ -549,10 +565,16 @@ The **host** is the software that runs in the virtual machine while the **guest*
 
 1. ***Process Virtual Machines***  
    The ABI provides the interface between the physical machine and the virtual one, onto which *it is possible to execute processes but no other operative systems.*  
-   The virtualization software is called **runtime software**, it emulates user-level ISA and operating system calls, meaning that it must rely on the software of the physical machine to access the hardware as it supports the level 0-3 of the architecture. 
-2.  ***System Virtual Machines***  
+   The virtualization software is called **runtime software**, it emulates user-level ISA and operating system calls, meaning that it must rely on the software of the physical machine to access the hardware as it supports the level 0-3 of the architecture.  
+   PVM uses:
+   - User ISA
+   - Syscalls
+2. ***System Virtual Machines***  
    The ISA provides the interface between the two machines, meaning that *each machine can run its own operative system and interact independently with resources*, either via an underlying OS or directly communicating with the hardware, which includes also the I/O resources.   
    The virtualizing software is the **Virtual Machine Monitor (VMM)**, it supports the level 0-2 of the architecture, as it does not include the software.   
+   SVM uses:  
+   - User ISA
+   - System ISA
 
 <div style="page-break-after: always;"></div> 
 
@@ -809,18 +831,22 @@ The fog pre-processes the data and, if it is able, it takes a decision, otherwis
 
 ## RAIDS
 
-The aim is to emulate a very expensive disks buying a bunch of less expensive ones: to increase the performance, the size and the reliability of storage systems, several independent disks are considered as a single one. Data are striped across the disk and accessed in parallel, thus gaining high parallelism in accessing them and load balancing.     
+The aim is to emulate a very expensive disk buying a bunch of less expensive ones:  
+In order to increase the performance, the size and the reliability of storage systems, several independent disks are considered as a single one.  
+Data are striped across the disk and accessed in parallel, thus gaining high parallelism in accessing them and load balancing.     
 Two techniques must be implemented on RAID disks.
 
 - ***Data striping:***  
-  data are written sequentially according to a cyclic algorithm (round robin), it allows reading and writing in parallel
-- Stripe unit:  
-    the amount of data written on a single disk
+  data are written sequentially according to a cyclic algorithm (round robin), it allows reading and writing in parallel.
+  - Stripe unit:  
+      the amount of data written on a single disk
   - Stripe width:  
     the number of disks considered by the algorithm, which can be less than the total amount of disks. 
   
 - ***Redundancy:***  
-  it is necessary as the probability of failure rises with the growing of the number of disks, it consists of error-correcting codes, that are stored on different disks than the data and can be used to reconstruct the data after a failure; the main drawback is the slowing down of the writing operations, as these values must be computed and stored along with the data.   
+  it is necessary since the probability of failure rises with the growing of the number of disks.  
+  It consists of error-correcting codes, that are stored on different disks than the data and can be used to reconstruct data after a failure.  
+  The main drawback is the slowing down of writing operations, as these values must be computed and stored along with the data.   
 
 There are many types of architectures, the choice should be done accordingly to the required features.   
 
@@ -828,7 +854,7 @@ There are many types of architectures, the choice should be done accordingly to 
 
 ## RAID 0  
 
-Data are written on a single logical disk and then split by the controller among the several physical disks.   
+Data are written on a single logical disk and then split by the controller among several physical disks.   
 It has the lowest costs and the best write performance of all the levels, but the failure of a single disk will cause the loss of data, so it is used where performance and capacity are very important while data reliability is not an issue.   
 
 <img src="images\1558210949912.png" style="zoom:50%">
@@ -842,7 +868,7 @@ $$
 Data are duplicated, two physical disks contain the same data;   
 it has a high reliability, and read and write performance are not bad, as data can be accessed in parallel without the need of computing parity bits;  
 the main drawback is the cost, as only 50% of the capacity can be used.   
-In theory, data could be copied on more than one disk, but this solution is never used due to the prohibited costs.  
+In theory, data could be copied on more than one disk, but this solution is never used due to the prohibitive costs.  
 
 <img src="images\1558211237440.png" style="zoom:50%">
 $$
@@ -853,10 +879,10 @@ $$
 ## Combinations of 0 and 1
 
 If several disks are available, RAIDs can be combined:  
-x+y means that there are ${n\cdot m}$ disks in total, then RAID ${x}$ is applied to groups of ${n}$ disks, that are treated like a single one onto which is applied RAID ${y}$.  
+$x+y$ means that there are ${n\cdot m}$ disks in total $\to$ RAID ${x}$ is applied to groups of ${n}$ disks, that are treated like a single one onto which is applied RAID ${y}$.  
 Two very used configurations are ${0+1}$ and ${1+0}$, the former places redundancy at a higher level, thus becoming less fault tolerant as there are only two groups of RAID1:  
-if two disks on different groups fail, the controller cannot realize that their copies could still be found on the other RAID0 level and so data are lost. Performances and storage capacity are the same.    
-
+if two disks on different groups fail, the controller cannot realize that their copies could still be found on the other RAID $0$ level, so data are lost.  
+Performances and storage capacity are the same.    
 
 ***Raid 0 + 1***
 <img src="images\1558211297365.png" style="zoom:50%">
@@ -896,7 +922,8 @@ ${b) \ 10101010 \ XOR}$
 ${c) \ 11001010=}$  
 ${p) \ 00000011}$  
 
-Suppose losing ${a)}$. We can reconstruct it:  
+Suppose losing ${a)}$.   
+We can reconstruct it:   
 
 ${p) \ 00000011 \ XOR }$
 ${b) \ 10101010 \ XOR}$  
@@ -908,7 +935,8 @@ ${a) \ 01100011 }$
 ## RAID 4 
 
 It is similar to level 3, the main difference is that <u>parity is calculated for strips that have the same position in all the disks and then stored in that aimed for redundancy.</u>   
-The single disk for redundant data (parity disk, accessed at each write) can easily become the bottleneck: all the write must access it, so they cannot be parallelized. This level is able to recover from the failure of one disk.   
+The single disk for redundant data (parity disk, accessed at each write) can easily become the bottleneck:  all the write must access it, so they can't be parallelized.  
+This level is able to recover from the failure of one disk.   
 
 <img src="images\1558212387379.png" style="zoom:50%">
 
@@ -916,7 +944,7 @@ The single disk for redundant data (parity disk, accessed at each write) can eas
 
 ## RAID 5 
 
-It is exactly identical to level 4, but the parity blocks are uniformly distributed over the disk, thus avoiding the bottleneck on the parity disk and allowing load balancing among the data disks.  
+It is exactly identical to level 4, but the parity blocks are uniformly distributed over the disks, thus avoiding the bottleneck on the parity disk and allowing load balancing among data disks.  
 It loses data if more than one disk fails.  
 
 <img src="images\1558208924886.png" style="zoom:50%">
@@ -928,8 +956,8 @@ $$
 
 ## RAID 6 
 
-This level is able to recover from the failure of two disks, as it uses two redundancy schemes P and Q which are independent.  
-On the other hand, it needs a disk more than level 5 to be implemented and a greater computational overhead, so it must be used only for very critical applications.   
+This level is able to recover from the failure of up to two disks, as it uses two redundancy schemes P and Q which are independent.  
+On the other hand, it needs a greater computational overhead, so it must be used only for very critical applications.   
 
 However, its efficiency grows with the number of disks, as does the probability of having two failures. 
 
@@ -957,22 +985,21 @@ The repairing technique depends on which disk (or disks) have failed:
    ${D_i=P-\sum_{j=0,j\neq i}^{n-1}D_j}$   
 
 2. *<u>A parity bit:</u>*  
-   simply recompute it, data are still available  
+   simply recompute it, data are still available.
 
 3. *<u>A data disk and the Q block:</u>*  
-   the data are reconstructed as  
-   ${D_i=P-\sum_{j=0,j\neq i}^{n-1}D_j}$ and then used to recompute ${Q}$  
+   data are reconstructed as  
+   ${D_i=P-\sum_{j=0,j\neq i}^{n-1}D_j}$ and then use it to recompute ${Q}$  
 
 4. *<u>A data disk and the ${P}$ block:</u>*  
    data are reconstructed as 
    $$
-   D_i=\frac{(Q-\sum_{j=0,j \neq i}^{n-1}g^jD_j)}{g^i}  
-   and then used to reconstruct P
+   D_i=\frac{(Q-\sum_{j=0,j \neq i}^{n-1}g^jD_j)}{g^i}  
    $$
-
-   and then used to reconstruct P   
-
-   <div style="page-break-after: always;"></div> 
+   
+and then used to reconstruct P   
+   
+<div style="page-break-after: always;"></div> 
    
 5. *<u>Two data disks ${D_i}$ and ${D_j}$:</u>*   
    a system of equation must be solved, calling 
@@ -981,7 +1008,7 @@ The repairing technique depends on which disk (or disks) have failed:
    $$
    
    $$
-   Q^*=\sum_{i=0,k\neq i,k\neq j}^{n-1}g^kD_k
+   Q^*=\sum_{k=0,k\neq i,k\neq j}^{n-1}g^kD_k
    $$
    
 
@@ -1014,7 +1041,7 @@ $$
 $$
 
 
-However, these techniques work only for machines with infinite precision, that do not exist. The solution is to use a special algebra, called Galois Fields, that includes only the integer powers of prime numbers and allows to perform all the previous mentioned operations using numbers that can fit into a byte.
+However, these technique works only for machines with infinite precision, that do not exist. The solution is to use a special algebra, called Galois Fields, that includes only the integer that are powers of prime numbers and allows to perform all the previous mentioned operations using numbers that can fit into a byte.
 
 <img src="images\1558208996961.png" style="zoom:50%">
 $$
