@@ -44,7 +44,7 @@ The class of View-Serializable schedules is named ***VSR***.
 a write $w_i(X)$ is said to be ***blind*** if it is not the last action of resource $X$ and the following action on $X$ is a write $w_j(X)$.
 
 ***VSR Property*** 
-each schedule $S \in VSR$ and $S\notin CSR$ has, in its conflict graph, cycles of arcs due to pairs of blind writes.  These can be swapped without modifying the *reads-from* relationships.  
+each schedule $S \in VSR$ and $S\notin CSR$ has, in its conflict graph, cycles of arcs due to *pairs* of blind writes.  These can be swapped without modifying the *reads-from* and *final-writes* relationships.  
 Once the graph is acyclic it is possible to find a serial schedule view-equivalent to the initial one.
 
 ***How to find out if a schedule is in VSR?***
@@ -53,6 +53,11 @@ Do the Conflict Graph.
 If such graph is cyclic, consider the cycles that are due to blind writes.   
 Switch such writes (switch the direction of the arrow).   
 If now the graph is acyclic we can say it is in VSR.
+
+***What's an easy way to build a View Equivalent serial schedule?***  
+Look at the conflict graph and find a node that does not have any incoming arc.   
+Select it and delete all its outcoming arcs.  
+Repeat the procedure until you have considered all the nodes of the graph.
 
 <div style="page-break-after: always;"></div> 
 
@@ -81,11 +86,20 @@ We need to do the *Conflict Graph*:
 
 A schedule is in ***CSR*** if and only if its conflict graph is acyclic.
 
- 
-
 <img src="images\1555350358796.png" style="zoom:50%">
 
-<div style="page-break-after: always;"></div> 
+
+
+***How do we check acyclicity in practice?***  
+A node can be part of a cycle if and only if it has incoming **and** outcoming arcs.  
+Nodes with only incoming or only outgoing arcs cannot, and can be (recursively) ignored.  
+The same holds for arc adjacent to such nodes.  
+
+In this way, we not only check for acyclicity, but also identify a serial schedule that is view-equivalent to the given one (if transactions are considered in the order in which the corresponding nodes are deleted)
+
+<img src="images/acyclicity.png" style="zoom:50%">
+
+<div style="page-break-after: always;"> </div> 
 
 ## 2PL
 
@@ -97,13 +111,42 @@ A schedule is in ***CSR*** if and only if its conflict graph is acyclic.
 
 <div style="page-break-after: always;"></div> 
 
-## 2PL STRINCT
+## 2PL Strict
 
-<img src="images\1555332620352.png" style="zoom:50%">
+So far we used the hypothesis of *commit-projection* (no transaction in the schedule aborts).  
+2PL so far does not protect against dirty reads (and therefore neither do VSR nor CSR).
 
-in 2PL strict, if I unlock the transition 3, I need to unlock it immediately for all the resources.
+In order to remove such hypothesis we need to add a constraint to 2PL, that defines *2PL Strict*:
+
+*Locks held by a transaction can be released only* ***after*** *commit/rollback*. 
+
+<img src="images\2plstrict.png" style="zoom:50%">
+
+in 2PL strict, if, for example,  I unlock the transition $3$, I need to unlock it immediately for all the resources.
 
 <div style="page-break-after: always;"></div> 
+
+
+
+## TS
+
+TimeStamp - based concurrency control is caharacterized by the fact that:
+
+- the scheduler has two counters ***RTM(x)*** and ***WTM(x)*** for each object.
+- the scheduler receives read/write requests tagged with timestamps.  
+
+Let's clearify:
+
+- $read(x,ts)$:
+  - if $ts < WTM(x)$ the request is ***rejected*** and the transaction is killed
+  - else, access is ***granted*** and the $RTM(x)$ is set to $\max(RTM(x),ts)$ 
+- $write(x,ts)$: 
+  - if $ts<RTM(x)$ or $ts<WTM(x)$ the request is ***rejected*** and the transaction is killed
+  - else, access is ***granted*** and $WTM(x)$ is set to $ts$
+
+In order to work without the commit-projection hypothesis, it needs to "buffer" write operations until commit, which introduces waits. 
+
+2PL and TS are incomparable, doesn't make sense to compare them since a schedule could be in TS but non in 2PL, the other way around, or even both in TS and in 2PL.
 
 # Physical Access Structures Introduction
 
