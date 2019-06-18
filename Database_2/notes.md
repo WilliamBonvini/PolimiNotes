@@ -148,6 +148,18 @@ In order to work without the commit-projection hypothesis, it needs to "buffer" 
 
 2PL and TS are incomparable, doesn't make sense to compare them since a schedule could be in TS but non in 2PL, the other way around, or even both in TS and in 2PL.
 
+***How to find out if a scheduler is in TS in practice***?
+
+The fastest way consists in considering the transaction resource-wise and do the following.
+
+for each resource we want to have the transactions ordered increasingly. 
+
+Thomas Rule is a improvement to TS which considers legit even resources with transactions ordered decreasingly.
+
+<img src="images/ts1.png" style="zoom:50%">
+
+
+
 # Physical Access Structures Introduction
 
 Each table is stored into exactly one primary physical access structure, and may have one or many optional secondary access structures.
