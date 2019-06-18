@@ -26,9 +26,25 @@
   c_{n1} & c_{n2} & \dots & c_{nn}
   \end{bmatrix}^T
   $$
+
+- Zero-Pole Cancellation
+  $$
+  W_1(z)=\frac{(z+2)}{(z+\frac{1}{2})(z+2)}\to W_2(z)=\frac{1}{z+\frac{1}{2}}
+  $$
+  $W_1$ and $W_2$ are the same: they represent the same input output relationship.
+  That said,  
+  $$
+  W_1(z)=\frac{(z+2)}{(z+\frac{1}{2})(z+2)}=\frac{z+2}{z^2+\frac{5}{2}z+1} \leftarrow 2^{nd} \ order  \ unstable \  system
+  \\
+  W_2(z)=\frac{1}{z+\frac{1}{2}} \leftarrow 1^{st} \ order \ stable \ system \color{red} \ (WRONG \ CONCLUSION)
+  \\
+  \color{red}DO \ NOT \ CANCEL \ NUMERATOR \ - \ DENOMINATOR \ COMMON \ TERMS!
+  $$
   
 
 <div style="page-break-after: always;"></div> 
+
+# Session 1 & 2
 
 ## Write the system of difference equations
 
@@ -170,7 +186,44 @@ $$
 
 ### Second Method - Matrix Multiplication Formula
 
-Matrix Multiplication formula.
+The following formula is always the definition of impulse, but it's expressed in a way that is valid only for strictly proper systems.
+$$
+w(t)=
+\begin{cases}
+0 & t=0
+\\
+HF^{t-1}G & t>0
+\end{cases}
+$$
+Let's consider the following matrices to go along with the example:
+$$
+H=\begin{bmatrix}1 & 0\end{bmatrix}
+\\
+G=\begin{bmatrix} 0 \\ 2 \end{bmatrix}
+\\
+F=\begin{bmatrix} 0 & 1 \\ \frac{1}{2} & 0\end{bmatrix}
+\\
+D=0
+$$
+Let's start:
+
+$w(0)=0$  
+
+$w(1)=HG=\begin{bmatrix}  1 & 0\end{bmatrix} \begin{bmatrix}0 \\ 2 \end{bmatrix}$
+
+$w(2)=HFG=2$
+
+$w(3)=HF^2G=0$
+
+$w(4)=HF^3G=1$
+
+$w(5)=HF^4G=0$
+
+from $HFG$ on we can exploit the previous computation (for example, in order to compute $w(3)$ we can exploit $HF$ found for computing $w(2)$).
+
+
+
+
 
 ### Third Method - Long Division
 
@@ -247,6 +300,14 @@ HF^2
 FF^{n-1}
 \end{bmatrix}
 $$
+What does it mean that $J$ is not observable?  
+For example, a zero-pole cancellation correspond to a hidden part of the system: something that the I/O representation cannot catch.
+
+In this case there is a non-observable part:
+
+![1560883836749](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1560883836749.png)
+
+
 
 ### Reachability
 
@@ -322,7 +383,9 @@ The blue colored part of the equation is our transfer function $W$.
 
 <div style="page-break-after: always;"></div> 
 
-## Write the state space system in control form
+## Write the state space representation 
+
+### Control Form
 
 The state space system in control form is given by 
 $$
@@ -378,6 +441,70 @@ $$
 In order to check whether you have computed correctly such matrixes you can make sure that
 $$
 W(z)=H(zI-F)^{-1}+D
+$$
+
+### 4SID method
+
+1. ***Identify the system order***  
+   Start by considering $i=1$, compute the rank, and increase $i$. Compute the new rank. as soon as the rank stops increasing you have found the order of the system.   
+   Schematized below. 
+
+   $rank(H_i)=n \ \ \ \ i \ge n \to n \ is \ the \ system \ order$  
+   $$
+   the \ rank \ stops \ increasing \begin{cases} rank(H_{n-1})<n
+   \\
+   rank(H_n)=n
+   \\
+   rank(H_{n+1})=n
+   \end{cases}
+   $$
+   Example:  
+   <img src="C:/Users/Willi/Desktop/myGitHub/Notes/Model_Identification_and_Data_Analysis_Modulo_2/images/rank.png" style="zoom:50%"> 
+
+2. ***Build*** $H_{n+1}$
+
+3. ***Find a factorization of*** $H_{n+1}= \theta_{n+1} \mathscr{R}_{n+1}$  
+   How to do it?  
+
+   - put $n$ independent rows of $H_{n+1}$ in $\mathscr{R}_{n+1}$ 
+   - fill the rows of $\theta_{n+1}$ such that $H_{n+1}=\theta_{n+1}\mathscr{R}_{n+1}$ 
+
+   Example:  
+   <img src="C:/Users/Willi/Desktop/myGitHub/Notes/Model_Identification_and_Data_Analysis_Modulo_2/images/fact.png" style="zoom:50%">
+
+4. ***Extract matrices*** $\hat{F},\hat{G},\hat{H},\hat{D}$   
+   $\hat{F}=\theta_{n+1}(1:n,:)^{-1}\theta_{n+1}(2:n+1,:)$  
+   $\hat{G}=\mathscr{R}_{n+1}(:,1)$  
+   $\hat{H}=\theta_ {n+1}(1,:)$  
+   $\hat{D}=0$ $\to$ usually like this, since the system is usually strictly proper $(w(0)=0)$.
+
+We get new system matrices wrt the original ones $\to$ we have found an equivalent state space representation.
+
+### $\hat{D} \neq 0$ case
+
+If $w(0) \neq 0$ (in this case we are told that $w(0)=1$) the system is not strictly proper and $\hat{D} \neq 0$.
+
+In this case let's consider a general state space system (SISO).
+$$
+\begin{cases}
+x(t+1)=Fx(t)+Gu(t)
+\\
+y(t)=Hx(t)+Du(t)
+\end{cases}
+$$
+Always consider $x(0)=0$  if no one tells you differently
+
+and 
+
+$u(t)=\begin{cases} 1 & t=0 \\ 0 & t \neq 0\end{cases}$ 
+
+We infer that:
+
+$t=0$           $y(0)=Hx(0)+Du(0)=D$    
+
+$D$ is the first sample of the impulse response!
+$$
+\hat{D}=w(0)=1
 $$
 
 <div style="page-break-after: always;"></div> 
@@ -459,22 +586,6 @@ Once we have such formulas we just need to compute the new matrices and get the 
 
 
 <div style="page-break-after: always;"></div> 
-
-## Identify the system matrices using the 4SID method
-
-1. Identify the system order
-2. Build $H_{n+1}$
-3. Find a factorization of $H_{n+1}= \theta_{n+1} \mathscr{R}_{n+1}$  
-   How to do it?  
-   - put $n$ independent rows of $H_{n+1}$ in $\mathscr{R}_{n+1}$ 
-   - fill the rows of $\theta_{n+1}$ such that $H_{n+1}=\theta_{n+1}\mathscr{R}_{n+1}$ 
-4. Extract matrices $\hat{F},\hat{G},\hat{H},\hat{D}$   
-   $\hat{F}=\theta_{n+1}(1:n,:)^{-1}\theta_{n+1}(2:n+1,:)$  
-   $\hat{G}=\mathscr{R}(:,1)$  
-   $\hat{H}=\theta_ {n+1}(1,:)$  
-   $\hat{D}=0$ (since the system is strictly proper)
-
-We get difference matrices wrt the original ones $\to$ we have found an equivalent state space representation.
 
 
 
