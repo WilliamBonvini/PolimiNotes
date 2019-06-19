@@ -184,6 +184,8 @@ w(5)=\frac{3}{8};
 $$
 
 
+<div style="page-break-after: always;"></div> 
+
 ### Second Method - Matrix Multiplication Formula
 
 The following formula is always the definition of impulse, but it's expressed in a way that is valid only for strictly proper systems.
@@ -223,7 +225,7 @@ from $HFG$ on we can exploit the previous computation (for example, in order to 
 
 
 
-
+<div style="page-break-after: always;"></div> 
 
 ### Third Method - Long Division
 
@@ -255,7 +257,7 @@ Once done the long division you'll easily find the values for $w(0),w(1),w(2),w(
 
 You can stop doing the long division ass soon as you get the coefficients you are looking for, no need to go further obviously.
 
-
+<div style="page-break-after: always;"></div> 
 
 ### Fourth Method - Geometric Series Trick
 
@@ -443,6 +445,8 @@ $$
 W(z)=H(zI-F)^{-1}+D
 $$
 
+<div style="page-break-after: always;"></div> 
+
 ### 4SID method
 
 1. ***Identify the system order***  
@@ -479,6 +483,8 @@ $$
    $\hat{D}=0$ $\to$ usually like this, since the system is usually strictly proper $(w(0)=0)$.
 
 We get new system matrices wrt the original ones $\to$ we have found an equivalent state space representation.
+
+<div style="page-break-after: always;"></div> 
 
 ### $\hat{D} \neq 0$ case
 
@@ -588,6 +594,368 @@ Once we have such formulas we just need to compute the new matrices and get the 
 <div style="page-break-after: always;"></div> 
 
 
+
+# Session 3  & 4- Kalman Filter
+
+## Compute the 1-step Kalman predictor
+
+given, for example, the system 
+$$
+\begin{cases}
+x(t+1)=\frac{2}{5}x(t)+v_1(t) && v_1\sim WN\big(0,\frac{123}{125}\big)
+\\
+y(t)=3x(t)+v_2(t) && v_2 \sim WN(0,1)
+\\
+v_1 \perp v_2
+\end{cases}
+$$
+The one-step predictor is  given by 
+
+<img src="images/kalman1.png" style="zoom:50%">
+
+$V_1$ is the variance of $v_1$, $V_2$ is the variance of $v_2$, $V_{12}$ is the covariance between $v_1$ and $v_2$.
+$$
+\begin{cases}
+\hat{x}(t+1|t)=F\hat{x}(t|t-1)+K(t)e(t) && (state \ prediction)
+\\
+\hat{y}(t|t-1)=H\hat{x}(t|t-1) && (output \ prediction)
+\\
+e(t)=y(t)-\hat{y}(t|t-1) && (innovation)
+\\
+K(t)=(FP(t)H^T+V_{12})(HP(t)H^T+V_2)^{-1} && (filter \ gain)
+\\
+P(t+1)=FP(t)F^T+V_1-(FP(t)H^T+V_{12})(HP(t)H^T+V_2)^{-1}(FP(t)H^T+V_{12})^T && (DRE)
+\\
+P(t)\ge 0
+
+\end{cases}
+$$
+The five equations above will be condensed in the following three:
+$$
+\begin{cases}
+\hat{x}(t+1|t)=\color{blue}\bigg(F-K(t)H\bigg)\color{black}\hat{x}(t|t-1)+\color{blue}K(t)\color{black}y(t)
+\\
+P(t+1)=FP(t)F^T+V_1-(FP(t)H^T+V_{12})(HP(t)H^T+V_2)^{-1}(FP(t)H^T+V_{12})^{T}
+\\
+\hat{y}(t|t-1)=H\hat{x}(t|t-1)
+\end{cases}
+$$
+Initial conditions:
+$$
+\hat{x}(1|0)=x_0  \to  guess \ of \ the \ initial \ state
+\\
+P(1)=P_0 \to Represents \ how \ much \ we \ trust \ the \ initial \ guess
+$$
+
+1. Compute the DRE
+2. Compute the filter gain
+3. Write the first system of equations I wrote
+4. Condense it into the second system of equations I wrote
+
+
+
+<div style="page-break-after: always;"></div> 
+
+## Compute the steady state 1-step Kalman predictor
+
+***Asymptotic Kalman Predictor***
+
+$K(t) \to$ the Kalman predictor is time varying.
+
+The asymptotic Kalman predictor exists if
+
+- $K(t)\to_{t\to\infty}\bar{K}$
+- The Kalman predictor is stable
+
+$K(t)=f(P(t))$      $K(t) \to \bar{K} \ \ \ if \ \ \  P(t) \to \bar{P}$ 
+
+$P(t+1)=P(t)=\bar{P}$
+
+$\bar{P}=F\bar{P}F^T+V_1-(F\bar{P}H^T+V_{12})(H\bar{P}H^T+V_2)^{-1}(F\bar{P}H^T+V_{12})^{-1}$
+
+$\bar{K}=(F\bar{P}H^T+V_{12})(H\bar{P}H^T+V_2)^{-1}$
+
+we have to check if 
+
+$P(t)\to \bar{P}$
+
+and if
+
+$F-\bar{K}H$ is stable.  
+
+There are two methods:
+
+### Method 1 - Graphical Method
+
+1. ***Compute the DRE in order to find $\bar{P}$ ($\bar{P}$ is called ARE)***    
+   Just replace $P(t)$ and $P(t+1)$ with $\bar{P}$ and isolate $\bar{P}$.  
+   You'll probably end up with a positive and a negative solution.   
+   Choose the positive one.  
+   In fact the ARE has one and only one positive definitive solution
+
+2. ***Draw $P(t+1)=f(P(t))$***  
+
+   You have the equation of $P(t+1)$.  
+   Compute the horizontal (considering $P(t)\to \infty$) and vertical asymptote (denom $=0$).  
+   Compute the axis intersection.  
+   Draw it.  
+   You'll obtain something like this, for example:  
+   <img src="images/draw1.png" style="zoom:50%">  
+   Let's analyze this graphical representation.  
+   Let's say we know the value for $P(1)$. thanks to our function $f$ we are able to compute $P(t+1)=P(2)$. So far nothing new.  
+   Now we want to compute $P(3)$ in function of $P(2)$, so how to do it?  
+   First of all let's draw the $y=x$ line.  
+   The first thing we did was computing $P(2)$ in function of $P(1)$, so now we see where $P(2)$ is on the $y$ axis. Well, we want it on the $x$ axis now, because we want to treat it as the input for computing $P(3)$.  
+   Draw an horizontal line from $(P(t)=O(1),P(t+1)=P(2))$ until you reach the $y=x$ line. Then go straight down until you intersect the $x$ axis. Now you found the point where $P(2)$ resides in the $x$ axis.  
+   Repeat the procedure until convergence $(P(t)=P(t+1))$.  
+   Not always convergence is reached.
+
+3. ***Compute the gain and check stability***   
+
+   $K(t)=f(P(t))\to_{t \to \infty}K(t)=f(\bar{P})=\bar{K}$  
+   $F-\bar{K}H=\alpha$  
+   for stability all the eigenvalue of $F-KH$ must be inside the unitary circle $\to \alpha < 1$. 
+
+4. ***Write the steady state 1-step predictor***  
+   If stability is satisfied we can write the steady state 1-step predictor:  
+   $$
+   \begin{cases}
+   \bar{x}(t+1|t)=(F-\bar{K}H)\bar{x}(t|t-1)+\bar{K}y(t)
+   \\
+   \bar{y}(t|t-1)=H\bar{x}(t|t-1)
+   \end{cases}
+   $$
+   
+
+<div style="page-break-after: always;"></div> 
+
+### Method 2 - Asymptotic Theorems
+
+***Theorem 1***
+
+if 
+
+- the system is asymptotically stable  
+  (the system is asymptotically stable if and only if all the eigenvalues of $F$ are inside the unitary circle)
+- $V_{12}=0$
+
+then
+
+*ARE has one and only one positive semidefinite solution $\bar{P}\ge0$.  
+DRE converges to $\bar{P}\ \ \  \forall P_0 \ge 0 $.  
+The corresponding $\bar{K}$ is such that $F-\bar{K}H$ is asymptotically stable.*
+
+***Theorem 2***
+
+Premise: $\Gamma$ is the standard deviation of $v_1$.
+
+if
+
+- $V_{12}=0$
+- $(F,H)$ is observable
+- $(F,\Gamma)$ is reachable $(\Gamma \Gamma^T=V_1)$
+
+then
+
+*ARE has one and only one positive definite solution $\bar{P} >0$.  
+DRE converges to $\bar{P} \ \ \ \forall P_0 \ge 0$.  
+The corresponding $\bar{K}$ is such that $F-\bar{K}H$ is asymptotically stable*
+
+***In practice***
+
+Check for the assumptions of such theorems, if the assumptions hold for one of the theorems we can obviously ignore the other one.
+
+{TODO} how does he actually compute $\bar{P}$ and $\bar{K}$ afterwards?
+
+In the end we will get:
+$$
+\begin{cases}
+\bar{x}(t+1|t)=(F-\bar{K}H)\bar{x}(t|t-1)+\bar{K}y(t)
+\\
+\bar{y}(t|t-1)=H\bar{x}(t|t-1)
+\end{cases}
+$$
+
+
+NB: It could be that looking at the whole system neither THM1 nor THM2 can be applied.  
+But maybe the system is composed by two autonomous subsystems and we can try to analize one subsystem at a time.  
+if both systems are stable we can say that the whole system is table $\to$  the asymptotic state prediction error is bounded.
+
+<div style="page-break-after: always;"></div> 
+
+## Find the steady state 3-step predictor
+
+K-Step Predictor:
+$$
+\begin{cases}
+\hat{x}(t+k|t)=F^{k-1}\hat{x}(t+1|t)
+\\
+\hat{y}(t+k|t)=H\hat{x}(t+k|t)
+\end{cases}
+$$
+That's all you need.
+
+<div style="page-break-after: always;"></div> 
+
+## Find the state equation of the Kalman filter
+
+***Kalman Filter***
+
+<img src="images/kfblockd.png" style="zoom:50%">
+
+***if F is not singular***
+$$
+\hat{x}(t|t)=F^{-1}\hat{x}(t+1|t)
+$$
+
+$$
+\hat{x}(t+1|t)=Fx(t|t)
+$$
+
+In this case it could be we'll need to do some *manipulation*.   
+For example:
+<img src="images/manip.png" style="zoom:50%">
+
+
+
+***otherwise, assuming $V_{12}=0$***
+$$
+\begin{cases}
+\hat{x}(t|t)=F\hat{x}(t-1|t-1)+K_F(t)e(t) 
+\\
+\hat{y}(t|t-1)=H\hat{x}(t|t-1) 
+\\
+e(t)=y(t)-\hat{y}(t|t-1) 
+\\
+K_F(t)=P(t)H^T(HP(t)H^T+V_2)^{-1}
+\\
+P(t+1)=FP(t)F^T+V_1-(FP(t)H^T)(HP(t)H^T+V_2)^{-1}(FP(t)H^T)^T 
+\end{cases}
+$$
+
+<div style="page-break-after: always;"></div> 
+
+## Compute the variance of the state estimation using the filter, at steady state
+
+$$
+P(t)=var[x(t)-\hat{x}(t|t-1)]
+\\
+P(t+1)=var[x(t+1)-\hat{x}(t+1|t)]
+$$
+
+$$
+var[x(t)-\hat{x}(t|t)]\le var[x(t)-\hat{x}(t|t-1)]
+$$
+
+Example:
+
+<img src="images/ses3.png" stile="zoom:50%">
+
+<img src="images/ses32.png" style="zoom:50%">
+
+
+
+<div style="page-break-after: always;"></div> 
+
+# Session 5 - Minimum Variance Control
+
+## Check the assumption for the design of the Minimum Variance Controller
+
+Consider for example the ARMAX system
+$$
+y(t)=\frac{1}{2}y(t-1)+u(t-1)+e(t)+\frac{1}{3}e(t-1) \ \ \ \ \ \ \ e(t)\sim WN(0,1)
+$$
+***Assumption for MVC design***
+
+Given a general ARMAX system
+$$
+y(t)=\frac{B(z)}{A(z)}u(t-k)+\frac{C(z)}{A(z)}e(t)
+$$
+We want
+
+- $b_0\neq 0$
+
+- $B(z)$ in minimum phase (no roots outside the unitary circle)
+
+- $\frac{C(z)}{A(z)}$ is in canonical form
+
+<div style="page-break-after: always;"></div> 
+
+## Compute the k-step predictor
+
+Done via the long division. Already explained it in MIDA Modulo 1.   
+Go check it out at [PolimiNotes](https://github.com/WilliamBonvini/PolimiNotes/tree/master/Model_Identification_and_Data_Analysis_Modulo_1).
+
+<div style="page-break-after: always;"></div> 
+
+## Compute the MVC
+
+***Minimum Variance Control***
+
+General control objective: find $u(t)$ such that $y(t) \cong y^0(t)$.
+
+<img src="images/mvc1.png" style="zoom:50%">
+
+ ***Minimum Variance Control flow***:
+$$
+u(t)0\arg \min_{u(t)} \bigg\{E\bigg[\big(y(t)-y^0(t)\big)^2\bigg]\bigg\}=\arg\min_{u(t)}\bigg\{E\bigg[\big(\hat{y}(t|t-k)-y^0(t)\big)^2\bigg]\bigg\}
+$$
+The solution can be found imposing $\hat{y}(t|t-k)=y^0(t)$
+$$
+\frac{B(z)E(z)}{C(z)}u(t-k)+\frac{\tilde{R}(z)}{C(z)}y(t-k)=y^0(t)
+$$
+We can do a time shift without any problem:
+$$
+\frac{B(z)E(z)}{C(z)}u(t)+\frac{\tilde{R}(z)}{C(z)}y(t)=y^0(t+k)
+$$
+Moreover, $y^0(t)$ is completely unpredictable so:
+$$
+y^0(t+k)=y^0(t)
+$$
+And thus:
+$$
+\frac{B(z)E(z)}{C(z)}u(t)+\frac{\tilde{R}(z)}{C(z)}y(t)=y^0(t)
+$$
+Now we just need to isolate $u(t)$:
+$$
+u(t)=\frac{1}{B(z)E(z)}\bigg(C(z)y^0(t)-\tilde{R}(z)y(t)\bigg)
+$$
+
+<div style="page-break-after: always;"></div> 
+
+## Draw the closed loop block scheme
+
+<img src="images/blockscheme.png" style="zoom:50%">
+
+<div style="page-break-after: always;"></div> 
+
+## Find the transfer function from $y^0(t)$ to $y(t)$ and from $e(t)$ to $y(t)$
+
+### Method 1 - Signal replace
+
+You'll start from something like this, for example:
+$$
+y(t)=\frac{1}{1-\frac{1}{2}z^{-1}}u(t-1)+\frac{1+\frac{1}{3}z^{-1}}{1-\frac{1}{2}z^{-1}}e(t)
+$$
+replace $u(t-1)=u(t)z^{-1}$ with the MVC you've found in the previous steps and find the transfer functions consequently.
+
+<div style="page-break-after: always;"></div> 
+
+### Method 2 - Block scheme
+
+<img src="images/blockscheme2.png" style="zoom:50%">
+
+<div style="page-break-after: always;"></div> 
+
+## Compute the transfer functions from $y^0$ to $u$ and from $\eta$ to $u$
+
+<img src="images/tryunu.PNG" style="zoom:50%">
+
+<div style="page-break-after: always;"></div> 
+
+## Check the closed loop asymptotic stability
+
+<img src="images/astab.png" style="zoom:50%">
 
 
 
