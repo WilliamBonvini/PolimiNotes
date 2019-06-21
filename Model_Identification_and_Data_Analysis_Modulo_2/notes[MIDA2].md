@@ -61,11 +61,7 @@ x(t)=
 \begin{bmatrix} 
 x_1(t) 
 \\
-.
-\\
-.
-\\
-.
+\vdots
 \\
 x_n(t)
 \end{bmatrix}
@@ -76,8 +72,6 @@ $$
 $$
 y(t),u(t) \in \R^1
 $$
-
-<div style="page-break-after: always;"></div> 
 
 ## Compute the system transfer function
 
@@ -127,8 +121,6 @@ There are four methods to compute it.
 
 ### First Method - From Difference Equations 
 
-From the system of difference equations.
-
 Let's say for example the difference equations are
 $$
 \begin{cases}
@@ -170,17 +162,12 @@ $$
 
 The impulse responses are given by the value of $y$ at each timestep $t$:
 $$
-w(0)=0;
-\\
-w(1)=6;
-\\
-w(2)=3;
-\\
-w(3)=\frac{3}{2};
-\\
-w(4)=\frac{3}{4};
-\\
-w(5)=\frac{3}{8};
+w(0)=0; \ \ 
+w(1)=6;\ \ 
+w(2)=3;\ \ 
+w(3)=\frac{3}{2};\ \ 
+w(4)=\frac{3}{4};\ \ 
+w(5)=\frac{3}{8};\ \ 
 $$
 
 
@@ -229,8 +216,6 @@ from $HFG$ on we can exploit the previous computation (for example, in order to 
 
 ### Third Method - Long Division
 
-Long division.
-
 The output is represented like this:
 $$
 y(t)=w(0)u(t)+w(1)u(t-1)+w(2)u(t-2)+...
@@ -256,8 +241,6 @@ Let's do the long division and equal it to the right member of the equation abov
 Once done the long division you'll easily find the values for $w(0),w(1),w(2),w(3)$ and $w(4)$ just by looking at the coefficients of $z$ terms.
 
 You can stop doing the long division ass soon as you get the coefficients you are looking for, no need to go further obviously.
-
-<div style="page-break-after: always;"></div> 
 
 ### Fourth Method - Geometric Series Trick
 
@@ -307,18 +290,33 @@ For example, a zero-pole cancellation correspond to a hidden part of the system:
 
 In this case there is a non-observable part:
 
-![1560883836749](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\1560883836749.png)
-
-
+<img src="images/abba.png" style="zoom:50%">
 
 ### Reachability
 
-$J$ is reachable if and only if the reachability matrix $\mathscr{R}$ is full rank $(det \neq 0)$.  
-Where
+***Method 1***
+
+$J$ is reachable if and only if the reachability matrix $\mathscr{R}$ is full rank $(det \neq 0)$.  Where:
 $$
 \mathscr{R}=\begin{bmatrix}G \ \ \  \ FG \  \ \ \ F^2G \ \ \ \ \dots \ \  \ \ F^{n-1}G \end{bmatrix}
 $$
-   
+***Method 2***
+
+Another way to prove reachability is by applying the PBH test:  
+$$
+rank([F-\lambda I  \ \ \ \ \ \  G])=n \ \ \ \forall\lambda \in \Lambda(F)
+$$
+
+###  PBH Test
+
+The PBH test is useful even for another reason:
+
+The pair $(A,B)$ is 
+
+- ***Stabilizable*** if and only if $rank([\lambda I - A  \ \ \ \ \ \  B])=n \ \ \ \forall\lambda \in \Lambda(A) \and \lambda \in \C^+ $
+- ***Controllable*** if and only if $rank([\lambda I - A  \ \ \ \ \ \  B])=n \ \ \ \forall\lambda \in \Lambda(A) \and \lambda \in \C$
+
+
 
 <div style="page-break-after: always;"></div> 
 
@@ -350,8 +348,6 @@ $$
 
 
 
-<div style="page-break-after: always;"></div> 
-
 ## Given the input response compute the  transfer function
 
 Let's explain it with an example:
@@ -367,7 +363,7 @@ w(t)=
 $$
 May be helpful to draw the input response from some instants $t$.
 
-The thing we need to remember is that
+The one thing we need to remember is that
 $$
 y(t)=w(0)+w(1)u(t-1)+w(2)u(t-2)+ \dots
 $$
@@ -463,7 +459,7 @@ $$
    \end{cases}
    $$
    Example:  
-   <img src="C:/Users/Willi/Desktop/myGitHub/Notes/Model_Identification_and_Data_Analysis_Modulo_2/images/rank.png" style="zoom:50%"> 
+   <img src="images/rank.png" style="zoom:50%"> 
 
 2. ***Build*** $H_{n+1}$
 
@@ -474,7 +470,7 @@ $$
    - fill the rows of $\theta_{n+1}$ such that $H_{n+1}=\theta_{n+1}\mathscr{R}_{n+1}$ 
 
    Example:  
-   <img src="C:/Users/Willi/Desktop/myGitHub/Notes/Model_Identification_and_Data_Analysis_Modulo_2/images/fact.png" style="zoom:50%">
+   <img src="images/fact.png" style="zoom:50%">
 
 4. ***Extract matrices*** $\hat{F},\hat{G},\hat{H},\hat{D}$   
    $\hat{F}=\theta_{n+1}(1:n,:)^{-1}\theta_{n+1}(2:n+1,:)$  
@@ -700,7 +696,7 @@ There are two methods:
    Compute the axis intersection.  
    Draw it.  
    You'll obtain something like this, for example:  
-   <img src="images/draw1.png" style="zoom:50%">  
+   <img src="images/draw1.png" style="zoom:30%">  
    Let's analyze this graphical representation.  
    Let's say we know the value for $P(1)$. thanks to our function $f$ we are able to compute $P(t+1)=P(2)$. So far nothing new.  
    Now we want to compute $P(3)$ in function of $P(2)$, so how to do it?  
@@ -781,6 +777,18 @@ NB: It could be that looking at the whole system neither THM1 nor THM2 can be ap
 But maybe the system is composed by two autonomous subsystems and we can try to analize one subsystem at a time.  
 if both systems are stable we can say that the whole system is table $\to$  the asymptotic state prediction error is bounded.
 
+
+
+If one subsystem is stable and the other one is not, we can prove convergence if the unstable system is ***stabilizable*** and ***detectable***.   
+Detectable means that
+$$
+\begin{bmatrix}
+H\\
+\lambda ^* I-F
+\end{bmatrix} has \  rank=n
+$$
+
+
 <div style="page-break-after: always;"></div> 
 
 ## Find the steady state 3-step predictor
@@ -814,7 +822,7 @@ $$
 
 In this case it could be we'll need to do some *manipulation*.   
 For example:
-<img src="images/manip.png" style="zoom:50%">
+<img src="images/manip.png" style="zoom:20%">
 
 
 
@@ -851,7 +859,7 @@ Example:
 
 <img src="images/ses3.png" stile="zoom:50%">
 
-<img src="images/ses32.png" style="zoom:50%">
+<img src="images/ses32.png" style="zoom:30%">
 
 
 
@@ -878,8 +886,6 @@ We want
 - $B(z)$ in minimum phase (no roots outside the unitary circle)
 
 - $\frac{C(z)}{A(z)}$ is in canonical form
-
-<div style="page-break-after: always;"></div> 
 
 ## Compute the k-step predictor
 
@@ -927,7 +933,7 @@ $$
 
 <img src="images/blockscheme.png" style="zoom:50%">
 
-<div style="page-break-after: always;"></div> 
+
 
 ## Find the transfer function from $y^0(t)$ to $y(t)$ and from $e(t)$ to $y(t)$
 
@@ -955,13 +961,86 @@ replace $u(t-1)=u(t)z^{-1}$ with the MVC you've found in the previous steps and 
 
 ## Check the closed loop asymptotic stability
 
-<img src="images/astab.png" style="zoom:50%">
+What we do is always imposing the input signals equal to zero.  
+So usually we'll have something like $y^0(t)=e(t)=0$.  
+Then we can study the system.
+
+Loop function $\to L(z)=$ Multiply together all the blocks
+
+Forward Function $\to F_{y_1,y_2}(z)$
+
+Every Transfer Function is $W_{y_1,y_2}(z)=\frac{F_{y_1,y_2}(z)}{1+L(z)}$
+
+$F_{y_1,y_2}(z)$ depends on the I/O signals.
+$$
+L(z)=\frac{1}{B(z)E(z)}\frac{z^{-k}B(z)}{A(z)}\tilde{R}(z)
+$$
+*A system is asymptotically stable if the roots of the characteristic polynomial $(\chi)$ are strictly inside the unitary circle.*
+
+$N_L(z)=$ everything on the numerators of the blocks in the Loop Function (all the blocks)
+
+$D_L(z)=$ everything on the denominators of the blocks in the Loop Function (all the blocks) 
+
+### Negative Feedback System
+
+<img src="images/bscheme.png" style="zoom=50%">
 
 
+$$
+\chi(z)=N_L(z)+D_L(z)=
+\\
+=z^{-k}B(z)\tilde{R}(z)+B(z)E(z)A(z)=
+\\
+=B(z)[z^{-k}\tilde{R}(z)+E(z)A(z)]=
+\\
+=B(z)C(z)
+$$
+
+
+### Positive Feedback System
+
+$$
+\chi(z)=N_L(z)-D_L(z)
+$$
+
+
+
+
+
+# Session 6 
 
 <div style="page-break-after: always;"></div> 
+
+
 
 # Doubts
 
 - <img src="images/doubt1.png" style="zoom:50%">  
   non capisco la dicitura $\theta(1:n,:)$, non dovrebbe essere: considera le le riga dalla $1$ alla $n$ e tutte le colonne?
+
+
+
+
+
+
+
+
+
+# With fil, don't know where such things come from
+
+## Prove that DRE converges
+
+Method 1:
+
+apply one of the Asymptotic Theorems
+
+## Write the recursive Kalman Predictor Equations in stationary conditions
+
+$$
+\hat{x}(t+1|t)=F\hat{x}(t|t-1)+\bar{K}\bigg(y(t)-H\hat{x}(t|t-1)\bigg)
+$$
+
+
+
+
+
