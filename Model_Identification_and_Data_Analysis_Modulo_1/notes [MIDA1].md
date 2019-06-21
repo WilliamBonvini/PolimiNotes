@@ -1,5 +1,11 @@
 # Notes of Model Identification and Data Analysis
 
+*A series of notes on the course MIDA modulo 1 as taught in Politecnico di Milano by Sergio Bittanti during the academic year 2018/2019*
+
+[TOC]
+
+
+
 ## Childhood Memories
 
 - ${ae^{jw}=acos(w)+jasin(w)}$
@@ -25,9 +31,9 @@
 - how to find out if a closed-loop system is stable? 
 - why the results of the predictor found via PEM or via long division are different? when should I use one and why should I use the other? (page 28 exams pdf)
 
+<div style="page-break-after: always;"></div> 
+
 ## Exercises on Covariance & Spectra
-
-
 
 **General method to compute variance and covariance of a process**  
 Transform your process in time domain:  
@@ -104,6 +110,8 @@ ${Q_k}$ are all known, so just propagate the variance within the equation:   ${V
 
 To do the diagram just put the ${k}$ in the ${x}$ axis, and ${variance(\varepsilon)}$ in the ${y}$ axis.
 
+<div style="page-break-after: always;"></div> 
+
 ## Exercise on Minimum Variance Controller
 
 **First step: compute the ${k}$-steps predictor**
@@ -129,7 +137,7 @@ the input is ${y^0(t)}$, the output is ${y(t)}$.  take the expression of ${y}$ t
 
 
 
-
+<div style="page-break-after: always;"></div> 
 
 ## Optimal Estimates of Parameters via PEM
 
@@ -218,7 +226,7 @@ $$
 $$
 We repeat the process to find ${a_2}$ using the model ​ ${M_2}$
 
-
+<div style="page-break-after: always;"></div> 
 
 ### For ${AR}$ Processes  
 
@@ -273,9 +281,7 @@ $$
 
 
 
-
-
-
+<div style="page-break-after: always;"></div> 
 
 
 ## Parameter Estimation knowing Variances
@@ -290,14 +296,6 @@ $$
 v(t)=e(t)+a_1e(t-1)+a_2e(t-2)+...a_ne(t-n)
 $$
 and use the known formulas for the covariances of MA processes to build a system of ${n+1}$ equations, then solve it. 
-
-
-
-
-
-
-
-
 
 
 
@@ -323,21 +321,7 @@ and use the known formulas for the covariances of MA processes to build a system
   $$
   take care, if a ${z}$ term is missing, for example ${y(t)=1-z^{-2}}$, the predictor of the missing ${z}$ term is the same of the predictor of the next ${z}$ term's corresponding step. so in this case the 1-step predictor is the same of the 2-steps predictor.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div style="page-break-after: always;"></div> 
 
 ## Questions
 
@@ -345,17 +329,17 @@ and use the known formulas for the covariances of MA processes to build a system
 
 
 
-##### Explain the bayes problem and discuss the bayes formula
+##### Explain the Bayes problem and discuss the Bayes formula
 
 
 
-##### In hte prediction theory for dtationary processes in external representation form i.e. input/output models, the canonical representation has a main role, explain what it is meant by canonical representation specifying what is the input signal and what ia the output signal of the representation and then highlight its properties. what is the role of this properties in the prediction theory?
+##### In HTE prediction theory for stationary processes in external representation form i.e. input/output models, the canonical representation has a main role, explain what it is meant by canonical representation specifying what is the input signal and what ia the output signal of the representation and then highlight its properties. what is the role of this properties in the prediction theory?
 
 
 
 ##### Briefly explain the concept of minimum variance control for a given plant described by an ARX model, when can this method be used and when not?
 
-##### How can we estimate both the state x(t9and the unknown parameter a of the system a sistemaaaa ${x(t+1)=ax(t)+v_1(t)}$ system ${y(t)=x(t)+v_2(t)}$ by means of the extended Kalman filter
+##### How can we estimate both the state x(t) and the unknown parameter a of the system $\begin{cases}x(t+1)=ax(t)+v_1(t) \\ y(t)=x(t)+v_2(t) \end{cases}$ by means of the extended Kalman filter
 
 
 
