@@ -4,7 +4,7 @@
 
 [TOC]
 
-
+<div style="page-break-after: always;"></div> 
 
 ## Childhood Memories
 
@@ -14,8 +14,6 @@
 - Gain of a transfer function:  
   if it's mathematically doable, ${\mu = G(s=0)=G(jw=0)}$, so in model analysis ${\mu=G(z=1)}$ since ${z=e^{jw}}$ 
 
-
-
 ## Observations
 
 - in an ${MA(n)}$ all the covariances ${\gamma(\tau)}$ with ${\tau>n}$ are equal to zero: ${\gamma(tau>n)=0}$ 
@@ -23,13 +21,20 @@
   NB: if the transfer function is in canonical form, it is surely stable.
 - ${2\eta(t) \ \ \eta\sim WN(0,\lambda^2)\to\tilde{\eta}\sim WN(0,\lambda^22^2)}$
 
-
-
 ## Doubts
 
 - is ${c_0}$ in MA processes always equal to 1?
 - how to find out if a closed-loop system is stable? 
 - why the results of the predictor found via PEM or via long division are different? when should I use one and why should I use the other? (page 28 exams pdf)
+
+## Canonical Form
+
+A stochastic process is in canonical form if its transfer function has the following properties:
+
+- $N(z)$ and $D(z)$ have the same order
+- $N(z)$ and $D(z)$ are monic (the coefficient of the highest degree variable is 1)
+- $N(z)$ and $D(z)$ are coprime (no roots in common)
+- zeros and poles are inside the unitary circle $(|z|\le1$ and $|p|\le1)$ 
 
 <div style="page-break-after: always;"></div> 
 
@@ -325,25 +330,27 @@ and use the known formulas for the covariances of MA processes to build a system
 
 ## Questions
 
-##### explain what is the purpose of the final prediction error FPE method and how it can be used in practice given a set of data
+#### explain what is the purpose of the final prediction error FPE method and how it can be used in practice given a set of data
 
 
 
-##### Explain the Bayes problem and discuss the Bayes formula
+#### Explain the Bayes problem and discuss the Bayes formula
 
 
 
-##### In HTE prediction theory for stationary processes in external representation form i.e. input/output models, the canonical representation has a main role, explain what it is meant by canonical representation specifying what is the input signal and what ia the output signal of the representation and then highlight its properties. what is the role of this properties in the prediction theory?
+#### In HTE prediction theory for stationary processes in external representation form i.e. input/output models, the canonical representation has a main role, explain what it is meant by canonical representation specifying what is the input signal and what is the output signal of the representation and then highlight its properties. what is the role of this properties in the prediction theory?
 
 
 
-##### Briefly explain the concept of minimum variance control for a given plant described by an ARX model, when can this method be used and when not?
-
-##### How can we estimate both the state x(t) and the unknown parameter a of the system $\begin{cases}x(t+1)=ax(t)+v_1(t) \\ y(t)=x(t)+v_2(t) \end{cases}$ by means of the extended Kalman filter
+#### Briefly explain the concept of minimum variance control for a given plant described by an ARX model, when can this method be used and when not?
 
 
 
-##### A measure problem in model identification is the choice of the model type and the selection of its appropriate complexity. Concisely present the available methods.
+#### How can we estimate both the state x(t) and the unknown parameter a of the system $\begin{cases}x(t+1)=ax(t)+v_1(t) \\ y(t)=x(t)+v_2(t) \end{cases}$ by means of the extended Kalman filter
+
+
+
+#### A measure problem in model identification is the choice of the model type and the selection of its appropriate complexity. Concisely present the available methods.
 
 
 
