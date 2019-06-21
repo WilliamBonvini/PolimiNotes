@@ -967,9 +967,9 @@ Then we can study the system.
 
 Loop function $\to L(z)=$ Multiply together all the blocks
 
-Forward Function $\to F_{y_1,y_2}(z)$
+Forward Function $\to F_{y_1,y_2}(z)=$ Multiply together all the blocks you meet starting from the considered input to reach the considered output.
 
-Every Transfer Function is $W_{y_1,y_2}(z)=\frac{F_{y_1,y_2}(z)}{1+L(z)}$
+
 
 $F_{y_1,y_2}(z)$ depends on the I/O signals.
 $$
@@ -986,6 +986,10 @@ $D_L(z)=$ everything on the denominators of the blocks in the Loop Function (all
 <img src="images/bscheme.png" style="zoom=50%">
 
 
+
+Every Transfer Function is $W_{y_1,y_2}(z)=\frac{F_{y_1,y_2}(z)}{1+L(z)}$
+
+
 $$
 \chi(z)=N_L(z)+D_L(z)=
 \\
@@ -999,10 +1003,12 @@ $$
 
 ### Positive Feedback System
 
-$$
-\chi(z)=N_L(z)-D_L(z)
-$$
+Every Transfer Function is $W_{y_1,y_2}(z)=\frac{F_{y_1,y_2}(z)}{1-L(z)}$
 
+
+$$
+\chi(z)=D_L(z)-N_L(z)
+$$
 
 
 
