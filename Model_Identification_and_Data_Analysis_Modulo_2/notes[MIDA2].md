@@ -4,8 +4,6 @@
 
 [TOC]
 
-<div style="page-break-after: always;"></div> 
-
 ## Childhood Memories
 
 - Geometric Series
@@ -318,8 +316,6 @@ The pair $(A,B)$ is
 
 
 
-<div style="page-break-after: always;"></div> 
-
 ## Compute the Hankel Matrix of order $n$
 
 ### Definition
@@ -567,7 +563,7 @@ y(t)=HT^{-1}\tilde{x}(t)+Ku(t)
 \\
 y(t)=HT^{-1}\tilde{x}(t)+Ku(t) 
 \end{cases}
-
+
 $$
 
 
@@ -713,15 +709,25 @@ There are two methods:
    for stability all the eigenvalue of $F-KH$ must be inside the unitary circle $\to \alpha < 1$. 
 
 4. ***Write the steady state 1-step predictor***  
-   If stability is satisfied we can write the steady state 1-step predictor:  
+   If stability is satisfied we can write the steady state 1-step predictor:    
+   Usually expressed in the following way:  
+   $$
+      \begin{cases}
+      \hat{x}(t+1|t)=F\hat{x}(t|t-1)+\bar{K}\bigg(y(t)-\hat{y}(t|t-1)\bigg)
+      \\
+      
+      \hat{y}(t|t-1)=H\hat{x}(t|t-1)
+      \end{cases}
+   $$
+   But if you prefer you can use this notation:
    $$
    \begin{cases}
-   \bar{x}(t+1|t)=(F-\bar{K}H)\bar{x}(t|t-1)+\bar{K}y(t)
+   \hat{x}(t+1|t)=(F-\bar{K}H)\hat{x}(t|t-1)+\bar{K}y(t)
    \\
-   \bar{y}(t|t-1)=H\bar{x}(t|t-1)
+   \hat{y}(t|t-1)=H\hat{x}(t|t-1)
    \end{cases}
    $$
-   
+
 
 <div style="page-break-after: always;"></div> 
 
@@ -772,12 +778,8 @@ $$
 \end{cases}
 $$
 
-
 NB: It could be that looking at the whole system neither THM1 nor THM2 can be applied.  
-But maybe the system is composed by two autonomous subsystems and we can try to analize one subsystem at a time.  
-if both systems are stable we can say that the whole system is table $\to$  the asymptotic state prediction error is bounded.
-
-
+But maybe the system is composed of two autonomous subsystems and we can try to analyze one subsystem at a time. If both systems are stable we can say that the whole system is stable $\to$  the asymptotic state prediction error is bounded.
 
 If one subsystem is stable and the other one is not, we can prove convergence if the unstable system is ***stabilizable*** and ***detectable***.   
 Detectable means that
@@ -803,8 +805,6 @@ $$
 $$
 That's all you need.
 
-<div style="page-break-after: always;"></div> 
-
 ## Find the state equation of the Kalman filter
 
 ***Kalman Filter***
@@ -823,8 +823,6 @@ $$
 In this case it could be we'll need to do some *manipulation*.   
 For example:
 <img src="images/manip.png" style="zoom:20%">
-
-
 
 ***otherwise, assuming $V_{12}=0$***
 $$
@@ -900,7 +898,7 @@ Go check it out at [PolimiNotes](https://github.com/WilliamBonvini/PolimiNotes/t
 
 General control objective: find $u(t)$ such that $y(t) \cong y^0(t)$.
 
-<img src="images/mvc1.png" style="zoom:50%">
+<img src="images/mvc1.png" style="zoom:40%">
 
  ***Minimum Variance Control flow***:
 $$
@@ -927,13 +925,11 @@ $$
 u(t)=\frac{1}{B(z)E(z)}\bigg(C(z)y^0(t)-\tilde{R}(z)y(t)\bigg)
 $$
 
-<div style="page-break-after: always;"></div> 
-
 ## Draw the closed loop block scheme
 
-<img src="images/blockscheme.png" style="zoom:50%">
+<img src="images/blockscheme.png" style="zoom:40%">
 
-
+<div style="page-break-after: always;"></div> 
 
 ## Find the transfer function from $y^0(t)$ to $y(t)$ and from $e(t)$ to $y(t)$
 
@@ -945,11 +941,9 @@ y(t)=\frac{1}{1-\frac{1}{2}z^{-1}}u(t-1)+\frac{1+\frac{1}{3}z^{-1}}{1-\frac{1}{2
 $$
 replace $u(t-1)=u(t)z^{-1}$ with the MVC you've found in the previous steps and find the transfer functions consequently.
 
-<div style="page-break-after: always;"></div> 
-
 ### Method 2 - Block scheme
 
-<img src="images/blockscheme2.png" style="zoom:50%">
+<img src="images/blockscheme2.png" style="zoom:40%">
 
 <div style="page-break-after: always;"></div> 
 
@@ -961,15 +955,12 @@ replace $u(t-1)=u(t)z^{-1}$ with the MVC you've found in the previous steps and 
 
 ## Check the closed loop asymptotic stability
 
-What we do is always imposing the input signals equal to zero.  
-So usually we'll have something like $y^0(t)=e(t)=0$.  
+What we do is always imposing the input signals equal to zero.  So usually we'll have something like $y^0(t)=e(t)=0$.  
 Then we can study the system.
 
-Loop function $\to L(z)=$ Multiply together all the blocks
+***Loop function*** $\to L(z)=$ Multiply together all the blocks
 
-Forward Function $\to F_{y_1,y_2}(z)=$ Multiply together all the blocks you meet starting from the considered input to reach the considered output.
-
-
+***Forward Function*** $\to F_{y_1,y_2}(z)=$ Multiply together all the blocks you meet starting from the considered input to reach the considered output.
 
 $F_{y_1,y_2}(z)$ depends on the I/O signals.
 $$
@@ -983,9 +974,7 @@ $D_L(z)=$ everything on the denominators of the blocks in the Loop Function (all
 
 ### Negative Feedback System
 
-<img src="images/bscheme.png" style="zoom=50%">
-
-
+<img src="images/bscheme.png" style="zoom:30%">
 
 Every Transfer Function is $W_{y_1,y_2}(z)=\frac{F_{y_1,y_2}(z)}{1+L(z)}$
 
@@ -993,11 +982,10 @@ Every Transfer Function is $W_{y_1,y_2}(z)=\frac{F_{y_1,y_2}(z)}{1+L(z)}$
 $$
 \chi(z)=N_L(z)+D_L(z)=
 \\
-=z^{-k}B(z)\tilde{R}(z)+B(z)E(z)A(z)=
-\\
+=z^{-k}B(z)\tilde{R}(z)+B(z)E(z)A(z)
 =B(z)[z^{-k}\tilde{R}(z)+E(z)A(z)]=
 \\
-=B(z)C(z)
+=B(z)C(z) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 
 $$
 
 
@@ -1011,9 +999,188 @@ $$
 $$
 
 
+<div style="page-break-after: always;"></div> 
+
+# Session 6 & 7
+
+## Generalized Minimum Variance Controller
+
+In case the assumption for making an MVC are not satisfied we can compute a Generalized MVC:
+$$
+MVC \to J=	E\bigg[(\hat{y}(t+k|t)-y^0(t))^2\bigg]
+$$
+
+$$
+GMVC \to J=	E\bigg[\big(\color{blue}P(z)\color{black}\hat{y}(t+k|t)-y^0(t)+\color{red}Q(z)u(t)\color{black}\big)^2\bigg]
+$$
+
+## Implement the MVC in a system that is fed by a non-zero mean signal
+
+<img src="images/ses61.PNG" style="zoom:50%">
+
+<img src="images/ses62.PNG" style="zoom:50%">
+
+<img src="images/ses63.PNG" style="zoom:50%">
+
+<div style="page-break-after: always;"></div> 
+
+## Constant Signal case
+
+In this exercise section we encountered a signal $\xi(t)=1$ in the following expression of $y(t)$:
+$$
+y(t)=\frac{1}{1-\alpha z^{-1}}\eta(t)+\frac{1}{1+\alpha z^{-1}}\xi(t)=\frac{1}{1-\alpha z^{-1}}\eta(t)+\frac{1}{1+\alpha z^{-1}}1
+$$
+When we have a transfer function that multiplies a constant signal, we have enough information to evaluate the transfer function in $z=1$.  
+The result is thus:
+$$
+y(t)=\frac{1}{1-\alpha z^{-1}}\eta(t)+\frac{1}{1+\alpha}
+$$
+We can now use this expression to compute for example $E\big[(y(t))^2\big]$.
+
+<div style="page-break-after: always;"></div> 
+
+## Recursive Identification
+
+Outline:
+
+- ARX Identification
+  - Least Square (already seen in MIDA 1)
+  - Recursive Least Square $(I,II,III$ form$)$
+  - Recursive Least Square with forgetting factor
+- ARMAX  Identification
+  - Maximum Likelihood (already seen in MIDA 1)
+  - Recursive Maximum Likelihood
+
+### ARX Identification
+
+$$
+y(t)=\frac{B(z)}{A(z)}u(t-1)+\frac{1}{A(z)}e(t)
+$$
+
+$$
+e(t)\sim WN(m_e,\lambda ^2_e)
+\\
+B(z)=b_0+b_1z^{-1}+\dots+b_pz^{-p}
+\\
+A(z)=1+a_1z^{-1}+\dots +a_n z^{-n}
+\\
+y(t)=a_1y(t-1)-\dots-a_n y(t-n)+b_0u(t-1)+\dots+b_pu(t-p-1)+e(t)
+$$
+
+Define:
+$$
+\theta =\begin{bmatrix} a_1\\\vdots\\a_n\\b_0\\ \vdots \\b_p\end{bmatrix}
+$$
+
+$$
+\varphi(t)=\begin{bmatrix} -y(t-1)\\\vdots\\-y(t-n)\\u(t-1)\\ \vdots \\u(t-p-1)\end{bmatrix}
+$$
+
+$$
+\implies y(t)=\varphi(t)^T\theta +e(t)
+$$
+
+Objective: identify $\theta$ starting from an available dataset:
+$$
+\{u(1)\dots u(n)\}
+$$
+
+$$
+\{y(1)\dots y(n)\}
+$$
+
+<div style="page-break-after: always;"></div> 
+
+#### Least Square
+
+***PEM*** = Prediction Error Method
+$$
+\hat{\theta}_N=\arg\min_{\theta}\bigg\{ J_\theta(N)=\frac{1}{N}\sum_{t=1}^N\Big(y(t)-\hat{y}(t|t-1,\theta)\Big)^2 \bigg\}
+$$
+We need a model predictor.
+$$
+y(t)=\color{blue}\varphi(t)^T\theta \color{black}+\color{red}e(t)
+$$
+$\color{blue}blue\to$ Known at time $t-1$
+
+$\color{red}red \to$ Unpredictable at time $t-1$
+
+The predictor is:
+$$
+\hat{y}(t|t-1)=\varphi(t)^T\theta \leftarrow \color{green} optimal \ predictor
+$$
 
 
-# Session 6 
+$J_\theta(N)=\frac{1}{N}\sum_{t=1}^N\Big(y(t)-\hat{y}(t|t-1,\theta)\Big)^2$ is a quadratic function so it is possible to compute the solution explicitly.
+
+
+
+$\frac{dJ_N(\theta)}{d \theta}\vert_{\theta=\hat{\theta}_N}=0$
+
+The main formula are:
+$$
+\hat{\theta}_N=S(N)^{-1}\sum_{t=1}^N\varphi(t)y(t)
+$$
+
+$$
+S(N)^{-1}=\sum_{t=1}^N\varphi(t)\varphi(t)^T
+$$
+
+***What are the drawbacks of Least Square?***
+
+When you get new measurements you don't use the previous identification, you have to redo all the computation.   
+Solution? Recursive Least Square!
+
+<div style="page-break-after: always;"></div> 
+
+#### Recursive Least Square
+
+RLS is a method that updates the identification 
+
+<img src="images/rls1.png" style="zoom:50%">
+
+Advantages:
+
+- Lower computation effort
+- You save memory allocation
+
+***I Form***
+
+<img src="images/rls2.png" style="zoom:50%">
+
+<img src="images/rls3.png" style="zoom:50%">
+
+<img src="images/rls4.png" style="zoom:50%">
+
+<div style="page-break-after: always;"></div> 
+
+All the following topics are discussed in the last exercise session (2019 - 05 - 30). 
+
+***II Form***
+
+...
+
+***III Form***
+
+...
+
+#### Recursive Least Square With Forgetting Factor
+
+...
+
+<div style="page-break-after: always;"></div> 
+
+### ARMAX Identification
+
+#### Maximum Likelihood
+
+...
+
+#### Recursive Maximum Likelihood
+
+...
+
+
 
 <div style="page-break-after: always;"></div> 
 
