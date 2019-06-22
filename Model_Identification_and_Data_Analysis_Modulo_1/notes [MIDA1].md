@@ -6,13 +6,60 @@
 
 <div style="page-break-after: always;"></div> 
 
+# Side Notes
+
 ## Childhood Memories
 
 - ${ae^{jw}=acos(w)+jasin(w)}$
+
 - ${|z_1|^2=z_1\bar{z}_1}$
+
 - ${e^{j\omega}+e^{j(-\omega)}=2cos(\omega)}$
-- Gain of a transfer function:  
+
+- ***Gain of a transfer function***  
   if it's mathematically doable, ${\mu = G(s=0)=G(jw=0)}$, so in model analysis ${\mu=G(z=1)}$ since ${z=e^{jw}}$ 
+  
+- ***From the algebraic form to the exponential one***   
+  ${z=a+jb=re^{jw}}$  
+  $$
+  r=\sqrt{a^2+b^2}
+  $$
+  
+  $$
+  \theta \in (-\pi,\pi] = \begin{cases} \frac{\pi}{2} \ \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ se \ a=0,b>0 \\
+  -\frac{\pi}{2} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ se  \ a=0,b<0 \\
+  non \ definito \ \ \ \  \ se  \ a=0,b=0 \\
+  \arctan(\frac{b}{a}) \ \ \ \ \ \ \  \ \  \ se \ a >0,b\ge0 \\
+  \arctan(\frac{b}{a})+\pi \ \ \ se \ a <0,b\ge0 \\
+  \arctan(\frac{b}{a})-\pi \ \ \ se \ a <0,b<0 \\
+  \end{cases}
+  $$
+  
+  $$
+  \theta \in [0,2\pi) = \begin{cases} \frac{\pi}{2} \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ se \ a=0,b>0 \\
+  \frac{3\pi}{2} \ \ \ \ \ \  \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \ se  \ a=0,b<0 \\
+  non \ definito \ \ \ \ \ \   \ se  \ a=0,b=0 \\
+  \arctan(\frac{b}{a}) \ \ \ \ \ \ \ \ \  \ \  \ se \ a >0,b\ge0 \\
+  \arctan(\frac{b}{a})+2\pi \ \ \ se \ a >0,b<0 \\
+  \arctan(\frac{b}{a})+\pi \ \ \ \  \ se \ a <0,b \ qualsiasi \\
+  \end{cases}
+  $$
+  
+- ***Frequency Response Theorem***  
+  Let ${u(t)=A\sin(\bar{w}t+\varphi)}$. If the system is asymptotically stable, at the end of the initial transitory, the output is sinusoidal as well.  
+  $$
+  y(t)=B\sin(\bar{w}t+\theta)
+  $$
+
+  $$
+  \begin{cases} 
+  B=A|G(j\bar{\omega})| \\
+  \theta=\varphi+\ang{Gj\bar{\omega}}
+  
+  \end{cases}
+  $$
+
+   
 
 ## Observations
 
@@ -20,12 +67,15 @@
 - A process is stationary if its transfer function is stable (poles and zeros ${\le |1|}$) and it's fed by a stationary signal (i.e., a white noise).  
   NB: if the transfer function is in canonical form, it is surely stable.
 - ${2\eta(t) \ \ \eta\sim WN(0,\lambda^2)\to\tilde{\eta}\sim WN(0,\lambda^22^2)}$
+- In case the transfer function is fed by a white noise with ${E[\eta(t)]=0}$ we can simplify the expression in: 
+  ${\gamma(y(t))=E[\space (\space y(t)\space)^2\space]}$
 
 ## Doubts
 
 - is ${c_0}$ in MA processes always equal to 1?
 - how to find out if a closed-loop system is stable? 
 - why the results of the predictor found via PEM or via long division are different? when should I use one and why should I use the other? (page 28 exams pdf)
+- if a signal has a zero, does its spectrum surely goes to zero at certain frequencies ? (page 33 exams pdf)
 
 ## Canonical Form
 
@@ -38,9 +88,25 @@ A stochastic process is in canonical form if its transfer function has the follo
 
 <div style="page-break-after: always;"></div> 
 
-## Exercises on Covariance & Spectra
+# Exercises on Covariance & Spectra
 
-**General method to compute variance and covariance of a process**  
+**Variance and Spectra Properties**
+
+If two signals ${\alpha}$ and ${\beta}$ are independent and ${\varphi=\alpha+\gamma}$:
+
+- ${\gamma_\varphi=\gamma_\alpha+\gamma_\beta}$
+- ${\Gamma(\varphi(t))=\Gamma(\alpha(t))+\Gamma(\beta(t))}$
+
+
+
+**All Pass Filter**
+
+${y(t)=\frac{1+az}{1+\frac{1}{a}z}\varphi(t)=(\frac{1}{a}\frac{1+az}{1+\frac{1}{a}z})a\varphi(t)=a\varphi(t)}$
+
+## Covariance
+
+### General method to compute variance and covariance of a process 
+
 Transform your process in time domain:  
 ${y(t)= a_1y(t-1)+a_2y(t-2)+c_o\eta(t)+c_1\eta(t-1)}$
 
@@ -67,37 +133,12 @@ now multiply all the members with one another and take in mind that:
 
    
 
-  
 
 **Compute the Variance of an AR(1) process ${y(z)=\frac{1}{A(z)}\eta (z)}$**
 
 1. Transform the function in the domain of time
 2. knowing that ${\gamma_{y(t)}(0)=\gamma_{y(t-1)}(0)}$ and that ${y(t)=y(t-1)+\eta(t)}$ then ${\gamma_y(0)=\gamma_y(0)+\gamma_\eta(0)}$ if and only if ${y}$ and ${\eta}$ are independent, we can solve the last equation because usually the variance of ${\eta}$ is known.  
    Another important property of the variance is that ${\gamma(ay(t))=a^2 \gamma(y(t))}$ , given that ${a}$ is a constant.
-
-
-
-
-
-**Variance and Spectra Properties**
-
-If two signals ${\alpha}$ and ${\beta}$ are independent and ${\varphi=\alpha+\gamma}$:
-
-- ${\gamma_\varphi=\gamma_\alpha+\gamma_\beta}$
-- ${\Gamma(\varphi(t))=\Gamma(\alpha(t))+\Gamma(\beta(t))}$
-
-
-
-**All Pass Filter**
-
-${y(t)=\frac{1+az}{1+\frac{1}{a}z}\varphi(t)=(\frac{1}{a}\frac{1+az}{1+\frac{1}{a}z})a\varphi(t)=a\varphi(t)}$
-
-
-
-1. In case the transfer function is fed by a white noise with ${E[\eta(t)]=0}$ we can simplify the expression in: 
-   ${\gamma(y(t))=E[\space (\space y(t)\space)^2\space]}$
-
-
 
 ### Draw the diagram of the prediction error variance as a function of the prediction horizon ${k}$
 
@@ -115,9 +156,27 @@ ${Q_k}$ are all known, so just propagate the variance within the equation:   ${V
 
 To do the diagram just put the ${k}$ in the ${x}$ axis, and ${variance(\varepsilon)}$ in the ${y}$ axis.
 
+
+
+## Spectra
+
+### Compute the Spectrum via definition
+
+$$
+\Gamma(\omega)=\sum_{t=-\tau}^{+\tau}\gamma(t)e^{-j\omega t}
+$$
+
+
+
+
+
+
+
 <div style="page-break-after: always;"></div> 
 
-## Exercise on Minimum Variance Controller
+# Exercise on Minimum Variance Controller
+
+(This is probably just for MIDA2)
 
 **First step: compute the ${k}$-steps predictor**
 
@@ -144,7 +203,7 @@ the input is ${y^0(t)}$, the output is ${y(t)}$.  take the expression of ${y}$ t
 
 <div style="page-break-after: always;"></div> 
 
-## Optimal Estimates of Parameters via PEM
+# Optimal Estimates of Parameters via PEM
 
 ### Tips
 
@@ -289,7 +348,7 @@ $$
 <div style="page-break-after: always;"></div> 
 
 
-## Parameter Estimation knowing Variances
+# Parameter Estimation knowing Variance
 
 **MA**
 
@@ -306,7 +365,7 @@ and use the known formulas for the covariances of MA processes to build a system
 
 
 
-## Optimal Predictors via Long Division
+# Optimal Predictors via Long Division
 
 - take the process equation and put it in canonical form
 
