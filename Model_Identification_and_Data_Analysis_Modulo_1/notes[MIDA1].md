@@ -398,31 +398,3 @@ and use the known formulas for the covariances of MA processes to build a system
 
 <div style="page-break-after: always;"></div> 
 
-## Questions
-
-#### explain what is the purpose of the final prediction error FPE method and how it can be used in practice given a set of data
-
-
-
-#### Explain the Bayes problem and discuss the Bayes formula
-
-
-
-#### In HTE prediction theory for stationary processes in external representation form i.e. input/output models, the canonical representation has a main role, explain what it is meant by canonical representation specifying what is the input signal and what is the output signal of the representation and then highlight its properties. what is the role of this properties in the prediction theory?
-
-
-
-#### Briefly explain the concept of minimum variance control for a given plant described by an ARX model, when can this method be used and when not?
-
-
-
-#### How can we estimate both the state x(t) and the unknown parameter a of the system $\begin{cases}x(t+1)=ax(t)+v_1(t) \\ y(t)=x(t)+v_2(t) \end{cases}$ by means of the extended Kalman filter
-
-
-
-#### A measure problem in model identification is the choice of the model type and the selection of its appropriate complexity. Concisely present the available methods.
-
-
-
-
-
