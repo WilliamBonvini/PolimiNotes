@@ -563,7 +563,6 @@ y(t)=HT^{-1}\tilde{x}(t)+Ku(t)
 \\
 y(t)=HT^{-1}\tilde{x}(t)+Ku(t) 
 \end{cases}
-
 $$
 
 
@@ -958,9 +957,9 @@ replace $u(t-1)=u(t)z^{-1}$ with the MVC you've found in the previous steps and 
 What we do is always imposing the input signals equal to zero.  So usually we'll have something like $y^0(t)=e(t)=0$.  
 Then we can study the system.
 
-***Loop function*** $\to L(z)=$ Multiply together all the blocks
+***Loop function*** $\to L(z)=$ Multiply together all the blocks *inside* the loop.
 
-***Forward Function*** $\to F_{y_1,y_2}(z)=$ Multiply together all the blocks you meet starting from the considered input to reach the considered output.
+***Forward Function*** $\to F_{y_1,y_2}(z)=$ Multiply together all the blocks you meet starting from the considered input to reach the considered output, no loops considered.
 
 $F_{y_1,y_2}(z)$ depends on the I/O signals.
 $$
@@ -1199,7 +1198,7 @@ All the following topics are discussed in the last exercise session (2019 - 05 -
 
 
 
-# With fil, don't know where such things come from
+# Reminders with fil
 
 ## Prove that DRE converges
 

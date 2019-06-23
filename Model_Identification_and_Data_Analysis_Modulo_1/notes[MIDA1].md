@@ -150,7 +150,7 @@ keep in mind that
 $$
 \varepsilon (t|t-k)=Q_k(z)\tilde{e}(t)
 $$
-where ${\tilde{e}(t)}$ is the WN of the process in canonical form.
+where ${\tilde{e}(t)}$ is the $WN$ of the process in canonical form.
 
 ${Q_k}$ are all known, so just propagate the variance within the equation:   ${Var(\varepsilon(t|t-k))=Var(Q_k\tilde{e}(t))}$ 
 
@@ -160,13 +160,19 @@ To do the diagram just put the ${k}$ in the ${x}$ axis, and ${variance(\varepsil
 
 ## Spectra
 
-### Compute the Spectrum via definition
+### Compute the spectrum via definition
 
 $$
 \Gamma(\omega)=\sum_{t=-\tau}^{+\tau}\gamma(t)e^{-j\omega t}
 $$
 
 
+
+### Compute the spectrum via magic formula
+
+$$
+\Gamma(\omega)=|W(e^{jw})|^2var(\eta(t))
+$$
 
 
 
@@ -347,8 +353,9 @@ $$
 
 <div style="page-break-after: always;"></div> 
 
+# Parameter Estimation 
 
-# Parameter Estimation knowing Variance
+## Knowing Variance
 
 **MA**
 
@@ -361,20 +368,24 @@ v(t)=e(t)+a_1e(t-1)+a_2e(t-2)+...a_ne(t-n)
 $$
 and use the known formulas for the covariances of MA processes to build a system of ${n+1}$ equations, then solve it. 
 
+## Knowing Measurements
+
+<img src="images/param1.png" style="zoom:50%">
 
 
 
 
-# Optimal Predictors via Long Division
+
+# Optimal Predictors via Long Division (only $e(t)$ case)
 
 - take the process equation and put it in canonical form
 
 - once you do it you'll have something in the form ${y(t)=\frac{C(z)}{A(z)}e(t)}$
 
-- C(z) on the left, A(z) on the right and do the long division:  
+- $C(z)$ on the left, $A(z)$ on the right. Do the long division:  
   Let's for example compute the optimal 1-step predictor:  
-  Do the long division between C(z) and A(z). 
-  you'll obtain a quotient ${Q_1}$ and a remainder ${R_1}$, and such remainder can be called the  1-step remainder. ${R_1}$ and ${Q_1}$ will be used for the 1-step predictor in the following way:  
+  Do the long division between $C(z)$ and $A(z)$. 
+  you'll obtain a quotient ${Q_1}$ and a remainder ${R_1}$, and such remainder can be called the 1-step remainder. ${R_1}$ and ${Q_1}$ will be used for the 1-step predictor in the following way:  
   $$
   \hat{y}(t|t-1)=\frac{\hat{R_1}}{C(z)}y(t)
   $$
@@ -410,10 +421,6 @@ and use the known formulas for the covariances of MA processes to build a system
 
 
 #### A measure problem in model identification is the choice of the model type and the selection of its appropriate complexity. Concisely present the available methods.
-
-
-
-
 
 
 
