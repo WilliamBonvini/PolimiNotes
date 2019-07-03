@@ -3,12 +3,35 @@
 *A series of not yet structured notes on the course of Database 2 as taught in Politecnico di Milano by Sara Comai during the academic year 2018/2019.*
 
 <div style="page-break-after: always;"></div> 
-
 [TOC]
 
 <div style="page-break-after: always;"></div> 
-
 # Concurrency Control
+
+## Anomalies
+
+**Lost Update** $\to r_1-r_2-w_2-w_1$
+
+**Dirty Read** $\to r_1-w_1-r_2-abort_1-w_2$
+
+**Non-Repeat Read** $\to r_1-r_2-w_2-r_1$
+
+**Phantom Update** $\to r_1-r_2-w_2-r_1$ (last $r_1$ reads an inconsistent value)
+
+**Phantom Insert** $r_1-w_2\text{(new data)}-r_1$
+
+## Core Concepts
+
+- **Goal:**  
+  reject schedules that cause anomalies
+- **Scheduler:**  
+  a component that accepts or rejects the operations requested by the transaction
+- **Serial Schedule:**  
+  a schedule in which the actions of each transaction occur in a contiguous sequence
+- **Serializable Schedule:**  
+  If it produces the same result of a serial schedule of some transactions.
+- **Assumption Commit-Projection:**  
+  Transaction are observed "in the past" and we decide whether the corresponding schedule is correct.
 
 ## Class Hierarchy
 
@@ -16,7 +39,7 @@ $$
 2PL \implies CSR \implies VSR
 $$
 
-
+<div style="page-break-after: always;"></div> 
 
 ## VSR - View Serializability
 
@@ -60,7 +83,6 @@ Select it and delete all its outcoming arcs.
 Repeat the procedure until you have considered all the nodes of the graph.
 
 <div style="page-break-after: always;"></div> 
-
 ## CSR -  Conflict Serializability
 
 ***Conflict***  
@@ -100,17 +122,29 @@ In this way, we not only check for acyclicity, but also identify a serial schedu
 <img src="images/acyclicity.png" style="zoom:50%">
 
 <div style="page-break-after: always;"> </div> 
-
 ## 2PL
 
+| **OBJECT STATES**    | **PRIMITIVES(OPERATIONS)** |
+| -------------------- | -------------------------- |
+| free                 | r-lock                     |
+| r-locked (1 or more) | w-lock                     |
+| w-locked (exclusive) | unlock                     |
 
+**Rule:** a transaction cannot acquire any other lock after releasing a lock
 
 <img src="images\1555332565008.png" style="zoom:50%">
 
 
 
-<div style="page-break-after: always;"></div> 
+**how to actually draw the scheme?**  
+What I've come up so far is to :
 
+1. list in the page all the read and writes in order of execution (just write them in pencil)
+2. under such list create the empty table with transactions as rows. 
+3. for each row copy the corresponding read and write in the correspond position
+4. now complete the table with all the arrows.
+
+<div style="page-break-after: always;"></div> 
 ## 2PL Strict
 
 So far we used the hypothesis of *commit-projection* (no transaction in the schedule aborts).  
@@ -124,18 +158,19 @@ In order to remove such hypothesis we need to add a constraint to 2PL, that defi
 
 in 2PL strict, if, for example,  I unlock the transition $3$, I need to unlock it immediately for all the resources.
 
-<div style="page-break-after: always;"></div> 
+$\to$ in practice it means that in the table with all the read and write I should put all the downward arrows at the end.
 
+<div style="page-break-after: always;"></div> 
 
 
 ## TS
 
-TimeStamp - based concurrency control is caharacterized by the fact that:
+TimeStamp - based concurrency control is characterized by the fact that:
 
 - the scheduler has two counters ***RTM(x)*** and ***WTM(x)*** for each object.
 - the scheduler receives read/write requests tagged with timestamps.  
 
-Let's clearify:
+Let's clarify:
 
 - $read(x,ts)$:
   - if $ts < WTM(x)$ the request is ***rejected*** and the transaction is killed
@@ -152,9 +187,9 @@ In order to work without the commit-projection hypothesis, it needs to "buffer" 
 
 The fastest way consists in considering the transaction resource-wise and do the following.
 
-for each resource we want to have the transactions ordered increasingly. 
+*for each resource we want to have each contiguous $r-w$ and $w-w$  pairs ordered increasingly.* 
 
-Thomas Rule is a improvement to TS which considers legit even resources with transactions ordered decreasingly.
+Thomas Rule is an improvement to TS which considers legit even resources with such pairs ordered decreasingly.
 
 <img src="images/ts1.png" style="zoom:50%">
 
@@ -179,7 +214,6 @@ Each table is stored into exactly one primary physical access structure, and may
 
 
 <div style="page-break-after: always;"></div> 
-
 ## Physical Access Structure Types
 
 <u>Legenda</u> :
@@ -210,7 +244,6 @@ Three types:
     Insertions and Updates could increase the data size, this means that such structures require reordering techniques for the tuples already present. There are some techniques to avoid such reordering problem (i.e. leaving a certain number of slots free at the time of first loading, followed by 'local reordering' operations) 
 
 <div style="page-break-after: always;"></div> 
-
 #### Hash - Based Access Structures
 
 Such structures assure an efficient associative access to data, based on the value of a key field to which the hash is applied.
@@ -221,7 +254,6 @@ A hash algorithm is applied to the key field so as to compute a value between $0
   This is the most efficient structure for queries with equality predicates, but it is rather inefficient for interval queries
 
 <div style="page-break-after: always;"></div>
-
 #### Tree Structures
 
 <img src="images\1550329150350.png" style="zoom:50%">
@@ -239,7 +271,6 @@ Each node corresponds to a block.
 The links between nodes are established by pointers to mass memory.
 
 <div style="page-break-after: always;"></div>
-
 *Search technique* :
 
 <img src="images\1550330012359.png" style="zoom:50%">
@@ -264,7 +295,6 @@ The nodes can be organized in two ways:
   - No chain links for leaf nodes, namely there is no support for intervals
 
 <div style="page-break-after: always;"></div>
-
 ## Costs
 
 - **Sequential Structures**
@@ -395,7 +425,6 @@ Type of joins:
   - $Cost = b_L + b_R$
 
 <div style="page-break-after: always;"></div>
-
 ## Query Planning 
 
 What cost to assign to a plan?
