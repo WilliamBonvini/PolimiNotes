@@ -64,7 +64,7 @@
 ## Observations
 
 - in an ${MA(n)}$ all the covariances ${\gamma(\tau)}$ with ${\tau>n}$ are equal to zero: ${\gamma(tau>n)=0}$ 
-- A process is stationary if its transfer function is stable (poles and zeros ${\le |1|}$) and it's fed by a stationary signal (i.e., a white noise).  
+- A process is stationary if its transfer function is stable (usually it means poles ${\le |1|}$) and it's fed by a stationary signal (i.e., a white noise).  
   NB: if the transfer function is in canonical form, it is surely stable.
 - ${2\eta(t) \ \ \eta\sim WN(0,\lambda^2)\to\tilde{\eta}\sim WN(0,\lambda^22^2)}$
 - In case the transfer function is fed by a white noise with ${E[\eta(t)]=0}$ we can simplify the expression in: 
@@ -387,12 +387,13 @@ and use the known formulas for the covariances of MA processes to build a system
   Do the long division between $C(z)$ and $A(z)$. 
   you'll obtain a quotient ${Q_1}$ and a remainder ${R_1}$, and such remainder can be called the 1-step remainder. ${R_1}$ and ${Q_1}$ will be used for the 1-step predictor in the following way:  
   $$
-  \hat{y}(t|t-1)=\frac{\hat{R_1}}{C(z)}y(t)
+  \hat{y}(t|t-1)=\frac{R_1}{C(z)}y(t)
+  So, if you want to compute the k-step predictor, just compute ${Q_K}$ and ${R_k}$ (which are the results of the ${k}$-th iteration of the long division) and use the generalize formula:
   $$
-  **where ${\hat{R_1}}$ is ${R_1}$ considering only the coefficients of ${z}$.**  
+  
   So, if you want to compute the k-step predictor, just compute ${Q_K}$ and ${R_k}$ (which are the results of the ${k}$-th iteration of the long division) and use the generalize formula:  
   $$
-  \hat{y}(t|t-k)=\frac{\hat{R_k}}{C(z)}y(t)
+  \hat{y}(t|t-k)=\frac{R_k}{C(z)}y(t)
   $$
   take care, if a ${z}$ term is missing, for example ${y(t)=1-z^{-2}}$, the predictor of the missing ${z}$ term is the same of the predictor of the next ${z}$ term's corresponding step. so in this case the 1-step predictor is the same of the 2-steps predictor.
 
