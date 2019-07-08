@@ -40,7 +40,6 @@ $$
 $$
 
 <div style="page-break-after: always;"></div> 
-
 ## VSR - View Serializability
 
 ***Preliminary Definitions***
@@ -162,7 +161,6 @@ $\to$ in practice it means that in the table with all the read and write I shoul
 
 <div style="page-break-after: always;"></div> 
 
-
 ## TS
 
 TimeStamp - based concurrency control is characterized by the fact that:
@@ -193,7 +191,86 @@ Thomas Rule is an improvement to TS which considers legit even resources with su
 
 <img src="images/ts1.png" style="zoom:50%">
 
+<div style="page-break-after :always"> </div>
 
+# XML
+
+## XPATH
+
+### Basics
+
+Path expression are made of ***steps***. The most common steps are:
+
+- *Nodename*
+  - Selects all child nodes of the current node
+- */* 
+  - Selects from the root node
+- *//* 
+  - Selects nodes in the document from the current node that match the selection no matter where they are
+- *.* 
+  - Selects the current node
+- ..
+  - Selects the parent of the current node 
+- *@*
+  - Qualifies attribute names
+
+### Conditions
+
+- ***doc(“books.xml”)/bookstore/book[publisher=‘Macmillan’]/title***
+  - returns the title of the books published by Macmillan
+- ***doc(“books.xml”)/bookstore/book[2]***
+  - returns the second book of the structure
+-  ***doc(“books.xml”)/bookstore/book[2]/*** 
+  - returns all the elements (*=with any tagname) contained into the second book*
+-  ***[generic node]//@lang***
+  - returns all attributes that are named lang
+- ***/bookstore/book[1]*** 
+  - selects the first book
+- ***/bookstore/book[last()]*** 
+  - selects the last book
+- ***/bookstore/book[last()-1]***  
+  - selects the last but one book
+- ***/bookstore/book[position()<3]***
+  - selects the first two books
+- ***//title[@lang]*** 
+  - selects all the title elements that have an attribute named lang
+- ***//title[@lang='eng']*** 
+  - selects all the title elements that have an attribute named lang with a value of 'eng' 
+- ***/bookstore/book[price>35.00]*** 
+  - selects all the book elements of the bookstore element having a price element with a value greater than 35.00
+
+### Wildcards 
+
+XPath wildcards can be used to select unknown XML elements
+
+- ***\**** 
+  - matches any element node
+- ***@\****
+  - matches any attribute node
+- ***node()***
+  - matches any node of any kind
+
+so far example, if I write in a path  *//title[@\*]*, I will select all title elements which have any attribute
+
+## XQuery
+
+### FLWR Expressions
+
+FLWR stands for:
+
+- **F**or
+- **L**et
+- **W**here
+- (Order By)
+- **R**eturn
+
+<img src="images/flwr1.png" style="zoom:50%">
+
+<img src="images/flwr2.png" style="zoom:50%">
+
+
+
+<div style="page-break-after :always"> </div>
 
 # Physical Access Structures Introduction
 
