@@ -1,6 +1,8 @@
 # Notes of Database 2
 
-*A series of not yet structured notes on the course of Database 2 as taught in Politecnico di Milano by Sara Comai during the academic year 2018/2019.*
+*A series of not yet structured notes on the course Database 2 as taught in Politecnico di Milano by Sara Comai during the academic year 2018/2019.*
+
+Edited by: William Bonvini
 
 <div style="page-break-after: always;"></div> 
 [TOC]
@@ -36,8 +38,18 @@
 ## Class Hierarchy
 
 $$
-2PL \implies CSR \implies VSR
+!CSR \implies (\ !2PL \ \and \  !TS\_ MONO)
 $$
+
+$$
+CSR \implies VSR
+$$
+
+$$
+!2PL\implies!2PL\_STRICT
+$$
+
+
 
 <div style="page-break-after: always;"></div> 
 ## VSR - View Serializability
@@ -107,7 +119,7 @@ We need to do the *Conflict Graph*:
 
 A schedule is in ***CSR*** if and only if its conflict graph is acyclic.
 
-<img src="images\1555350358796.png" style="zoom:50%">
+<img src="images\1555350358796.png" style="zoom:20%">
 
 
 
@@ -118,7 +130,7 @@ The same holds for arc adjacent to such nodes.
 
 In this way, we not only check for acyclicity, but also identify a serial schedule that is view-equivalent to the given one (if transactions are considered in the order in which the corresponding nodes are deleted)
 
-<img src="images/acyclicity.png" style="zoom:50%">
+<img src="images/acyclicity.png" style="zoom:30%">
 
 <div style="page-break-after: always;"> </div> 
 ## 2PL
@@ -136,7 +148,7 @@ In this way, we not only check for acyclicity, but also identify a serial schedu
 
 
 **how to actually draw the scheme?**  
-What I've come up so far is to :
+What I've come up with so far is to :
 
 1. list in the page all the read and writes in order of execution (just write them in pencil)
 2. under such list create the empty table with transactions as rows. 
@@ -160,8 +172,7 @@ in 2PL strict, if, for example,  I unlock the transition $3$, I need to unlock i
 $\to$ in practice it means that in the table with all the read and write I should put all the downward arrows at the end.
 
 <div style="page-break-after: always;"></div> 
-
-## TS
+## TS - Mono
 
 TimeStamp - based concurrency control is characterized by the fact that:
 
@@ -185,14 +196,35 @@ In order to work without the commit-projection hypothesis, it needs to "buffer" 
 
 The fastest way consists in considering the transaction resource-wise and do the following.
 
-*for each resource we want to have each contiguous $r-w$ and $w-w$  pairs ordered increasingly.* 
+*for each resource we want to have each*  
+
+- $r-w$
+- $w-r$
+- $w-w$  
+
+*pairs ordered increasingly.* 
 
 Thomas Rule is an improvement to TS which considers legit even resources with such pairs ordered decreasingly.
 
 <img src="images/ts1.png" style="zoom:50%">
 
-<div style="page-break-after :always"> </div>
+## TS - Multi
 
+- $read(x,ts)$:    
+  reads are **always accepted**. a copy $x_k$ is selected for reading such that:
+  - if $ts > WTM_N(x)$ then $k=N$
+  - else take $k$ such that $WTM_k(x)<ts<WTM_{k+1}(x)$
+- $write(x,ts)$: 
+  - if $ts<RTM(x)$ the request is ***rejected*** and the transaction is killed
+  - else, a new version is created ($N$ is incremented) with $WTM_N(x)=ts$ 
+
+***How to check TS - Multi in practice?***
+
+The fastest way consists in considering the transaction resource-wise and do the following.
+
+if in a row you have $r_a $ ... $w_b$ and $a>b$ then the schedule **is not** in TS-Multi.
+
+<div style="page-break-after :always"> </div>
 # XML
 
 ## XPATH
@@ -264,14 +296,13 @@ FLWR stands for:
 - (Order By)
 - **R**eturn
 
-<img src="images/flwr1.png" style="zoom:50%">
+<img src="images/flwr1.png" style="zoom:30%">
 
-<img src="images/flwr2.png" style="zoom:50%">
+<img src="images/flwr2.png" style="zoom:30%">
 
 
 
 <div style="page-break-after :always"> </div>
-
 # Physical Access Structures Introduction
 
 Each table is stored into exactly one primary physical access structure, and may have one or many optional secondary access structures.
@@ -283,7 +314,7 @@ Each table is stored into exactly one primary physical access structure, and may
   - Contains all the tuples of a table
   - Its main purpose is to store the table content
 - *<u>Secondary Structures</u>*
-  - Used to index primary structures, and only contain the values of some fields, interleaved with pointers to the blocks of the primary structure
+  - Used to index primary structures, and only contains the values of some fields, interleaved with pointers to the blocks of the primary structure
   - Their main purpose is to speed up the search for specific tuples within the table, according to some search criterion 
 
 <img src="images\1550333788254.png" style="zoom:50%">
@@ -313,14 +344,15 @@ Three types:
       1. Searching specific data units
       2. Updates that increase the size of tuple, in fact all following tuples must be shifted on.
 - *<u>Array</u>*
-  - In an array organization, the tuples (all of the same size) are arranged as in an array, and their position depend on the values of an index (or indexes)
+  - In an array organization, the tuples (all of the same size) are arranged as in an array, and their position depends on the values of an index (or indexes)
   - Appropriate only when the tuples are of fixed length
 - *<u>Sequentially - Ordered</u>*
   - In a Sequentially - Ordered organization, the tuples are ordered according o the value of a key (typically one field, but may be obtained by combining more than one attribute)
   - Main problem: 
     Insertions and Updates could increase the data size, this means that such structures require reordering techniques for the tuples already present. There are some techniques to avoid such reordering problem (i.e. leaving a certain number of slots free at the time of first loading, followed by 'local reordering' operations) 
 
-<div style="page-break-after: always;"></div> 
+
+
 #### Hash - Based Access Structures
 
 Such structures assure an efficient associative access to data, based on the value of a key field to which the hash is applied.
@@ -355,9 +387,9 @@ The links between nodes are established by pointers to mass memory.
 
 Suppose we are looking for a tuple with key value V, so at each intermediate node we do the following:
 
-- If V < K_1 follow P_0
-- if V >= K_F follow P_F
-- Otherwise, follow P_J such that K_J <= V <K_j+1
+- If $V < K_1$ follow $P_0$
+- if $V \ge K_F$ follow $P_F$
+- Otherwise, follow $P_J$ such that $K_J \le V <K_j+1$
 
 The nodes can be organized in two ways:
 
@@ -368,7 +400,7 @@ The nodes can be organized in two ways:
   - The most used by relational DBMSs
 - *<u>B trees</u>*
   - Pointers to the tuples can also be contained in intermediate nodes.
-    In this way, for tuples with V = K_i , we don't kneed to descend the tree down to the leaves.
+    In this way, for tuples with $V = K_i$ , we don't kneed to descend the tree down to the leaves.
   - No chain links for leaf nodes, namely there is no support for intervals
 
 <div style="page-break-after: always;"></div>
@@ -393,8 +425,8 @@ The nodes can be organized in two ways:
 
     *<u>If it is a primary hash:</u>*
 
-    A lookup for A_i = v  needs to find the block(s) storing the tuples with the same hash for A_i as those with v.
-    The Hash function is applied to v, the right bucket is therefore immediately identified.
+    A lookup for $A_i = v$  needs to find the block(s) storing the tuples with the same hash for $A_i$ as those with $v$.
+    The hash function is applied to $v$, the right bucket is therefore immediately identified.
     The bucket contains the searched tuples
 
     - $Cost = 1$
@@ -406,7 +438,7 @@ The nodes can be organized in two ways:
     The lookup for $A_i = v$ works exactly in the same way, only the aim is to find the block(s) storing the pointers to the tuples with the same hash for $A_i$ as those with $v$.
     The Hash function is applied to $v$, the right bucket is identified, and the corresponding block(s) are retrieved.
 
-    - $Cost =   \\ 1 (comment: \ for  \ the  \ initial  \ bucket  \ block) + \\  (average  \ overflow  \ blocks) \\ (comment: \ if  \  any)  +  \\ (1 \  block  \ per  \ pointer \ to  \ be  \ followed)$   
+    - $Cost =   \\ 1 (comment: \ for  \ the  \ initial  \ bucket  \ block) + \\  (average  \ overflow  \ blocks)  (comment: \ if  \  any)  +  \\ (1 \  block  \ per  \ pointer \ to  \ be  \ followed)$   
     
   - Cost of Interval Lookups:   
     lookups based on intervals are not supported
@@ -415,19 +447,19 @@ The nodes can be organized in two ways:
 
   - Cost of equality Lookups :  
     *<u>If it is a primary B+</u>*  
-    A lookup for A_i = v needs to find the block(s) storing all tuples indexed by the key value v.
-    the root is read first, then, a node per intermediate level is read, until the first leaf node that stores tuples with A_i = v is reached.
+    A lookup for $A_i = v$ needs to find the block(s) storing all tuples indexed by the key value $v$.
+    the root is read first, then, a node per intermediate level is read, until the first leaf node that stores tuples with $A_i = v$ is reached.
     If the searched tuples are all stored in that leaf block, stop.
-    Else, continue in the leaf blocks chain until v changes to v'
+    Else, continue in the leaf blocks chain until $v$ changes to $v'$
 
     - $Cost =  \\ (1 \  block  \ per  \ intermediate  \ level) +  \\
                   (as \  many  \ leaf  \ blocks  \ as  \ necessary  \ to  \ store  \ all \ the  \ tuples  \ with \  A_i = v)$
 
     *<u>If it is a secondary B+</u>*  
     The lookup for $A_i = v$ needs to find the block(s) storing all the pointers that point to all tuples with the key value $v$ for $A_i$.
-    The root is read first, then a node per intermediate level is read, until the first leaf node that sores pointers A_i = v is reached.
+    The root is read first, then a node per intermediate level is read, until the first leaf node that sores pointers $A_i = v$ is reached.
     If the pointers are all stored in that leaf block, stop.
-    Else, continue in the leaf blocks chain until v changes to $v'$.
+    Else, continue in the leaf blocks chain until $v$ changes to $v'$.
 
     - $Cost =  \\ (1 \  block  \ per  \ intermediate  \ level) +  \\ 
                   (as \  many  \ leaf  \ blocks  \ as  \ necess. \  to  \ store  \ the  \ pointers  \ pointing  \ to  \ the  \ tuples  \ with  \  A_i = v) +  \\
@@ -440,7 +472,7 @@ The nodes can be organized in two ways:
     If $(A_i < v)$ or $(v < A_i)$ we just assume that the other edge of the interval is the first/last value in the structure.
     The root is read first, then a node per intermediate level is read, until the first leaf node that stores tuples with $A_i = v_1$ is reached.
     if the searched tuples are all stored in that leaf block stop.
-    Else continue in the leaf blocks chain until v_2 is reached.
+    Else continue in the leaf blocks chain until $v_2$ is reached.
 
     - $Cost  =  \\ (1 \  block  \ per  \ intermediate  \ level) + \\
                   (as  \ many  \ leaf \  blocks  \ as  \ necess.  \ to  \ store  \ all  \ the  \ tuples  \ in  \ the  \ interval)$
@@ -475,7 +507,7 @@ Type of joins:
 
 - *<u>Nested - Loop Join Cost (Assuming not enough free pages to host an entire table in the buffer)</u>*
 
-  compares the tuples of a block of table T_E with all the tuples of all the blocks of T_I before moving to the next block T_E.
+  compares the tuples of a block of table $T_E$ with all the tuples of all the blocks of $T_I$ before moving to the next block $T_E$.
 
   - $Cost = b_E * b_I$
 

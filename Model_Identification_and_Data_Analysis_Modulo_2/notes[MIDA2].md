@@ -41,7 +41,6 @@
   
 
 <div style="page-break-after: always;"></div> 
-
 # Session 1 & 2
 
 ## Write the system of difference equations
@@ -106,7 +105,6 @@ $$
 4. Compute $W(z)=H(zI-F)^{-1}+D$
 
 <div style="page-break-after: always;"></div> 
-
 ## Compute the first 4 impulse response elements
 
 What is impulse response?
@@ -170,7 +168,6 @@ $$
 
 
 <div style="page-break-after: always;"></div> 
-
 ### Second Method - Matrix Multiplication Formula
 
 The following formula is always the definition of impulse, but it's expressed in a way that is valid only for strictly proper systems.
@@ -211,7 +208,6 @@ from $HFG$ on we can exploit the previous computation (for example, in order to 
 
 
 <div style="page-break-after: always;"></div> 
-
 ### Third Method - Long Division
 
 The output is represented like this:
@@ -262,7 +258,6 @@ $$
 
 
 <div style="page-break-after: always;"></div> 
-
 ## Check the system observability and reachability 
 
 ### Observability
@@ -314,7 +309,7 @@ The pair $(A,B)$ is
 - ***Stabilizable*** if and only if $rank([\lambda I - A  \ \ \ \ \ \  B])=n \ \ \ \forall\lambda \in \Lambda(A) \and \lambda \in \C^+ $
 - ***Controllable*** if and only if $rank([\lambda I - A  \ \ \ \ \ \  B])=n \ \ \ \forall\lambda \in \Lambda(A) \and \lambda \in \C$
 
-
+<div style="page-break-after: always;"></div> 
 
 ## Compute the Hankel Matrix of order $n$
 
@@ -327,7 +322,7 @@ w(1) & w(2) & w(3) & \dots &w(n-1) & w(n)
 \\
 w(2) & w(3) & w(4) & \dots &w(n) & w(n+1)
 \\
-w(3) & w(4) & w(5) & \dots &w(n-2) & w(n-1)
+w(3) & w(4) & w(5) & \dots &w(n+1) & w(n+2)
 \\
 \vdots
 \\
@@ -344,11 +339,11 @@ $$
 
 
 
-## Given the input response compute the  transfer function
+## Given the impulse response compute the  transfer function
 
 Let's explain it with an example:
 
-Input Response:
+Impulse Response:
 $$
 w(t)=
 \begin{cases} 
@@ -357,7 +352,7 @@ w(t)=
 (-2)^{2-t} & t>1
 \end{cases}
 $$
-May be helpful to draw the input response from some instants $t$.
+May be helpful to draw the impulse response from some instants $t$.
 
 The one thing we need to remember is that
 $$
@@ -376,12 +371,13 @@ The blue colored part of the equation is our transfer function $W$.
 
 
 <div style="page-break-after: always;"></div> 
+## Write the state space representation in Control Form
 
-## Write the state space representation 
+It consists in writing down the matrices $F,G,H,D$.
 
-### Control Form
+### Starting from the Transfer Function
 
-The state space system in control form is given by 
+You'll be provided with a transfer function, make sure it is in this form, otherwise make it happen. 
 $$
 W(z)=\frac{b_0z^{n-1}+b_1z^{n-2}+\dots + b_{n-1}}{z^n+a_1z^{n-1}+\dots+a_n}
 $$
@@ -438,10 +434,11 @@ W(z)=H(zI-F)^{-1}+D
 $$
 
 <div style="page-break-after: always;"></div> 
-
 ### 4SID method
 
-1. ***Identify the system order***  
+Starting from the impulse responses.
+
+1. ***Identify the system's order***  
    Start by considering $i=1$, compute the rank, and increase $i$. Compute the new rank. as soon as the rank stops increasing you have found the order of the system.   
    Schematized below. 
 
@@ -477,8 +474,7 @@ $$
 We get new system matrices wrt the original ones $\to$ we have found an equivalent state space representation.
 
 <div style="page-break-after: always;"></div> 
-
-### $\hat{D} \neq 0$ case
+###  $\hat{D} \neq 0$ case
 
 If $w(0) \neq 0$ (in this case we are told that $w(0)=1$) the system is not strictly proper and $\hat{D} \neq 0$.
 
@@ -498,7 +494,7 @@ $u(t)=\begin{cases} 1 & t=0 \\ 0 & t \neq 0\end{cases}$
 
 We infer that:
 
-$t=0$           $y(0)=Hx(0)+Du(0)=D$    
+$y(0)=Hx(0)+Du(0)=D$    
 
 $D$ is the first sample of the impulse response!
 $$
@@ -506,8 +502,7 @@ $$
 $$
 
 <div style="page-break-after: always;"></div> 
-
-## Apply the change of variable $\tilde{x}=Tx$ with $T=\begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}$ to the difference equations
+## Apply the change of variable  $\tilde{x}=Tx$ with  $T=\begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}$ to the difference equations
 
 The difference equations are
 $$
@@ -583,9 +578,6 @@ Once we have such formulas we just need to compute the new matrices and get the 
 
 
 <div style="page-break-after: always;"></div> 
-
-
-
 # Session 3  & 4- Kalman Filter
 
 ## Compute the 1-step Kalman predictor
@@ -646,7 +638,6 @@ $$
 
 
 <div style="page-break-after: always;"></div> 
-
 ## Compute the steady state 1-step Kalman predictor
 
 ***Asymptotic Kalman Predictor***
@@ -662,7 +653,7 @@ $K(t)=f(P(t))$      $K(t) \to \bar{K} \ \ \ if \ \ \  P(t) \to \bar{P}$
 
 $P(t+1)=P(t)=\bar{P}$
 
-$\bar{P}=F\bar{P}F^T+V_1-(F\bar{P}H^T+V_{12})(H\bar{P}H^T+V_2)^{-1}(F\bar{P}H^T+V_{12})^{-1}$
+$\bar{P}=F\bar{P}F^T+V_1-(F\bar{P}H^T+V_{12})(H\bar{P}H^T+V_2)^{-1}(F\bar{P}H^T+V_{12})^T$
 
 $\bar{K}=(F\bar{P}H^T+V_{12})(H\bar{P}H^T+V_2)^{-1}$
 
@@ -678,7 +669,7 @@ There are two methods:
 
 ### Method 1 - Graphical Method
 
-1. ***Compute the DRE in order to find $\bar{P}$ ($\bar{P}$ is called ARE)***    
+1. ***Compute the ARE, $\bar{P}$***    
    Just replace $P(t)$ and $P(t+1)$ with $\bar{P}$ and isolate $\bar{P}$.  
    You'll probably end up with a positive and a negative solution.   
    Choose the positive one.  
@@ -697,7 +688,7 @@ There are two methods:
    Now we want to compute $P(3)$ in function of $P(2)$, so how to do it?  
    First of all let's draw the $y=x$ line.  
    The first thing we did was computing $P(2)$ in function of $P(1)$, so now we see where $P(2)$ is on the $y$ axis. Well, we want it on the $x$ axis now, because we want to treat it as the input for computing $P(3)$.  
-   Draw an horizontal line from $(P(t)=O(1),P(t+1)=P(2))$ until you reach the $y=x$ line. Then go straight down until you intersect the $x$ axis. Now you found the point where $P(2)$ resides in the $x$ axis.  
+   Draw an horizontal line from $(P(t)=P(1),P(t+1)=P(2))$ until you reach the $y=x$ line. Then go straight down until you intersect the $x$ axis. Now you found the point where $P(2)$ resides in the $x$ axis.  
    Repeat the procedure until convergence $(P(t)=P(t+1))$.  
    Not always convergence is reached.
 
@@ -729,7 +720,6 @@ There are two methods:
 
 
 <div style="page-break-after: always;"></div> 
-
 ### Method 2 - Asymptotic Theorems
 
 ***Theorem 1***
@@ -777,21 +767,31 @@ $$
 \end{cases}
 $$
 
+<div style="page-break-after: always;"></div> 
+
+### Method 3 - PBH Test
+
 NB: It could be that looking at the whole system neither THM1 nor THM2 can be applied.  
 But maybe the system is composed of two autonomous subsystems and we can try to analyze one subsystem at a time. If both systems are stable we can say that the whole system is stable $\to$  the asymptotic state prediction error is bounded.
 
-If one subsystem is stable and the other one is not, we can prove convergence if the unstable system is ***stabilizable*** and ***detectable***.   
-Detectable means that
+If one subsystem is stable and the other one is not, we can prove convergence to $\bar{P}$ if the unstable system is ***stabilizable*** and ***detectable***. 
+
+***Stabilizable*** means that
+$$
+\begin{bmatrix}\lambda^*I-F && G\end{bmatrix} \text{has rank n} \to (F,G) \text{ is stabilizable}
+$$
+
+***Detectable*** means that
 $$
 \begin{bmatrix}
 H\\
 \lambda ^* I-F
-\end{bmatrix} has \  rank=n
+\end{bmatrix} \text{has  rank=n} \to \text{ (F,H) is  detectable }
 $$
 
+Moreover we can say that the *steady Kalman predictor is stable* $\to$ in view of the general convergence theorem $F-\bar{K}H$ is stable, where $\bar{K}$ is the asymptotic Kalman predictor.
 
 <div style="page-break-after: always;"></div> 
-
 ## Find the steady state 3-step predictor
 
 K-Step Predictor:
@@ -839,7 +839,6 @@ P(t+1)=FP(t)F^T+V_1-(FP(t)H^T)(HP(t)H^T+V_2)^{-1}(FP(t)H^T)^T
 $$
 
 <div style="page-break-after: always;"></div> 
-
 ## Compute the variance of the state estimation using the filter, at steady state
 
 $$
@@ -861,7 +860,6 @@ Example:
 
 
 <div style="page-break-after: always;"></div> 
-
 # Session 5 - Minimum Variance Control
 
 ## Check the assumption for the design of the Minimum Variance Controller
@@ -890,7 +888,6 @@ Done via the long division. Already explained it in MIDA Modulo 1.
 Go check it out at [PolimiNotes](https://github.com/WilliamBonvini/PolimiNotes/tree/master/Model_Identification_and_Data_Analysis_Modulo_1).
 
 <div style="page-break-after: always;"></div> 
-
 ## Compute the MVC
 
 ***Minimum Variance Control***
@@ -901,7 +898,7 @@ General control objective: find $u(t)$ such that $y(t) \cong y^0(t)$.
 
  ***Minimum Variance Control flow***:
 $$
-u(t)0\arg \min_{u(t)} \bigg\{E\bigg[\big(y(t)-y^0(t)\big)^2\bigg]\bigg\}=\arg\min_{u(t)}\bigg\{E\bigg[\big(\hat{y}(t|t-k)-y^0(t)\big)^2\bigg]\bigg\}
+u(t)=\arg \min_{u(t)} \bigg\{E\bigg[\big(y(t)-y^0(t)\big)^2\bigg]\bigg\}=\arg\min_{u(t)}\bigg\{E\bigg[\big(\hat{y}(t|t-k)-y^0(t)\big)^2\bigg]\bigg\}
 $$
 The solution can be found imposing $\hat{y}(t|t-k)=y^0(t)$
 $$
@@ -929,7 +926,6 @@ $$
 <img src="images/blockscheme.png" style="zoom:40%">
 
 <div style="page-break-after: always;"></div> 
-
 ## Find the transfer function from $y^0(t)$ to $y(t)$ and from $e(t)$ to $y(t)$
 
 ### Method 1 - Signal replace
@@ -945,13 +941,11 @@ replace $u(t-1)=u(t)z^{-1}$ with the MVC you've found in the previous steps and 
 <img src="images/blockscheme2.png" style="zoom:40%">
 
 <div style="page-break-after: always;"></div> 
-
 ## Compute the transfer functions from $y^0$ to $u$ and from $\eta$ to $u$
 
 <img src="images/tryunu.PNG" style="zoom:50%">
 
 <div style="page-break-after: always;"></div> 
-
 ## Check the closed loop asymptotic stability
 
 What we do is always imposing the input signals equal to zero.  So usually we'll have something like $y^0(t)=e(t)=0$.  
@@ -999,7 +993,6 @@ $$
 
 
 <div style="page-break-after: always;"></div> 
-
 # Session 6 & 7
 
 ## Generalized Minimum Variance Controller
@@ -1022,7 +1015,6 @@ $$
 <img src="images/ses63.PNG" style="zoom:50%">
 
 <div style="page-break-after: always;"></div> 
-
 ## Constant Signal case
 
 In this exercise section we encountered a signal $\xi(t)=1$ in the following expression of $y(t)$:
@@ -1037,7 +1029,6 @@ $$
 We can now use this expression to compute for example $E\big[(y(t))^2\big]$.
 
 <div style="page-break-after: always;"></div> 
-
 ## Recursive Identification
 
 Outline:
@@ -1089,7 +1080,6 @@ $$
 $$
 
 <div style="page-break-after: always;"></div> 
-
 #### Least Square
 
 ***PEM*** = Prediction Error Method
@@ -1131,7 +1121,6 @@ When you get new measurements you don't use the previous identification, you hav
 Solution? Recursive Least Square!
 
 <div style="page-break-after: always;"></div> 
-
 #### Recursive Least Square
 
 RLS is a method that updates the identification 
@@ -1152,8 +1141,8 @@ Advantages:
 <img src="images/rls4.png" style="zoom:50%">
 
 <div style="page-break-after: always;"></div> 
-
 All the following topics are discussed in the last exercise session (2019 - 05 - 30). 
+I won't write them in the document just because I've already took notes in my notebook, sorry guys.
 
 ***II Form***
 
@@ -1168,7 +1157,6 @@ All the following topics are discussed in the last exercise session (2019 - 05 -
 ...
 
 <div style="page-break-after: always;"></div> 
-
 ### ARMAX Identification
 
 #### Maximum Likelihood
@@ -1182,9 +1170,6 @@ All the following topics are discussed in the last exercise session (2019 - 05 -
 
 
 <div style="page-break-after: always;"></div> 
-
-
-
 # Doubts
 
 - <img src="images/doubt1.png" style="zoom:50%">  
@@ -1196,7 +1181,7 @@ All the following topics are discussed in the last exercise session (2019 - 05 -
 
 
 
-
+<div style="page-break-after: always;"></div> 
 
 # Reminders with fil
 
@@ -1211,8 +1196,5 @@ apply one of the Asymptotic Theorems
 $$
 \hat{x}(t+1|t)=F\hat{x}(t|t-1)+\bar{K}\bigg(y(t)-H\hat{x}(t|t-1)\bigg)
 $$
-
-
-
 
 

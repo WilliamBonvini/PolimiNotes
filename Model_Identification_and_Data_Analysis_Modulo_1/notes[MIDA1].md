@@ -5,7 +5,6 @@
 [TOC]
 
 <div style="page-break-after: always;"></div> 
-
 # Side Notes
 
 ## Childhood Memories
@@ -70,6 +69,8 @@
 - In case the transfer function is fed by a white noise with ${E[\eta(t)]=0}$ we can simplify the expression in: 
   ${\gamma(y(t))=E[\space (\space y(t)\space)^2\space]}$
 
+<div style="page-break-after: always;"></div> 
+
 ## Doubts
 
 - is ${c_0}$ in MA processes always equal to 1?
@@ -87,7 +88,6 @@ A stochastic process is in canonical form if its transfer function has the follo
 - zeros and poles are inside the unitary circle $(|z|\le1$ and $|p|\le1)$ 
 
 <div style="page-break-after: always;"></div> 
-
 # Exercises on Covariance & Spectra
 
 **Variance and Spectra Properties**
@@ -179,7 +179,6 @@ $$
 
 
 <div style="page-break-after: always;"></div> 
-
 # Exercise on Minimum Variance Controller
 
 (This is probably just for MIDA2)
@@ -208,7 +207,6 @@ the input is ${y^0(t)}$, the output is ${y(t)}$.  take the expression of ${y}$ t
 
 
 <div style="page-break-after: always;"></div> 
-
 # Optimal Estimates of Parameters via PEM
 
 ### Tips
@@ -297,7 +295,6 @@ $$
 We repeat the process to find ${a_2}$ using the model ​ ${M_2}$
 
 <div style="page-break-after: always;"></div> 
-
 ### For ${AR}$ Processes  
 
 **Knowing that ${\gamma_v(0)=10,\gamma_v(\pm 1)=0,\gamma_v(\pm2)=0,\gamma_v(\pm3)=3,\gamma_v(\tau)=0 \ \forall\tau:|\tau|\ge4  }$.  
@@ -352,7 +349,6 @@ $$
 
 
 <div style="page-break-after: always;"></div> 
-
 # Parameter Estimation 
 
 ## Knowing Variance
@@ -374,7 +370,7 @@ and use the known formulas for the covariances of MA processes to build a system
 
 
 
-
+<div style="page-break-after: always;"></div> 
 
 # Optimal Predictors via Long Division (only $e(t)$ case)
 
@@ -387,8 +383,7 @@ and use the known formulas for the covariances of MA processes to build a system
   Do the long division between $C(z)$ and $A(z)$. 
   you'll obtain a quotient ${Q_1}$ and a remainder ${R_1}$, and such remainder can be called the 1-step remainder. ${R_1}$ and ${Q_1}$ will be used for the 1-step predictor in the following way:  
   $$
-  \hat{y}(t|t-1)=\frac{R_1}{C(z)}y(t)
-  So, if you want to compute the k-step predictor, just compute ${Q_K}$ and ${R_k}$ (which are the results of the ${k}$-th iteration of the long division) and use the generalize formula:
+  \hat{y}(t|t-1)=\frac{R_1}{C(z)}y(t)
   $$
   
   So, if you want to compute the k-step predictor, just compute ${Q_K}$ and ${R_k}$ (which are the results of the ${k}$-th iteration of the long division) and use the generalize formula:  
@@ -398,4 +393,3 @@ and use the known formulas for the covariances of MA processes to build a system
   take care, if a ${z}$ term is missing, for example ${y(t)=1-z^{-2}}$, the predictor of the missing ${z}$ term is the same of the predictor of the next ${z}$ term's corresponding step. so in this case the 1-step predictor is the same of the 2-steps predictor.
 
 <div style="page-break-after: always;"></div> 
-
