@@ -729,7 +729,7 @@ then
 
 ==this means that all the auctions that e have seen satisfy the preconditions, so all of them are equivalent from the point of view of the auctioneer.==
 
-***thinks to thing about for next lecture***
+***things to think about for next lecture***
 
 - take the English auction, try to verify that the good is always allocated to the agent with the largest $v_i$.
 - try to think what is the amount of info that agents participating in auction are disclosing to the others in the different auctions we have seen.
