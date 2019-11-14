@@ -556,7 +556,7 @@ Probabilistic voting rules will output something like: the winner is $a$ with 70
 
 # Auctions - 25/10
 
-Auctions ("aste" in italian) are very used in the real world, for example: 
+Auctions ("aste" in italian) are very useful in the real world, for example: 
 
 - in the stock market
 - public concourse
@@ -738,6 +738,8 @@ this will show me why sealed bit auctions are very popular in real world scenari
 
 # Multiple Items Auctions - 29/10
 
+### Introduction
+
 In this scenario we have that multiple items are auctioned at the same time.
 
 Multiple good/item auctions are combinatorial auctions, they are called this way because we use a combinational approach to solve them.
@@ -782,10 +784,106 @@ The evaluation function can express some sort of complementarity when the value 
 If it holds for every subset it means that agent $i$ thinks that having goods together is better than having it alone.   
 That means that the two objects are complementary. (Right and left shoes for example).
 $$
-T,S \subseteq G \ \ \ \ T\
+T,S \subseteq G; \ \ \ \ T \cap S=\{\}; \ \ \ \ v_i(T\cup S)> v_i(T)+v_i(S)
 $$
 
-EXCETERA, TO BE COMPLETED
+
+
+***Substitutability***
+
+The value that agent $i$ gives to two objects together is less than the value of the sum (two tickets of the same play in different days).
+
+If you are the seller the best thing to do in the substitutability case is to sell one item at the time (same cases of the previous lesson)
+
+### Winner Determination Problem
+
+***Integer Linear Optimization Problem***
+
+Let's make an example showing that complementarity can be a problem.  
+You are the auctioneer and you receive this offer:
+$$
+N=\{1,2,...,n\}=\text{set of buyers}
+$$
+
+$$
+G=\{1,2,3,4,5\}= \text{set of items}
+$$
+
+| $S$ = Item | $\bar{v}(S)$ = Best offer for such item/items |
+| ---------- | --------------------------------------------- |
+| 1          | 5                                             |
+| 2          | 4                                             |
+| 5          | 1                                             |
+| 1,2        | 6                                             |
+| 1,3,5      | 7                                             |
+| 1,4        | 5                                             |
+| 2,5        | 10                                            |
+| 3,5        | 2                                             |
+
+Some items (or subsets of items) have not received any offer.
+
+Let's introduce some notation:
+
+Considering $S\in G,i\in N$:  
+The subset of items $S$ goes to agent $i$ if $x_{S,i}=1$. Otherwise $x_{S,i}=0$.
+
+$X$ is a vector called allocation, and corresponds to the distribution of $X_{S,i}$.  
+We have to solve the following integer linear optimization problem:
+$$
+\max \sum_{i \in N}\sum_{S \in G} \hat{v}_i(S)x_{S,i}
+$$
+$x_{S,i} \in \{0,1\} \ \ \ \  \forall S \subseteq G \ \ \ \ \forall i \in N$
+
+*Constraint $1$*: I can sell every item at most to one buyer
+$$
+\sum_{S|j \in S}\sum_{i \in N}x_{S,i}\le 1 \ \ \ \ \forall j \in G
+$$
+*Constraint* $2$: To each buyer is associated one and only one subsets of bought items (could be the empty set as well).  
+$$
+\sum_{S \in G}x_{S,i}=1 \ \ \ \ \forall i \in N
+$$
+ As already said this is an *Integer* linear problem. being so, it is more difficult to solve with respect to typical linear optimization problems.  
+It is proved to be $	\text{NP-Hard}$, so it can be solve optimally only for small instances.  
+The idea is to find a good solution for the auctioneer, in general.
+
+***Algorithm***
+
+*Step 1*
+
+Let's add to the table all the bids we have not received for $S$ of cardinality $1$ (single item).
+
+| S = Item | $\bar{v}(S)$ = Best offer for such item/items |
+| -------- | --------------------------------------------- |
+| 1        | 5                                             |
+| 2        | 4                                             |
+| 5        | 1                                             |
+| 1,2      | 6                                             |
+| 1,3,5    | 7                                             |
+| 1,4      | 5                                             |
+| 2,5      | 10                                            |
+| 3,5      | 2                                             |
+| ==3==    | ==0==                                         |
+| ==4==    | ==0==                                         |
+
+*Step 2: Tree Building*
+
+Root = Empty set.  
+I will add a child for every bid I have received that
+
+1. contains the smallest items (item $1$ is considered smaller than item $2$, etc) not yet on the path
+2. does not contain any item already in the path
+
+$\gamma=\text{cost of a specific path}$
+
+Stop as soon as you have considered all the items in $G$.
+
+Leaves are all the possible allocations of good (disjoint and containing all the items).
+
+<img src="img/29111.png" style="zoom:50%">
+
+We notice that...to be continued, I'll finish it soon.
+
+ 
 
 # Lecture 8/11
 
