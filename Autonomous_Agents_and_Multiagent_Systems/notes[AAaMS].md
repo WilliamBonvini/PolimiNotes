@@ -1967,7 +1967,7 @@ To be completed.
 
 
 
-# Multiagent Learning
+# Multiagent Learning - 6/12
 
 ### Introduction
 
@@ -2074,4 +2074,16 @@ When the environment is deterministic it is really easy to compute function $v^i
 
 
 
+
+# DPOP - CSP - 10/12
+
+ Not written yet. On OneNote.
+
+# Multiagent Learning pt2 - 17/12
+
+ Not written yet. On OneNote.
+
+# Multiagent Learning - Evolutionary Game Theory
+
+The teacher just read from the slides, so read those.
 
