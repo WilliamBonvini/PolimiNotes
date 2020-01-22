@@ -69,23 +69,23 @@ We assume that the 2 agents are perfectly rational: they prefer outcomes accordi
 
 We assume that the set of outcomes is partitioned in:
 
-- $A:$ set of possible ***agreements*** (all the legal prices for example). 
+- $A:$ set of possible ***agreements*** (all the legal prices for example). (hum, I think that the disagreement is in )
 - $D:$ the ***disagreement***, it is a single element. It is like a special outcome that says that no agreement was found (a special price that says that no agreement was found).
 
 $$
 \Theta =A \cup D
 $$
 
-- $S= $ ***Bargaining Set***$:$ set of utilities $S=\{(U^a(z),U^b(z))|z \in A\}$ 
+- $S= $ ***Bargaining Set***$:$ set of pairs of utilities $S=\{(U^a(z),U^b(z))|z \in A\}$ 
 
-- $d:$ set of utilities of the agents when the disagreement will happen.  
+- $d:$ set of pairs of utilities of the agents when the disagreement will happen.  
   $$
   d=(d^a,d^b)=(U^a(D),U^b(D))
   $$
 
 ***Bargaining Problem***
 
-A Bargaining problem is define as the pair $(S,d)$.
+A Bargaining problem is defined as the pair $(S,d)$.
 
 the solution to such problem is defined as the result of a function $f$ defined as follows:
 
@@ -128,7 +128,9 @@ First we need to introduce Pareto Efficiency, then I'll list all the properties.
 
 ***Pareto Efficiency***
 
-if you are maximizing a single objective function $5$ and $7$, you choose $7$.  
+*Pareto efficiency or Pareto optimality is a state of allocation of resources from which it is impossible to reallocate so as to make any one individual or preference criterion better off without making at least one individual or preference criterion worse off*.
+
+if you are maximizing a single objective function, among the outputs $5$ and $7$ you choose $7$.  
 Now assume you are maximizing $2$ objective functions:
 
 $(5,7),(8,9),(6,4)$ if we have to compare the first and the third, which one is best?  
@@ -146,7 +148,7 @@ Moreover, we notice 2 possibilities:
 
 
 
-The bargaining solutions is such that:
+The bargaining solution is such that:
 $$
 f(S,d):\nexists(y^a,y^b)\in S| (y^a,y^b)\ge(x^a,x^b) \text{ and }y^i>x^i
 $$
@@ -168,8 +170,7 @@ Meaning: *It makes no sense to select an outcome that is dominated by another on
 
 3. <u>Efficiency</u>  
    The bargaining solution returned by the function $f$ must be *Pareto Efficient*.  
-   The meaning of Pareto Efficiency is explained right after the listing of these properties.
-
+   
 4. <u>Invariance</u>  
    The solution that is returned by $f$ should not change if the utilities are linear changes.  
    if I multiply all the utilities by $\alpha$, then the final outcome that is selected as the bargaining solution will be multiplied by $\alpha$ $\to$ it scales but does not change.
@@ -186,15 +187,11 @@ Meaning: *It makes no sense to select an outcome that is dominated by another on
 The final result is the ==Nash Bargaining Solution==:   
 If you would like to find a bargaining solution $f$ that satisfies all these $5$ properties you have only 1 possibility: Your bargaining solution must be:
 $$
-f(s,D)=\arg \max(x^a,d^a)(x^b-d^b)
+f(s,D)=\underset{x=(x^a,x^b) \in S \text{ and } x\ge d}{\text{argmax}}(x^a-d^a)(x^b-d^b)
 $$
 
 $$
-x=(x^a,x^b)  \ \text{with }x \in S
-$$
-
-$$
-d=(d^a,d^b) \ \text{ with }x \ge d
+\text{with }d=(d^a,d^b) \ 
 $$
 
 Such solution is unique.  
@@ -470,7 +467,7 @@ We want this function to have the following properties
   ...>_{\sim 3}a>_{\sim 3}...>_{\sim 3}b>_{\sim 3}...
   
   \end{cases} 
-  \to ...>_{\sim }a>_{\sim }...>_{\sim }b>_{\sim }...
+   \ \ \ \ \ \ \ \ \ \ \ \ \Bigg\}\to ...>_{\sim }a>_{\sim }...>_{\sim }b>_{\sim }...
   $$
   In a nutshell we want to say that if you swap the red and yellow elements, and, as we can see, $a$ and $b$ have the same ordering over all the agents, and in case $a$ and $b$ have anyways the same order in the global relation, we can say that our formulation has IIA.
 
@@ -526,11 +523,11 @@ $f$ is resolute when $|f(R)|=1$
 | wine | wine | beer |
 | beer | milk | milk |
 
-***scoring rules***: rule that gives some point to each alternative according to the ranking related to each agent.
+***scoring rules***: rule that gives some points to each alternative according to the ranking related to each agent.
 $$
 >_\sim(s_1,s_2,...,s_m) \ \ \ \ \ \ \ \ m=|U| \ \ \ \ \ \ s_i\in \R
 $$
-where $s_i$ is the score of the first alternative in the ranking.
+where $s_i$ is the score of the $i$-th alternative in the ranking.
 $$
 s_1 \ge s_2 \ge... \ge s_m \ \ \ \ \ \ s_1 > s_m
 $$
@@ -556,11 +553,11 @@ Borda returns a global ranking among preferences.
 
 #### Pile Wise Majority Voting
 
-A ***==Condorcet Winner==*** is an alternatives that wins against every other alternative in a pile wise majority voting. 
+A ***==Condorcet Winner==*** is an alternative that wins against every other alternative in a pile wise majority voting. 
 
-***Pile wise majority voting***: a voting where you have only 2 alternatives and the alternatives that get more points is the winner. 
+***Pile wise majority voting***: a voting where you have only 2 alternatives and the alternative that gets more points is the winner. 
 
-A Condorcet winner is a very strong candidate because it wins against a every other candidate.
+A Condorcet winner is a very strong candidate because he wins against every other candidate.
 
 Do we have a Condorcet winner in the beverage example? (we are considering Borda count)
 
@@ -570,7 +567,7 @@ $milk - \color{red}wine$
 
 $\color{red}wine\color{black} - beer$
 
-Yes, wine, because it wins against every other candidate.
+Yes: wine, because it wins against every other candidate.
 
 A ***==Condorcet Extension==*** is a voting rule that selects a Condorcet winner if a Condorcet winner exists.  
 
@@ -1125,11 +1122,11 @@ The whole set of agents $A$ is called sometimes *grand coalition*.
 
 **Introductory Example**
 
-There are 2 children.   
+There are 3 children.   
 Charlie has 6 dollars.  
 Marcy has 4 dollars.  
 Patty has 3 dollars.  
-Charlie wants to buy ice cream which is 500g and it costs 7 dollars. The others are explained mathematically.  
+Charlie wants to buy 500g of ice-cream and it costs 7 dollars. The others are explained mathematically.  
 $w_c=500g; \ c_c=7 \$$  
 $w_m=750g; \ c_m=9 \$ $    
 $w_p=1000g; \ c_p=11\$ $  
@@ -1157,7 +1154,7 @@ the outcome is a pair $(CS,\bar{x})$  where
 $v(\{1,2,3\})=9$   
 $v(\{4,5\})=4$  
 $(\color{orange}(\{1,2,3\},\{4,5\})\color{black},\color{red}(3,3,3,3,1)\color{black})$  where the orange part is the $CS$ and the red one is $\bar{x}$.  
-This outcome respects the efficiency principle which says that the sum of the individual payoffs should sum the coalition payoff.
+This outcome respects the efficiency principle which says that the sum of the individual payoffs should sum up to the coalition's payoff.
 
 #### Superadditivity
 
@@ -1187,11 +1184,11 @@ $v(C) \in \{0,1\} \ \forall C \in A$
 
 Let's modify a little the introductory example:
 
-There are 2 children.   
+There are 3 children.   
 Charlie has 4 dollars.  
 Marcy has 3 dollars.  
 Patty has 3 dollars.  
-Charlie wants to buy ice cream which is 500g and it costs 7 dollars. The others are explained mathematically.  
+Charlie wants to buy 500g worth of ice cream and it costs 7 dollars. The others are explained mathematically.  
 $w_c=500g; \ c_c=7 \$$  
 $w_m=750g; \ c_m=9 \$ $    
 $w_p=1000g; \ c_p=11\$ $ 
@@ -1214,10 +1211,10 @@ A stable outcome is captured though the concept of ***core***.
 #### Core
 
 $$
-\text{core}=\{(CS,\bar{x}|\sum_{i \in C }x_i \ge v(C) \ \ \forall C \subseteq A\}
+\text{core}=\{(CS,\bar{x})|\sum_{i \in C }x_i \ge v(C) \ \ \forall C \subseteq A\}
 $$
 
-The core embeds the idea of stability.  
+The core embeds the idea of stability: the sum of payoffs of the agents in any sub-coalition $C$ is at least as large as the amount that these agents could earn by splitting from $A$ and forming $C$. 
 So, given a certain $\bar{x}$ we check whether it is a solution acceptable by everyone.  
 the payoff $(250,250,250)$ is in the core because for example $250\ge 0$ if we consider $C=\{1\}$.  
 Even the payoff $(750,0,0)$ is stable, but it is not **fair**!  
@@ -1250,14 +1247,20 @@ Let's introduce some terminology:
 
 $\Pi^A=\text{permutations over }A $ (it is an ordering over the agents)
 
-$c_{\pi}(a_i)\text{the number of the agents that in the ordering p are appearing before agent $a_i$}$ 
+$ c_{\pi}(a_i)\text{the number of the agents that in the ordering p are appearing before agent $a_i$}$ 
 
-$\Delta_\pi(a_i)=v(C_\pi(a_i)\cup \{a_i\})-v(c_\pi(a_i))=\text{marginal contribution of agent $a_i$}$
+$\Delta_\pi(a_i)=v(c_\pi(a_i)\cup \{a_i\})-v(c_\pi(a_i))=\text{marginal contribution of agent $a_i$}$
 
 The formula is:
 $$
 \varphi_i=\frac{1}{n!}\sum_{\pi \in \Pi^A}\Delta_\pi(a_i)
 $$
+
+This was the formula provided by Amigoni, but I prefer the following:
+$$
+\varphi_i(v)=\sum_{S\subseteq N  \backslash \{i\}}\frac{|S|! \ (n-|S|-1)!}{n!}(v(S \cup \{i\})-v(S))
+$$
+
 
 # CCF Part 2 - 15/11
 
@@ -1305,7 +1308,7 @@ It's related to the representation of the characteristic function games $(A,v)$.
 
 for every subset of agents $S$, $v$ should return a number. So if we have $100$ agents we need $2^{100}$ numbers to be returned.
 
-The problem is solve If the game is additive. It means that I have to compute $v$ for each agent $\to$ consequently a coalition made of agents $1$ and $2$ will be the sum of the value associated to $1$ and $2$ separately.
+The problem is solved If the game is additive. It means that I have to compute $v$ for each agent $\to$ consequently a coalition made of agents $1$ and $2$ will be the sum of the value associated to $1$ and $2$ separately.
 
 ### Best Coalition Structure
 
@@ -1502,7 +1505,7 @@ We'll be building a plan: a sequence of actions.
 - <u>Path planning</u>   
   you have a physical environment and you want to find a path in this environment.   
   It can be geometrical or a graph.   
-  You have a sequence of actions/vertices that you have to visit one after an other. 
+  You have a sequence of actions/vertices that you have to visit one after the other. 
 - <u>Task planning</u>   
   the actions are done to perform a task (example: moving a block from one place to another). 
 
@@ -1524,7 +1527,7 @@ you can have a planning model like STRIPS or like Markov decision problem.
 Kind of knowledge you have to use in both:    
 you need to know a model of the environment and a model of how your actions change the environment. 
 
-For single agents this is difficult because the space in which you have to look for your plan grow exponentially with the number of steps of the plan $\to$ the problem of planning is hard for single agents.
+For single agents this is difficult because the space in which you have to look for your plan grows exponentially with the number of steps of the plan $\to$ the problem of planning is hard for single agents.
 
 ### Multi agent planning 
 
@@ -1532,8 +1535,8 @@ When the action of an agent performed now affects the actions of the agents in t
 What we need:
 
 - Model of the environment 
-- Model of how your actions impact on the environment 
-- Some model of the other agent’s plan (what the other agents are doing)
+- Model of how your actions impact the environment 
+- Some models of the other agent’s plan (what the other agents are doing)
 
 The space of possible plans grows in the number of possible actions and also in the number of agents. 
 
@@ -1567,7 +1570,7 @@ $\downarrow$
 
 - <u>Coordination prior to Local Planning</u>   
   I will set at the beginning some rules for coordination.   
-  Then I will leave the agents to decide their local plans.      
+  Then I will leave the agents decide their local plans.      
   I’m assuming that the local plans are built by the agents.   
   The coordination between local plans is achieved because everybody respects some (traffic) rules   
   $\to$ "traffic rules" are "social laws" = rules that everybody knows.   
@@ -1579,7 +1582,7 @@ $\downarrow$
   At the beginning agents make plans as they want, then they are merged and modified to make them coordinated.  
   Different approaches to modify the plan: Freedom in planning $\to$ then modify. 
 
-*In both cases is to try to detach the problem of planning and the problem of coordination.* 
+*In both cases we are trying to detach the problem of planning and the problem of coordination.* 
 
 - <u>Decision Theoretic Multi Agent Planning</u>   
   We interleave at the same time local planning and coordination $\leftarrow$ *we will see this in details*
@@ -1605,21 +1608,20 @@ $\downarrow$
 *DECentralized Partially Observable Markov Decision Problems*.
 
 - $\text{Set of Agents I }= \{1,2,...,n \} $  
-  
+
 - $\text{Set of States: }S=\{1,...\} \text{ not known by the agents directly} $  
-  
+
 - $\text{Set of Actions agent $i$ can perform: }A_i$  
-  $\bar{A}=\times_{i=1,..,n}A_i$: vector of one action for each agents.   
-  Set of all possible Join Actions.  
+
+  with $\bar{A}=\otimes_{i=1,..,n}A_i$ being the set of joint actions, and $\bar{a}$ denotes a joint action.   
 
 - $\text{Transition Function: }P:S\times \bar{A}\to\Delta S: \text{Set of all the probability distributions over the set $S$}$  
-  $P(s'|s,\bar{a})$ is the probability  of reaching $s'$ being in £s£ an performing the joint action $\bar{a} $ 
+  $P(s'|s,\bar{a})$ is the probability  of reaching $s'$ being in $s$ and performing the joint action $\bar{a} $ 
 
-- $\Omega_i$ observations: Set of all possible perceptions agents $i$ receives from environment.  
-  a Joint Observation is defined as $\bar{\Omega}=\times_{i=1,..,n}\Omega_i$   
-
-- $\text{Observation Function $\to$ }O:S\times\bar{A} \to \Delta \bar{\Omega}$  
-  $O(\bar{o}|s,\bar{a})$ is the probability of receiving one specific observation for each agent $(\bar{o})$ when the world is in $s$ and the joint action is $\bar{a}$.    
+- $\Omega_i$ is a finite set of observations available to agent $i$ , and $\bar{\Omega}=\otimes_{i=1,..,n}\Omega_i$ is the set of joint observations, where $\bar{o}=<o_1,...,o_n>$ denotes a joint observation.
+  
+- $\text{Observation Function $\to$ }O:\bar{A}\times S \to \Delta \bar{\Omega}$  
+  $O(\bar{o}|\bar{a},s')$ denotes the probability of observing joint observation $\bar{o}$ given that joint action $\bar{a}$ was taken and led to state $s'$.  Here $s' \in S,\bar{a}\in \bar{A}, \bar{o} \in \bar{\Omega}$.
 
 - $\text{Reward Function} \to R(s,\bar{a})$  
   What is the immediate reward the system gets when the world is in $s$ and agents are jointly performing $\bar{a}$.  
@@ -1629,13 +1631,15 @@ This model is *Partially Observable* because the states are not known to the age
 
 ***Example***
 
+You can find a clear explanation of the setting of this example in section 5.1 of this [pdf](https://www.google.it/url?sa=t&rct=j&q=&esrc=s&source=web&cd=18&cad=rja&uact=8&ved=2ahUKEwjApNDww5TnAhVCLFAKHVTFCIEQFjARegQIARAB&url=ftp%3A%2F%2Fftp.cs.brown.edu%2Fpub%2Ftechreports%2F96%2Fcs96-08.pdf&usg=AOvVaw11nB1VK1yw8m5u4TwSM2fL) (it is for the single agent version though).
+
 The are 2 doors, behind one there is a tiger, behind the other a treasure. 
 
 If one agent opens the door with the tiger, both die $\to$ large penalty
 
-If one agent opens the door with then money $\to$ they share the treasure
+If one agent opens the door with the money $\to$ they share the treasure
 
-If both open the same door ….
+Immediately after one agent opens a door and receives a reward or penalty, the problem resets, randomly relocating the tiger behind one of the two doors.
 
 $I=\{1,2\} \text{ agents}$
 
@@ -1649,7 +1653,7 @@ $\bar{A}=\{<O_L,O_L>,<O_L,O_R>,...\}$
 
 Transition function:  
 
-$P(T_L|T_L,<L,L>)=1 \to$ probability the the tiger is behind left, given it was behind left and both agents are listening.
+$P(T_L|T_L,<L,L>)=1 \to$ probability the the in the new setting of the world the tiger is behind left, given it was behind left and both agents are listening.
 
 $P(T_R|T_L,<L,L>)=0$
 
@@ -1685,15 +1689,19 @@ Right now, being the states not observable, the information that an agent has in
 The policy $q_i$ is a mapping from a sequence of observations to an action.
 
 ***Finite Horizon***  
-There’s a finite number of actions in which the game can evolve. In this case a tree is the best possible representation for the policy
+There’s a finite number of actions in which the game can evolve.   
+In this case a tree is the best possible representation for the policy
 
  <img src="img/26111.png" style="zoom:30%">  
-
 
 In this case an action $OR$ or $OL$ can be performed only after two listenings.   
 In this case we have assumed that the observations are the same for all the agents. The policy tree for the two agents will be binary (left or right for every node), but it’s possible that the possible observations of different agents are different in general. 
 
 The drawn policy refers to agent 1. The policy of agent 2 is the same.
+
+***Infinite Horizon***
+
+The depth of the policy tree can be infinite. So we can’t use a tree for the representation. In this case it’s common to use a finite state machine. 
 
 <img src="img/26112.png" style="zoom:30%">
 
@@ -1702,7 +1710,7 @@ The one in the example is a finite state controller for a single agent.
 
 *How to find the optimal policy*?
 
-Given an initial state $s_0$ and a given $\bar{q}$, which is the joint policy (the policies set) I will define a function $V$ that returns the expected reward.
+For finite horizon: Given an initial state $s_0$ and a given $\bar{q}$, which is the joint policy, I will define a function $V$ that returns the expected reward.
 $$
 V(s_0,\bar{q})=E\bigg[\sum_{t=0}^{T-1}R(s_t,\bar{a}_t)|s_0,\bar{q}\bigg]
 $$
@@ -1715,7 +1723,7 @@ How difficult is this problem?
 Given $T$ (horizon $\to$ policy tree length ) the complexity of solving this problem is $NEXP-hard$.  
 This means super exponential (more than exponential). In fact I have to build every possible sequence of actions of length $T$ for every agent evaluating the joint probability every time.
 
-The goal becomes to find the best among all possible combinations of all the possible finite state controllers having $T$ number of states:
+For infinite horizon: the goal becomes to find the best among all possible combinations of all the possible finite state controllers having $T$ number of states:
 $$
 V(s_0,\bar{q})=E\bigg[\sum_{t=0}^{+\infty}d\cdot R(s_t,\bar{a}_t)|s_0,\bar{q}\bigg]
 $$
@@ -1726,7 +1734,7 @@ In the case of 3 states those are the optimal policies for player $1$ and player
 One agent checks one door, the other checks the other one and they join the knowledge coordinating themselves.   
 We will see a few steps of an actual algorithm to solve this kind of problems (this algorithm is not effective with high $T$).
 $$
-V(s_0,\bar{q})=R(s_0,\bar{a})+\sum_{s',\bar{o}}\color{orange}P(s'|s,\bar{a})\color{black}\color{green}O(\bar{o}|s,\bar{a})\color{black}V(s'|\color{red}\bar{q}_\bar{o}\color{black})
+V(s_0,\bar{q})=R(s_0,\bar{a})+\sum_{s',\bar{o}}\color{orange}P(s'|s_0,\bar{a})\color{black}\color{green}O(\bar{o}|\bar{a},s')\color{black}V(s'|\color{red}\bar{q}_\bar{o}\color{black})
 $$
 As we can see our expected reward ***depends*** on the $\color{orange}\text{transition function}$, and on the $\color{green}\text{observation function}$.  
 $\color{red} \text{joint policy composed of the sub-trees of the sub-trees of the initial policy}$.
@@ -1737,11 +1745,12 @@ The underlying idea is to try to solve the problems with an increasing dimension
 
 ==$T=1 \to$==
 
-Tree composed of a single level (the possible actions)$L \ (q_1),OR \ \ (q_2), OL(q_3) \to \bar{q}=<q_1,q_2,q_3$.  
+Tree composed of a single level (the possible actions)  
+$L \ (q_1),OR \ \ (q_2), OL(q_3) \to \bar{q}=<q_1,q_2,q_3>$.  
 All possible combinations of joint policies $(\bar{q}\times \bar{q})$ are $ 9 \ (3\cdot 3)$.
 
 Fixed a particular joint policy $<q_1,q_1>$  
-$V(TL,<q_1,q_1>)=R(TL,<L,L>)=-2$.   
+$V(T_L,<q_1,q_1>)=R(T_L,<L,L>)=-2$.   
 In this case, on the right member of the equation, we do not have any term $P,O,V$ because $T=1$.
 
 We have to compute $V$ for all the $9$ possible joint policies.
@@ -1754,7 +1763,7 @@ and so on...
 
 <img src="img/26114.PNG" style="zoom:40%">  $\dots$ 
 
-The total number of possible different trees for a single agent is 27.  
+The total number of possible different trees for a single agent is $3 \times 3^2 = 27$   
 The number of possible joint policies are $27\cdot 27$.
 
 Now consider we fixed the policy for agent $1$: $<q'_1,q'_1>$.
@@ -1773,6 +1782,7 @@ Considering even the one with probability  associated $=0$.
 $$
 V(s_0,\bar{q})=R(s_0,\bar{a})+ \sum_{s',\bar{o}}P(s'|s,\bar{a})O(\bar{o}|,s,\bar{a})V(s'|\bar{q}_{\bar{o}})
 $$
+(the formula above doesn't makes sense: $s$ is probably $s'$, but Amigoni wrote it twice like that... I wrote a senseful version of the formula somewhere earlier).  
 Then, all the $q_i,q_j$ combinations have to be considered.
 
 Then $T=3$ has to be considered.
