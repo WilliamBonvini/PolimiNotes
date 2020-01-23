@@ -284,10 +284,25 @@ $$
 \\
 \text{STRAT-B}(1)=ACCEPT
 $$
-$n=2$
+$n=2$  
+We have 2 rounds, if you are agent $a$ what do you do? 
+
+*non rational move*:
+
+1. if $a$ offers $(1,0)$ $\to b $ rejects 
+2. $b$ offers $(0,1)$ $\to a$ has to accept
+
+so $a$ should not offer $(1,0)$ at the first round.
+
+the last round is in power of agent $b$. 
+
+So, if we consider the non rational move we would have $U^a(0,2)=0$ and $U^b(1,2)=\delta$ (where the first field of the utility function is the fraction of the cake and the second field is the timestep, just to refresh your memory. check the utilization formula if you suddenly forgot it). 
+
+*rational move*:    
+agent $a$  offer to $b$ a fraction equal to $\delta$, this way he would not makes sense to him to refuse. the game ends in time step $1$, without waiting for time step $2$.
 $$
 \text{STRAT-A}(1)=\text{OFFER}(1-\delta,\delta)\\
-\text{STRAT-A}(1)=\text{ACCEPT}
+\text{STRAT-B}(1)=\text{ACCEPT}
 $$
   which translates into:
 $$
@@ -295,12 +310,13 @@ U^a(1-\delta,1)=1-\delta
 \\
 U^b(\delta,1)=\delta
 $$
-let's revise what we have just written:  
+let's revise again what we have just written:  
 The agent $a$ prefers to offer to $b$ $\delta$ part of the cake because the utility of $b$ can't be more than $\delta$ (in fact $U^b(1,2)=\delta$), because this way $a$ gets at least $1-\delta$ as utility, so it's a win win.
 
 let's generalize:
 
-deadline $n$, $\delta_a=\delta_b=\delta$
+deadline $n$:   
+$\delta_a=\delta_b=\delta$
 $$
 \text{STRAT-A}(n)=
 \begin{cases}
@@ -350,22 +366,20 @@ $\text{2. propose }x^{(a)}$
 
 $\text{3. receive }x^{(b)}$
 
-$\text{4. if }U^a(x^{(b)}\ge U^a(x^{(a)})) \text{ then ACCEPT } x^{(b)} \text{ and RETURN}
+$\text{4. if }U^a(x^{(b)})\ge U^a(x^{(a)}) \text{ then ACCEPT } x^{(b)} \text{ and RETURN}
 \\
- \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \  \text{else }x^{(a)}\leftarrow x \in O \text{ such that }U^{b}(x)\ge U^b(x^{(a)}) \text{ and }U^{(a)}\ge0
+ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \  \  \text{else }x^{(a)}\leftarrow x \in O \text{ such that }U^{b}(x)\ge U^b(x^{(a)}) \text{ and }U^a(x)\ge0
 \\$
 
 $\text{5. goto 2}$
 
-
-
 This algorithm can be applied only when you know the utility of the other agent, which does not happen very often in the real world...
 
-Moreover, the converge of this algorithm can b very long. 
+Moreover, the converge of this algorithm can be very long. 
 
-Another problem:  It can happen that agent a accepts the offer of agent b and agent a accepts the offer of agent b, but they are not the same! we have two different agreements: we need to introduce some tie-breaking to decide the agreement. we can pickup just one at random , or we can find the middle point of the offer and come up with a single agreement.
+Another problem:  It can happen that, at the same time step, agent $a$ accepts the offer of agent $b$, and $b$ accepts the offer of $a$,  but they are not the same! we have two different agreements: we need to introduce some tie-breaking to decide the agreement. we can pickup just one at random , or we can find the middle point of the offer and come up with a single agreement.
 
-There is a variant of this protocol that is called the Zeuthen Strategy
+There is a variant of this protocol that is called the Zeuthen Strategy.
 
 ### Zeuthen Strategy
 
@@ -386,6 +400,7 @@ $\text{6. if } \text{risk}_a <\text{risk}_b \text{ then } x^{(a)}\leftarrow x \i
 
 $\text{7. goto 2}$
 
+The idea is that you have an high risk when you are close to the situation in which your utility is very small, when you are close to the no-agreement. The agent that has the smallest risk will make the next offer  
 Property: the final agreement found via this algorithm is a pareto optimal agreement, which means that there is no another agreement that is not worse for one agent and strictly better for the other one.
 
 it finds an agreements which is a Nash BARGAININ solution. It is an agreement that maximizes the product of the two utilities.
@@ -399,7 +414,7 @@ Applications:
 - Aggregation of preferences.
 - Formation of coalitions.
 - Sometimes you have multiple robots that have to keep a formation, for example military patterns.  
-  It is based on the fact that there is a leader that is moving and all the other robot are keeping a fixed distance and angle from him. They should also avoid to collide with each other.  
+  It is based on the fact that there is a leader that is moving and all the other robots are keeping a fixed distance and angle from him. They should also avoid to collide with each other.  
   What happens if the leader fails? In this case there is a kind of voting for choosing the new leader, and this is the social choice.
 
 Let's start from the model that we will adopt for studying computational social choice.
@@ -409,16 +424,16 @@ we'll have:
 - a number of ***agents*** $N=\{1,2...,n\}$
 - a set of **alternatives**, also called **candidates** (in the case of political elections for example)  $U$. we assume $|U|\ge2$.
 - ***preferences***, denoted by the symbol *preference relation* $>_{\sim i}$ (it is an ordering over the alternatives).  
-  for it being a proper ordering we need to constraint such relations in the following way. we need to say that such relation is 
+  for it being a proper ordering we need to constrain such relations in the following way. we need to say that such relations are 
   - complete: $\forall a,b \in U: a >_{\sim i } b \text{ or } b >_{\sim i}a  $  (the or is not generally exclusive)
   - transitive: $\forall a,b,c \in U: \text{if } a >_{\sim i } b \text{ and } b>_{\sim i }c \text{ then }  a >_{\sim i } c$  
 
-Observations: agents and candidates could be disjoint or not depending on the case. In political election agents are people and politicians, while candidates are politicians.
+Observations: agents and candidates could be disjoint or not depending on the case. In political elections, agents are people and politicians, while candidates are politicians.
 
 Now let's introduce some symbols:
 
 - ***preference profile*** $R=(>_{\sim 1 },>_{\sim 2 },>_{\sim n })$ (it is an array of preferences, one for each agent).  
-  a preference can be structured as a pair of agent, candidate. So a preference profile can be represented as a list of pairs.
+  a preference can be structured as a pair of agents, candidate. So a preference profile can be represented as a list of pairs.
 - a ***set*** of all possible ***preference relations over $U$*** :   $\scr{R}$$(U)$   
   $>_{\sim i}$ $\in$ $\scr{R}$$(U)$
 
@@ -451,10 +466,10 @@ We want this function to have the following properties
 - <u>Pareto Optimality</u>  
   Informal definition: assume that every agent thinks that candidate $a$ is better than $b$. then it is reasonable to assume that $a$ will be better than $b$ even in the global relation.  
   Formal definition:   
-  $\text{if }a >_i b  \ \text{ then }a >b$  
+  $\text{if  }\  \forall i \ \ a >_i b  \ \text{ then }a >b$  
   the one above has been written assuming the following: $a>_{\sim i}b \text{ but not }b >_{\sim i} a$, which is not the general case.  
   the consequence assumes instead that: $a>_\sim b \text{ but not } b >_\sim a$.  
-  I had to write the formal definition this way because the actual formal definition would be complex to be written, so Amigoni preferred specifying the assumptions afterwards.
+  I had to write the formal definition this way because the actual formal definition would be too complex to be written, so Amigoni preferred specifying the assumptions afterwards.
 
 - <u>Independence of irrelevant alternatives (IIA)</u>    
   imagine this starting situation
@@ -498,9 +513,9 @@ $f:{\scr R }(U)^n \times {\scr F}(U) \to {\scr F}(U) $
 
 where $\scr F$ is the powerset of $U$: ${\scr F} = 2 ^U$, which is the set of all feasible sets of alternatives.
 
-$A \in {\scr F}(U) \ A \subseteq U$
+$A \in {\scr F}(U), \ A \subseteq U$
 
-$f(R,A)=A' \ \ \ \ \ \ A' \subseteq A$
+$f(R,A)=A', \ \ \ \ \ \ A' \subseteq A$
 
 #### Voting Rule
 
@@ -511,7 +526,7 @@ Given a preference profile it returns a set of candidates.
 $f:{\scr R}(U)^n \to {\scr F}(U)$  
 $f(R)\to A' $
 
-$f$ is resolute when $|f(R)|=1$
+$f$ is resolute when it returns exactly one candidate: $|f(R)|=1$
 
 # Computational Social Choice - 22/10
 
@@ -694,7 +709,7 @@ Selecting the agenda is
 not neutral. 
 
 ==Sequential Majority Voting is a condorcet extension because the condorcet winner can never
-loose in a pair wise==.
+lose in a pair wise comparison==.
 
 #### Strategic Manipulation of vote
 
@@ -737,7 +752,7 @@ So you can not avoid strategic manipulation, but you can make it harder to happe
 
 So far we have considered deterministic voting systems. The winner is deterministically selected. It is also possible to use probabilistic voting rules:  
 The rule is not selecting a candidate, but it is giving in output a probability distribution over the candidates. Then you pick up the winner randomly selecting the candidate according to the probability distribution.  
-So deterministic voting rule will output something like: the winner is $a$ with 100% probability.  
+So, deterministic voting rule will output something like: the winner is $a$ with 100% probability.  
 Probabilistic voting rules will output something like: the winner is $a$ with 70%, $b$ with 10% and so on.
 
 ==***Another Gibbard-Satterthwaite Theorem***==
@@ -760,7 +775,7 @@ Auctions ("aste" in italian) are very useful in the real world, for example:
 
 An auction is made out of an auctioneer (usually the one who sells) and some agents (usually the ones who buy).  roles could be the opposite, for example for public concourses, in that case the auctioneer is the one who buys.
 
-When you set up an auction you have to set up the rules of the auction. for example if you are the owner of  Ebay you have to say what is the minimum and maximum price or which an user can sell an item.  
+When you set up an auction you have to set up the rules of the auction. for example if you are the owner of  Ebay you have to say what is the minimum and maximum price or which user can sell an item.  
 You have to set even the rules: for example, is it possible to propose a price and get immediately the item? or we must wait for the end of the auction?
 
 What an agent decides to do is called *strategy*.
@@ -809,7 +824,7 @@ This last price is called ***reservation price***.
   it starts from a really high price and goes down.   
   the auction ends when one of the agents stops the clock.  
   The winner is the agent that stopped the clock and the amount of money he will pay is the price that is displayed by the clock at time of stopping.  
-  (i.e. for selling flowers, for selling fish. it is really fast. used for selling thinks that are not of a big value and you have to sell them fast.   
+  (i.e. for selling flowers, for selling fish. it is really fast. used for selling things that are not of a big value and you have to sell them fast.   
   the auctioneer can set the speed of the clock)
 
 - <u>Sealed-bid Auctions</u>  
@@ -870,7 +885,7 @@ This is a mechanism that enforces the agents to tell the truth!!
 
 ***Considerations on Dutch and First Price Sealed-Bid Auctions***
 
-==There is no dominant strategies in this case.==
+==There is no dominant strategy in this case.==
 
 There are though some interesting results: 
 
@@ -891,7 +906,7 @@ In this cases we can have some ***equilibrium strategies***: if an agent deviate
 
 If you have $n$ agents, the following is an equilibrium strategy:
 $$
-(\frac{n-1}{n}v_1\frac{n-1}{n}v_2,...,\frac{n-1}{n}v_n)
+\bigg(\frac{n-1}{n}v_1,\frac{n-1}{n}v_2,...,\frac{n-1}{n}v_n\bigg)
 $$
 where $v_i$ is the true value for agent $i$ (the value he is willing to pay).
 
@@ -922,14 +937,14 @@ if
 
 then
 
-- any kind of auction that satisfies such preconditions, the provide to the auctioneer the same expected revenue
+- any kind of auction that satisfies such preconditions provides to the auctioneer the same expected revenue
 
-==this means that all the auctions that e have seen satisfy the preconditions, so all of them are equivalent from the point of view of the auctioneer.==
+==all the auctions that we have seen satisfy the preconditions, so all of them are equivalent from the point of view of the auctioneer.==
 
 ***things to think about for next lecture***
 
 - take the English auction, try to verify that the good is always allocated to the agent with the largest $v_i$.
-- try to think what is the amount of info that agents participating in auction are disclosing to the others in the different auctions we have seen.
+- try to think what is the amount of info that agents participating in auctions are disclosing to the others in the different auctions we have seen.
 
 this will show me why sealed bit auctions are very popular in real world scenarios.
 
@@ -957,7 +972,7 @@ the problem is described with the followings:
   v_i:2^G \to \R
   $$
   
-- **Submitted bid of the auctioneer**   
+- **bid submitted to the auctioneer by agent $i$**   
   $$
   \hat{v}_i
   $$
@@ -978,7 +993,7 @@ The auctioneer will receive all the bids and will decide which agent is the winn
 ***Complementarity***
 
 The evaluation function can express some sort of complementarity when the value of the union between two disjoint subsets of $G$ is larger than the sum of the two.   
-If it holds for every subset it means that agent $i$ thinks that having goods together is better than having it alone.   
+If it holds for every subset it means that agent $i$ thinks that having goods together is better than having them alone.   
 That means that the two objects are complementary. (Right and left shoes for example).
 $$
 T,S \subseteq G; \ \ \ \ T \cap S=\{\}; \ \ \ \ v_i(T\cup S)> v_i(T)+v_i(S)
@@ -1827,7 +1842,7 @@ relation that enumerates every combination of values for the variables involved 
   $R$ is the relation representing an hard constraint.
 
 ***Soft constraints***  
-It's a function th has as domain the cartesian product of the domains and as codomain the set of real numbers.  
+It's a function that has as domain the cartesian product of the domains and as codomain the set of real numbers.  
 *Example*  
 $C:x_ix_j$      $D_i=D_j=\{0,1\}$
 
@@ -1842,7 +1857,7 @@ $F:$
 | 1     | 0     | 0    |
 | 1     | 1     | 1    |
 
-$F$ it's a cost (or a utility, it depends on the formulation).
+$F$ is a cost (or a utility, it depends on the formulation).
 
 ### Binary Constraint Networks
 
@@ -1880,7 +1895,7 @@ $2$ types:
 
 1. exponential number of messages to be exchanged by agents (adopt)
 2. exchange small number of messages but every message can be exponentially large (DPOP).   
-   The size of the messages grow exponentially.  
+   The size of the messages grows exponentially.  
    This algorithm does not scale to realistically large problems. 
    we will study this last type.
 
@@ -1919,7 +1934,7 @@ I can go no more in depth so I start backtracking:
 
 (I can build different trees)
 
-<img src="img/29115.PNG" style="zoom:40%"> <img src="img/29115.PNG" style="zoom:40%">
+<img src="img/29115.PNG" style="zoom:40%"> <img src="img/29116.PNG" style="zoom:40%">
 
 Is the tree on the left completely representing the graph? no, so we introduce *pseudo arcs*.
 
