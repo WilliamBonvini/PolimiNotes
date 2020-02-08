@@ -1,26 +1,44 @@
+# Artificial Neural Networks & Deep Learning
+
+*A Q&A on the course ANN2DL as taught by Matteo Matteucci, Giacomo Boracchi, and Francesco Lattari in Politecnico di Milano during the academic year 2019/2020*
+
+*Edited by: William Bonvini, Lorenzo Carnaghi*
+
+[TOC]
+
 # Machine vs Deep Learning 
 
-- What is machine learning 
-- What are the machine learning paradigms and their characteristics
-- What are the machine learning task and their characteristics
-- What is deep learning and how it differs from machine learning
-- Examples of successful deep learning applications
-- What is transfer learning and what it is used for
-- What is a feature and its role in machine and deep learning
-- What is cross-validation and what it is used for
-- What are hyperparameters and identify those for all the models presented in the course
-- What is Maximum likelihood estimation and how does it work in practice
-- What is Maximum a posteriori and how does it work in practice 
+#### What is machine learning 
+
+#### What are the machine learning paradigms and their characteristics
+
+#### What are the machine learning task and their characteristics
+
+#### What is deep learning and how it differs from machine learning
+
+#### Examples of successful deep learning applications
+
+#### What is transfer learning and what it is used for
+
+#### What is a feature and its role in machine and deep learning
+
+#### What is cross-validation and what it is used for
+
+#### What are hyperparameters and identify those for all the models presented in the course
+
+#### What is Maximum likelihood estimation and how does it work in practice
+
+#### What is Maximum a posteriori and how does it work in practice 
 
 
 
 # Feed Forward Neural Networks
 
-**The perceptron and its math**
+#### The perceptron and its math
 
 the perceptron is a linear classifier. It is the basic block of neural networks. it consists in a neuron with $n$ inputs, an activation function and a single output. the activation function is the step function with threshold zero.  
 
-**The Hebbian Learning paradigm, its maths, and it application**
+#### The Hebbian Learning paradigm, its maths, and it application
 
 “The strength of a synapse increases according to the simultaneous activation of the relative input and the desired target” 
 
@@ -32,16 +50,16 @@ $w^{k+1}_i \leftarrow w^{k}_i + \eta x_i^kt^k$.
 the main idea is that you have a training set, and you keep on iterating on it until a full batch of such training set is analyzed without any update on the weights.  
 it works fine when the separation boundary is linear, it doesn't work when we have meshed shapes or non linear boundaries (like xor), etc.
 
-***the feed forward neural architecture and its improvement wrt the Perceptron***
+#### the feed forward neural architecture and its improvement wrt the Perceptron
 
 it introduces more layers. we have an arbitrary number of neurons. improvement: it is able to classify inputs with any shape. A single hidden layer feedforward neural network with S shaped activation functions can approximate any measurable function to any desired degree of accuracy on a compact set. It doesn't mean that is always possible to practically find the right weights for a certain task, but theoretically it is.
 
-**number of parameters of any model you can build**
+#### number of parameters of any model you can build
 
 The number of parameters correspond to the number of weights that are present in the neural network. being such neural networks feed forward and fully connected we have that each node is linked to each node in the subsequent layer.  
 the hyperparameters are the number of hidden layers and the number of neurons in each layer of the network.
 
-***Activation functions, their math, their characteristics, and their practical use*** 
+#### Activation functions, their math, their characteristics, and their practical use 
 
 they are functions associated to each node of the neural network. the input is the dot product between the neurons in the previous layer and the weights associated to them. they model the activation of the considered neuron given the inputs. A characteristic is that they must be differentiable.  
 
@@ -65,7 +83,7 @@ we want an output that spans the whole $\R$ domain.
 
 
 
-***What is backpropagation and how does it work***
+#### What is backpropagation and how does it work
 
 backpropagation is the technique used in neural networks to update weights. it is divided in two steps.
 
@@ -76,13 +94,13 @@ backpropagation is the technique used in neural networks to update weights. it i
 
 
 
-**The relationship with non-linear optimization and gradient descent**
+#### The relationship with non-linear optimization and gradient descent
 
 it is not linear the problem of finding the weights of a neural network. this means that there is no closed form solution (compute the partial derivatives of the function and set them to zero) $\to$ we use an iterative approach, like gradient descent. we can use momentum to avoid local minima. we can use different initializations for the weights, it would make sense to start from a distribution that makes sense for the problem in hand. 
 
 
 
-**Backpropagation computation for standard feedforward models**
+#### Backpropagation computation for standard feedforward models
 
 $RSS=\sum_{n}(t_n-g(x_n|w))^2$
 $$
@@ -91,7 +109,7 @@ $$
 
 
 
-***Online vs batch, vs mini-batch learning and their characteristics***
+#### Online vs batch, vs mini-batch learning and their characteristics
 
 Online gradient descent is a synonym of stochastic gradient descent (this is what Bishop says).
 
@@ -111,7 +129,7 @@ they are three variations of gradient descent.
 
 
 
-***Forward-backward algorithm for backpropagation***
+#### Forward-backward algorithm for backpropagation
 
 the forward pass consists in computing the gradient after having seen some samples $n$.
 
@@ -119,7 +137,7 @@ the backward pass consists in updating each weight with gradient descent.
 
 
 
-***Derivatives chain rules***
+#### Derivatives chain rules
 
 the chain rule is a formula to compute the derivative of a composite function. for example $\frac{\part f(g(x))}{\part x}=\frac{\part f(g(x))}{\part g(x)}\frac{\part g(x)}{\part x}$.
 
@@ -127,7 +145,7 @@ It consists in breaking down the gradient calculation $\frac{\part E(w)}{\part w
 
 
 
-***Error functions, their statistical rationale, their derivation, and their derivative***
+#### Error functions, their statistical rationale, their derivation, and their derivative
 
 - Prediction
   - we can approximate $t_n$ as $g(x_n|w)+ \varepsilon_n= t_n$.   
@@ -145,11 +163,11 @@ It consists in breaking down the gradient calculation $\frac{\part E(w)}{\part w
   - the formula above makes sense since false positives (predicted true, but negative) have $w^Tx+w_0>0$ and false negatives (predicted false, but positive) have $w^Tx+w_0 <0$.
   - by deriving the error $E(w,w_0)$ with respect to to $w$ and in parallel with respect to $w_0$ we obtain gradients that plugged in the weights update formula of gradient descent returns us the Hebbian learning algorithm.
 
-**The issue of overfitting and its relationship with model complexity**
+#### The issue of overfitting and its relationship with model complexity
 
 no generalization. performs well on training but not on the test. if model too complex it is prone to overfitting. early stopping: stop as as soon as validation error starts increasing. perform crossvalidation to have a good estimate of the performance of the model.
 
-**Regularization techniques, their rationale and their implementation**
+#### Regularization techniques, their rationale and their implementation
 
 the technique Matteucci talked about is called ridge regression (weight decay) and it is an error function for the training data that penalizes weights with high absolute value. it is compute with a Bayesian approach by the computation of a maximum a posteriori likelihood on $P(w|D)$. 
 
@@ -184,11 +202,11 @@ $Ridge(X,W)=\sum_{i=1}^N(y-g(x_i|w))^2 + \gamma \sum_{j=1}^{|W|}w_j^2 $
 
 another regularization technique is dropout. come on, you know how it works.
 
-**Techniques for hyperparameters tuning and model selections**
+#### Techniques for hyperparameters tuning and model selections
 
 crossvalidation to choose hyperparameters ($\gamma$, number of hidden units, learning rate)
 
-**Techniques for weights initialization and their rationale**
+#### Techniques for weights initialization and their rationale
 
 - all zeros: baaaad, no learning happening
 - big: not convergence
@@ -205,7 +223,7 @@ crossvalidation to choose hyperparameters ($\gamma$, number of hidden units, lea
 - He
   - $w \sim N(0,\frac{2}{n_{in}})$
 
-**Batch-Normalization rationale and use** 
+#### Batch-Normalization rationale and use 
 
 it has been observed that networks work well if the input is whitened (zero mean and unitary variance). it would be wise to normalize inputs for every unit of the neural network, since, given a whitened input, it is not guaranteed that the subsequent inputs in the hidden layers are whitened as well. what we do is that we whiten every unit.
 
@@ -254,39 +272,39 @@ image classifiers are not good for generalization: they could learn a template f
 
 we could talk about the geometric interpretation as well, and about the loss function to be minimized.
 
-**The layers of a CNN** 
+#### The layers of a CNN 
 
 
 
-**Connections between CNN and Feedforward-NN, interpretations of CNN**
+#### Connections between CNN and Feedforward-NN, interpretations of CNN
 
 
 
-**How to compute the number of parameters of a CNN**
+#### How to compute the number of parameters of a CNN
 
 
 
-**Best practices to train CNN models: data augmentation, Transfer learning**
+#### Best practices to train CNN models: data augmentation, Transfer learning
 
 
 
-**Design criteria from the most successful architectures shown during classes (no need to know exactly the architectures)**
+#### Design criteria from the most successful architectures shown during classes (no need to know exactly the architectures)
 
 
 
-**Fully convolutional CNN and CNN for segmentation**
+#### Fully convolutional CNN and CNN for segmentation
 
 
 
-**The key principles of CNN used for object detection**
+#### The key principles of CNN used for object detection
 
 
 
-**Residual learning**
+#### Residual learning
 
 
 
-**GANs, what they are and how they are trained**
+#### GANs, what they are and how they are trained
 
 
 
@@ -312,7 +330,7 @@ we could talk about the geometric interpretation as well, and about the loss fun
 
 # Recurrent Neural Networks
 
-**Models for sequence modeling**
+#### Models for sequence modeling
 
 Different ways to deal with «dynamic» data:
 
@@ -334,7 +352,7 @@ Different ways to deal with «dynamic» data:
 
   - <u>Recurrent Neural Networks</u>
 
-**The architecture and math of a recurrent neural network**
+#### The architecture and math of a recurrent neural network
 
 In RNNs we deal with the time dimension as well.  
 We have $I$ input neurons, and $B$ input recurrent neurons that represent the state of the system at previous timesteps. Let's suppose to have the following architecture (image to be uploaded).
@@ -345,7 +363,7 @@ RNNs are models used for sequence modeling and they are able to have memory of t
 
  Distributed hidden state allows to store a information efficiently.  
 
-**Backpropagation through time rationale and math**
+#### Backpropagation through time rationale and math
 
 - perform network unroll for U steps
 - initialize $V,V_B$ replicas to be the same
@@ -377,12 +395,12 @@ BPTT can be computationally expensive as the number of timesteps increases.
 If input sequences are comprised of thousands of timesteps, then this will be the number of derivatives required for a single update weight update.  
 This can cause weights to vanish or explode (go to zero or overflow) and make slow learning and model skill noisy ([source](https://machinelearningmastery.com/gentle-introduction-backpropagation-time/))
 
-**The limits of backpropagation through time and the vanishing/exploding gradient issue**
+#### The limits of backpropagation through time and the vanishing/exploding gradient issue
 
 backpropagation through time becomes difficult to deal with when we want to consider a huge number of preceding timesteps. this is due to the fact that when we compute the gradient of the error function with respect to each weight, we obtain very small numbers due to the multiplication of many small partial derivatives.   
 As we have seen for FFNN, the vanishing/exploding gradient issue happens when the NN is very deep. Whenever we consider too many timestep in the past we obtain a proportionally deep unrolled RNN.
 
-**The vanishing gradient math in a simple case**
+#### The vanishing gradient math in a simple case
 
 to better understand the problem let's consider the following simple RNN
 
@@ -390,14 +408,53 @@ to better understand the problem let's consider the following simple RNN
 
 <img src="img/84.png" style="zoom:70%">
 
-**The Long Short-Term Memory model, rationale, ad math**
+#### The Long Short-Term Memory model, rationale, ad math
 
 rationale: we want to be able to read on, write in and forget a memory state based on an input and not on every step. to achieve this we introduced gates, which are trainable parameters: the network learns based on the input when to open and close these gates (when to read from its memory, update it with the new input, or forget it and replace it with the input).
 
 <img src="img/86.png" style="zoom:70%">
 
-**The Gated Recurrent Unit**
+#### The Gated Recurrent Unit
 
 <img src="img/87.png" style="zoom:70%">
 
-**LSTM Networks, hierarchical and bidirectional.** 
+#### LSTM Networks, hierarchical and bidirectional. 
+
+<img src="img/88.png" style="zoom:70%">
+
+
+
+
+
+
+
+# Sequence to Sequence Learning
+
+#### Sequential Data Problems, with examples
+
+#### The Seq2Seq model, training, and inference 
+
+#### Neural Turing Machine model and the attention mechanism
+
+#### Attention mechanism in Seq2Seq models 
+
+#### Chatbot: core models and context handling 
+
+#### The Transformer model  
+
+# Word Embedding 
+
+#### Neural Autoencoder model, error function, and training
+
+#### Language models and the N-grams model
+
+#### Limits of the N-gram model
+
+#### The concept of embedding and its benefits
+
+#### The Neural Language Model and its use for word embedding
+
+#### Google’s word2vec model (CBOW)
+
+#### Possible uses of word embedding
+
