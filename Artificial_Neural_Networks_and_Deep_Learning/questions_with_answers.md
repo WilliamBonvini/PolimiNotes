@@ -58,15 +58,14 @@ in transfer learning the weights are freezed, while in fine tuning such weights 
 
 A feature is the basic element to recognize patterns in the task. They can be crafted or learned, with pros and cons.   
 They allow the NN to understand what information carries the data wrt the task, and correctly give an answer.
-	
 
-data are made out of features, so features are data's intrinsic information. 
+Data are made out of features, so features are data's intrinsic information. 
 
 feature are based on domain knowledge or heuristics, however they need to be carefully designed depending on the task. they are fixed and sometimes they do not generalize between datasets.
 
-we need to get features right.
+We need to get features right.
 
-deep learning assumes it is possible to learn a hierarchy of descriptor with increasing abstraction
+Deep Learning assumes it is possible to learn a hierarchy of descriptor with increasing abstraction
 
 #### What is cross-validation and what it is used for
 
@@ -104,7 +103,7 @@ If k is n, meaning validation dataset has size 1, is LOOCV (leave one out Cross 
 
 the perceptron is a linear classifier. It is the basic block of neural networks. it consists in a neuron with $n$ inputs, an activation function and a single output. the activation function is the step function with threshold zero.  
 
-#### The Hebbian Learning paradigm, its maths, and it application
+#### The Hebbian Learning paradigm, its math, and its application
 
 “The strength of a synapse increases according to the simultaneous activation of the relative input and the desired target” 
 
@@ -135,9 +134,9 @@ The most typical activation functions for the *output layer* are the following:
 
 we want an output that spans the whole $\R$ domain.
 
-- linear $g(a)=a$
+- Linear $g(a)=a$
   - no vanishing gradient
-- relu
+- ReLu
 
 *in classification*
 
@@ -268,20 +267,20 @@ $Ridge(X,W)=\sum_{i=1}^N(y-g(x_i|w))^2 + \gamma \sum_{j=1}^{|W|}w_j^2 $
 
 another regularization technique is dropout. come on, you know how it works.
 
-#### Techniques for hyperparameters tuning and model selections
+#### Techniques for hyperparameters' tuning and model selection
 
 crossvalidation to choose hyperparameters ($\gamma$, number of hidden units, learning rate)
 
 #### Techniques for weights initialization and their rationale
 
-- all zeros: baaaad, no learning happening
+- all zeros: bad, no learning happening
 - big: not convergence
 - $w \sim N(0,0.01)$ is good just for small networks
 - Xavier
   - $Var( w_{ji} x_i)=E[w_{ji}]^2Var(x_i)+E[x_i]^2Var(w_{ji})+Var(x_i)Var(w_{ji})$
   - we assume both expected values to be zeros, so:
   - $Var( w_{ji} x_i)=Var(x_i)Var(w_{ji})$
-  - if we consider all inputs i.i.e. we obtain that $\color{orange}Var(\sum_i^nw_{ji}x_i)\color{black}=\sum_i^n Var(w_{ji}x_i)=nVar(w_{ji}x_i)=\color{orange}nVar(w_{ji})Var(x_i)$
+  - if we consider all inputs i.i.d. we obtain that $\color{orange}Var(\sum_i^nw_{ji}x_i)\color{black}=\sum_i^n Var(w_{ji}x_i)=nVar(w_{ji}x_i)=\color{orange}nVar(w_{ji})Var(x_i)$
   - since we want the variance of the output (the first orange block) to be equal to the variance of the input (the $Var(x_i)$ term in the last orange block) we impose $nVar(w_{ji})=1$
   - $w \sim N(0,\frac{1}{n_{in}})$
 - Bengio
@@ -336,7 +335,7 @@ we could talk about the geometric interpretation as well, and about the loss fun
 
 #### The layers of a CNN 
 
-convolution, activation, pooling.
+convolution, activation, pooling, fully connected.
 
 #### Connections between CNN and Feedforward-NN, interpretations of CNN
 
@@ -351,7 +350,7 @@ I know how to do it.
 data augmentation can be done via
 
 - geometric transformations
-  - shifts/rotation/affline/perspective distortions
+  - shifts/rotation/perspective distortions
   - shear
   - scaling
   - flip
@@ -363,13 +362,70 @@ data augmentation can be done via
 
 augmentation can help with class imbalance and data scarcity (obviously).
 
-transfer learning has already been described previously. it is a good option when little training data are provided and the pretrained model is expected to match the problem at hand.
+Transfer learning has already been described previously. it is a good option when little training data are provided and the pretrained model is expected to match the problem at hand.
 
 #### Design criteria from the most successful architectures shown during classes (no need to know exactly the architectures)
+
+- LeNet-5
+  - idea of using a sequence of $3$ layers: convolution, non linearity, pooling, as we do today.
+  - average pooling
+  - tanh or sigmoid
+  - MLP as classifier for the final layer
+- AlexNet
+  - 5 convolutional layers with filters 11x11 and 5x5
+  - 3 MLP
+  - introduced
+    - ReLu
+    - Dropout
+    - MaxPooling
+- VGG16
+  - deeper variant of AlexNet with smaller filters.
+  - winner of localization an classification in ImageNet 2014
+  - the paper presents a study on the role of network depth: fix other parameters of the architecture, and steadily increase the depth of the network by adding more convolutional layers, which is feasible due to the use of very small $3 \times 3$ convolution filters in all layers.
+  - multiple $3 \times 3$ convolutions in a sequence achieve a large receptive field with 
+    - less parameters
+    - more non linearities
+- Inception Module
+  - choosing the right kernel size for the convolution is difficult because images could show interesting features at different scales.
+  
+  - moreover, deep networks tend to over fit and to become very computationally expensive.
+  
+  - the solution is to exploit multiple filter size at the same level and then merge the output activation maps together.
+  
+  - it is a module that performs in parallel 1x1, 3x3, 5x5 convolutions and a final pooling in order to avoid the problem of choosing the kernel size.  
+  
+  - To decrease the computational load of the network we have a filter 1x1 added before the 3x3 and 5x5 convolutions.  
+    <img src="img/101.png" style="zoom:40%">
+  
+    <img src="img/102.png" style="zoom:40%">  
+- GoogLeNet
+  - at the beginning there are two blocks of conv + pool layers.
+  - then there are a stack of 9 inception modules.
+  - it has some mid classifiers (for dying neuron problem)
+  - no fully connected in the end! simple averaging pooling, linear classifier + softmax.
 
 
 
 #### Fully convolutional CNN and CNN for segmentation
+
+in normal CNNs the FC layer constrains the input to a fixed size.  
+Fully Convolutional CNNs are networks that don't have FC layers in the end, but output, for each class:
+
+- a lower resolution image than the input image
+- class probabilities for the receptive filed of each pixel.
+
+the outputs of a Fully Convolutional are heatmaps!
+
+*Semantic Segmentation, possible solutions*
+
+- Direct Heatmap
+  - assign to each pixel of the input image the predicted class with the highest probability in the output heatmaps.
+- Shift and Stitch
+  - compute the class as in direct heatmap but stitch the predictions obtained by giving as input shifts of the input image
+- U-net
+  - 
+
+
 
 one example of architecture for segmentation is the NiN architecture (Network in Network)
 
