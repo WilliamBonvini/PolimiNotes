@@ -422,10 +422,41 @@ the outputs of a Fully Convolutional are heatmaps!
   - assign to each pixel of the input image the predicted class with the highest probability in the output heatmaps.
 - Shift and Stitch
   - compute the class as in direct heatmap but stitch the predictions obtained by giving as input shifts of the input image
-- U-net
-  - 
+- Only convolutions with no pooling
+- concept: skip connections
+  - aggregation through summation  
+    <img src="img/103.png" style="zoom:60%">  
 
+- U-Net
+  - a network formed by 
+    - a contracting path
+    - an expansive path
+  - uses a large number of features channels in the upsampling part.
+  - use excessive data-augmentation by applying elastic deformations to the training images
+  - ***Contracting Path***, at each downsampling, repeat blocks of
+    - $3 \times 3$ convolution + ReLu
+    - $3 \times 3$ convolution + ReLu
+    - $2 \times 2$ max pooling
+  - ***Expansive Path***
+    - $2 \times 2$ transpose convolutions
+    - concatenation of corresponding cropped features
+    - $3 \times 3$ convolution + ReLu
+    - $3 \times 3$ convolution + ReLu
+  - aggregation through concatenation
+  - full image training by a weighted loss function  $\hat{\theta}=\min \sum_{x_j}w(x_j)l(x_j, \theta)$  
+    where 
+    - $w(\bold{x})=w_c(\bold{x})+w_0e^{-\frac{(d_1(\bold{x})+d_2(\bold{x}))^2}{2 \sigma^2}}$
+    - $w_c$ is used to balance class proportions
+    - $d_1$ is the distance to the border of the closest cell
+    - $d_2$ is the distance to the border of the second closest cell
 
+FCNN training options:
+
+- patch based
+- full-image
+  - fcnn are trained in an end-to-end manner
+  - no need to pass through a classification network
+  - takes advantage of FCNN efficiency, does not have to re-compute convolutional features in overlapping regions.
 
 one example of architecture for segmentation is the NiN architecture (Network in Network)
 
