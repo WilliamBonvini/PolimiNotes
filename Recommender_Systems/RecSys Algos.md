@@ -4,6 +4,27 @@
 
 [TOC]
 
+<div style="page-break-after:always"> </div>
+
+## Ranking Metrics
+
+**Average Precision at $N$**
+$$
+AP@N=\frac{1}{\min(m,N)}\sum_{k=1}^NP(k)rel(k)
+$$
+
+- $m$ is the number of relevant items in the entire system.
+- $N$ is the number of items recommended.
+- $P(k)$ is the precision at cutoff $k$.
+- $rel(k)$ is $1$ if item $k$ is relevant, $0$ otherwise.
+
+**MAP at $N$**
+$$
+MAP@N=\frac{1}{|U|}\sum_{u=1}^{|U|}(AP@N)_u
+$$
+
+<div style="page-break-after:always"> </div>
+
 ## Taxonomy
 
 ![image-20200216104451475](C:\Users\Willi\AppData\Roaming\Typora\typora-user-images\image-20200216104451475.png)
@@ -15,9 +36,9 @@
 *Implicit & Explicit*
 
 recommend items with the most number of interactions.  
-$s$ stands for score.
+$s$ stands for score, $b$ is a binary variable telling us whether the interaction happened or not.
 $$
-s_i=\sum_{u \in U}r_{ui}
+s_i=\sum_{u \in U}b_{ui}
 $$
 sort $\bar{s}$ in descending order and take the first $k$ items.  
 Most Popular items are those who have most ratings whatever is their value. 
@@ -32,6 +53,8 @@ $$
 $N_{i}$ is the number of users that have given a score to item $i$.
 
 $C$ is the shrinkage.
+
+<div style="page-break-after:always"> </div>
 
 ## Personalized
 
@@ -56,7 +79,7 @@ $C$ is the shrinkage.
 
 - remove it from each rating in the URM  
   $$
-  r''_{ui}=r'_{ui}- b_u \ \ \ \ \ \ \forall (u,i) \in \text{Interactions}
+  r''_{ui}=r'_{ui}- b_i \ \ \ \ \ \ \forall (u,i) \in \text{Interactions}
   $$
 
 - compute for each user the user bias   
@@ -67,7 +90,7 @@ $C$ is the shrinkage.
 
 - remove it from each rating the URM  
   $$
-  r'''_{ui}=r_{ui}''-b_i \ \ \ \ \ \ \forall (u,i) \in \text{Interactions}
+  r'''_{ui}=r_{ui}''-b_u \ \ \ \ \ \ \forall (u,i) \in \text{Interactions}
   $$
 
 $\hat{r}_{ui}=r_{avg}+b_i+b_u$
@@ -194,6 +217,8 @@ Generally speaking:
 - you compute the support for any pair of items $(i,j)$ and if it is greater or equal to $minsup$, you consider it as a frequent itemset.
 - for each frequent itemset $(i,j) $, you consider all the association rules associated to such frequent itemset (in this case $i \to j$, $j \to i$)  and for each association rule, if its confidence is greater than $minconf$ it is a valuable association rule.
 
+<div style="page-break-after:always"> </div>
+
 ### Machine Learning Recommenders
 
 #### SLIM, BPR, IALS
@@ -285,7 +310,27 @@ $$
 \tilde{x}_{uij}=\tilde{r}_{u}-\tilde{r}_{uj}
 $$
 
-##### IALS (TODO)
+##### IALS 
+
+Implicit Alternating Least Squares.  
+It is for implicit ratings.  
+We have to set up a preference and a confidence value for each user-item pair.
+$$
+p_{ui}=\begin{cases} 1 \ \ \ r_{ui}>0 	\\ 0 	\ \ \ r_{ui}=0 \end{cases}
+$$
+
+$$
+c_{ui}=1+\alpha r_{ui}
+$$
+
+where $\alpha$ is a hyperparameter (usually set to a value between $15$ and $40$).
+
+the loss function is:
+$$
+\min_{X,Y} \sum_{u,i}c_{ui}(p_{ui}-X^T_uY_i)^2+\lambda\bigg(||X||_2+||Y||_2\bigg)
+$$
+
+<div style="page-break-after:always"> </div>
 
 #### Matrix Factorization Techniques
 
@@ -351,6 +396,85 @@ it is called asymmetric because $Q^TY$ is not symmetric anymore.
 
 Asymmetric SVD is model-based and it has a good quality.   
 It is considered one of the best recommendations techniques at least for dataset with explicit ratings. 
+
+##### PureSVD
+
+It is the only actual, covered, technique that uses Singular Value Decomposition.
+$$
+R=U\cdot \Sigma \cdot V^T
+$$
+
+$$
+[U]=|U|\times k
+$$
+
+$$
+[\Sigma] = k \times k 
+$$
+
+$$
+[V]=|I|\times k
+$$
+
+$$
+U^TU=I
+$$
+
+$$
+V^TV=I
+$$
+
+$$
+\Sigma \text{ is a diagonal matrix}
+$$
+
+$$
+\tilde{R}=\tilde{U}\tilde{\Sigma}\tilde{V}^T
+$$
+
+we aim at finding the 3 matrices on the right member of the equation above by minimizing:
+$$
+\min_{U,\Sigma,V}||R-\tilde{R}||_2
+$$
+the problem of this approach is that it tends to overfit too much.
+
+How to create an approximate representation of $R$ starting from pure SVD? just take into consideration not all the singular values in $\Sigma$ (reduce $U$ and $V$ accordingly).
+
+***Relationship among FunkSVD and PureSVD***
+
+$$
+R=A\cdot B= \text{FunkSVD}
+$$
+
+$$
+A=U\sqrt{S}
+$$
+
+$$
+B=\sqrt{S}V^T
+$$
+
+$$
+R=USV^T=\text{Pure SVD}
+$$
+
+FunkSVD can be seen as pure SVD if we put such values as $A$ and $B$ (kind of, not exactly).
+
+***Pure SVD Trick - Folding in***
+
+Pure SVD can be seen as an item based technique that minimizes the mean squared error (computed on all the rating matrix)
+$$
+R\color{red}\tilde{V}\color{orange}\tilde{V}^T\color{black}=\tilde{U}\tilde{S}\tilde{V}^T\color{red}\tilde{V}\color{orange}\tilde{V}^T\color{black}=\tilde{U}\tilde{S}\color{orange}\tilde{V}^T
+$$
+$\tilde{V}^T\tilde{V}$ is equal to $I$, but $\tilde{V}\tilde{V}^T$ is not! this is because we are using approximated matrices.
+
+$\tilde{V}\tilde{V}^T$ is a matrix of dimensions items$\times$ items $\to$ it is a similarity matrix.
+$$
+RS=\tilde{U}\tilde{S}\color{orange}\tilde{V}^T
+$$
+so if I have a new user (a new row in $R$) it is easy to compute!
+
+<div style="page-break-after:always"> </div>
 
 #### Side Information Recommenders
 
@@ -428,6 +552,8 @@ Add bias for user and items if the original $R$ matrix contains explicit ratings
 
 Sparsity problem, solution: penalization term and reduce dimensionality as long as you can.
 
+<div style="page-break-after:always"> </div>
+
 #### Factorization Machines
 
 we turn the recommending problem into a regression problem.
@@ -468,12 +594,22 @@ a row $\bar{v}_i$ within $V$ describes the $i$-th variable with $k$ factors. $k 
 $FM$ can be applied to a variety of prediction tasks, among them there are:
 
 - Regression (use MSE or similar loss)
-- Binary classification 
-- Ranking
+- Binary classification  
+- Ranking 
+
+BPR is a good optimization metric to use in this case, but MSE is the one implemented in libFM.
 
 [source](https://www.csie.ntu.edu.tw/~b97053/paper/Rendle2010FM.pdf)
 
-#### Graph Based Recommenders
+Important:  it is possible to prove that, if you use this formula and you strictly follow the rule of putting one only for the user and the item that did the rating, the formula is identical to collaborative filtering matrix factorization, but more complex to write. 
+
+<div style="page-break-after:always"> </div>
+
+#### Graph Based 
+
+##### Basic Algorithm
+
+I'm gonna talk about it without considering features. the version with features is worth to be mentioned though (simply add nodes for the feature and you are on the horse (it is an italian dictum, it means you are good to go LeL)).
 
 - we model our data as a graph.
 
@@ -488,8 +624,7 @@ $FM$ can be applied to a variety of prediction tasks, among them there are:
   A_{i,j}=\begin{cases} 1 \text{   if $i$ consumed $j$ or if $i$ was consumed by $j$} \\ 0 \text{  otherwise} \end{cases}
   $$
   
-
-- we create a probability matrix $P$ of the same dimension of $M$ that tells us what is the probability of going to node $j$ from node $i$
+- we create a probability matrix $P$ of the same dimension of $M$ that tells us what is the probability of going to node $j$ from node $i$ ($i$ is strictly a user, $j$ is strictly an item)
   $$
   P_{ij}=\frac{A_{ij}}{\sum_{k}^{U+I} A_{ik}}
   $$
@@ -498,13 +633,41 @@ $FM$ can be applied to a variety of prediction tasks, among them there are:
   $$
   P_{ij}=\sum_a\sum_bP_{ia}P_{ab}P_{bj}
   $$
-  [TODO] write it better.
+
+##### P3Alpha
+
+exactly as I've described before, it does not consider feature. the only thing to be said is that now $P_{ij}$ becomes
+$$
+P_{ij}=\Bigg(\frac{A_{ij}}{\sum_{k}^{U+I} A_{ik}}\Bigg)^\alpha
+$$
+It considers $3$ steps, as I've said earlier.
+
+<div style="page-break-after:always"> </div>
 
 ##### Page Rank
 
-[TODO]
+It is an example of Random Walk with Restart **probably**.
 
+PageRank is an algorithm that measures the transitive influence or connectivity of nodes.   
+It can be computed by either iteratively distributing one node’s rank (originally based on degree) over its neighbors or by randomly traversing the graph and counting the frequency of hitting each node during these walks. 
+PageRank is used to rank websites in Google’s search results.   
+It counts the number, and quality, of links to a page which determines an estimation of how important the page is. The underlying assumption is that pages of importance are more likely to receive a higher volume of links from other pages. 
 
+Google recalculates PageRank scores each time it crawls the Web and rebuilds its index. As Google increases the number of documents in its collection, the initial approximation of PageRank decreases for all documents.
+
+It’s defined as: 
+$$
+PR(A)=(1-d)+d\bigg(\frac{PR(T_1)}{C(T_1)}+\dots+ \frac{PR(T_n)}{C(T_n)}\bigg)
+$$
+where 
+
+- we assume that a page $A$ has pages $T_1$ to $T_n$ which point to it (i.e., are citations).
+- $d$ is a damping factor which can be set between $0$ and $1$. It is usually set $0.85$.
+- $C(A)$ is defined as the number of links going out of page $A$.
+
+The ***normalized*** sum of the the PageRanks is equal to one.
+
+It is an iterative process.
 
 
 
